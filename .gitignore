@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+
+#Abaqus Odb
+*.odb
+*.cae

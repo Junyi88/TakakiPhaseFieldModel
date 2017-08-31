@@ -1,0 +1,281 @@
+1
+
+   Abaqus 6.14-6                                  Date 30-Aug-2017   Time 15:45:51
+   For use at IMPERIAL COLLEGE OF SCIENCE TECHNOLOGYMEDICINE under license from Dassault Systemes or its subsidiary.
+
+
+
+                         The Abaqus Software is a product of:
+
+                           Dassault Systemes SIMULIA Corp.
+                           1301 Atwood Avenue, Suite 101W
+                              Johnston, RI 02919, USA
+ 
+
+
+                   Available for internal use at IMPERIAL COLLEGE OF SCIENCE TECHNOLOGYMEDICINE. 
+                   The Abaqus Online Support System is accessible
+                   through the "My Support" section of the SIMULIA
+                   Home Page at http://www.simulia.com.
+
+                   Support policies for academic licenses are described
+                   on the SIMULIA web site at
+                   http://www.3ds.com/products/simulia/academics/
+ 
+                          On machine me-ql1615640 
+                          you are authorized to run
+                          Abaqus/Standard until 31-Mar-2018
+
+                          Your site id is: 200000000048523 
+
+
+ 
+                    For assistance or any other information you may
+                    obtain contact information for your local office
+                    from the world wide web at:
+
+                      http://www.3ds.com/products/simulia/locations/
+
+ 
+                * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+                *                                                         * 
+                *                   *****************                     * 
+                *                   *  N O T I C E  *                     * 
+                *                   *****************                     * 
+                *                                                         * 
+                *                                                         * 
+                *                    Abaqus 6.14-6                        * 
+                *                                                         * 
+                *          BUILD ID: 2016_03_30-16.02.06 135203           * 
+                *                                                         * 
+                *                                                         * 
+                *  Please make sure you are using release 6.14 manuals    * 
+                *  plus the notes accompanying this release.              * 
+                *                                                         * 
+                *                                                         * 
+                *                                                         * 
+                *                                                         * 
+                *                                                         * 
+                *   This program may not be used for commercial purposes  * 
+                *           without payment of a commercial fee.          * 
+                *                                                         * 
+                * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+
+ 
+
+
+
+     PROCESSING PART, INSTANCE, AND ASSEMBLY INFORMATION
+   *******************************************************
+
+
+     END PROCESSING PART, INSTANCE, AND ASSEMBLY INFORMATION
+   ***********************************************************
+
+
+
+
+     OPTIONS BEING PROCESSED
+   ***************************
+
+
+  *HEADING
+          USER-DEFINED (UMAT) material                                                                                                                                                                                                                                    
+  *Node
+  *include,input=nodes.inc
+
+  *** INPUT DATA IS READ FROM FILE nodes.inc                                                                                                                                                                                                                                                      
+
+  *Element, type=C3D20R
+  *include,input=elements.inc
+
+  *** INPUT DATA IS READ FROM FILE elements.inc                                                                                                                                                                                                                                                   
+
+  *include,input=sets.inc
+
+  *** INPUT DATA IS READ FROM FILE sets.inc                                                                                                                                                                                                                                                       
+
+  *Nset, nset=g01
+  *Elset, elset=g01, generate
+  *Nset, nset=g02
+  *Elset, elset=g02, generate
+  *Nset, nset=g03
+  *Elset, elset=g03, generate
+  *Nset, nset=g04
+  *Elset, elset=g04, generate
+  *Nset, nset=Stop
+  *Elset, elset=Stop
+  *Nset, nset=Sbot
+  *Elset, elset=Sbot
+  *Nset, nset=Sleft
+  *Elset, elset=Sleft
+  *Nset, nset=Sright
+  *Elset, elset=Sright
+  *Nset, nset=Sfront
+  *Elset, elset=Sfront
+  *Nset, nset=Sback
+  *Elset, elset=Sback
+  *Nset, nset=All, generate
+  *Elset, elset=All, generate
+  *include,input=rotationMatrix.inc
+
+  *** INPUT DATA IS READ FROM FILE rotationMatrix.inc                                                                                                                                                                                                                                             
+
+  *MATERIAL, NAME = MAT001
+  *DEPVAR
+  *USER MATERIAL, CONSTANTS=10
+  *MATERIAL, NAME = MAT002
+  *DEPVAR
+  *USER MATERIAL, CONSTANTS=10
+  *MATERIAL, NAME = MAT003
+  *DEPVAR
+  *USER MATERIAL, CONSTANTS=10
+  *MATERIAL, NAME = MAT004
+  *DEPVAR
+  *USER MATERIAL, CONSTANTS=10
+  *SOLID SECTION, ELSET=g01, MATERIAL=MAT001
+  *SOLID SECTION, ELSET=g02, MATERIAL=MAT002
+  *SOLID SECTION, ELSET=g03, MATERIAL=MAT003
+  *SOLID SECTION, ELSET=g04, MATERIAL=MAT004
+  *Boundary
+  *Boundary
+  *Boundary
+  *Boundary
+  *Boundary
+  *Boundary
+  *Boundary
+  *Boundary
+  *SOLID SECTION, ELSET=g01, MATERIAL=MAT001
+  *SOLID SECTION, ELSET=g02, MATERIAL=MAT002
+  *SOLID SECTION, ELSET=g03, MATERIAL=MAT003
+  *SOLID SECTION, ELSET=g04, MATERIAL=MAT004
+  *OUTPUT, FIELD, frequency=1
+  *ELEMENT OUTPUT, ELSET=ALL
+  *OUTPUT, FIELD, frequency=1
+  *ELEMENT OUTPUT, ELSET=ALL
+  *OUTPUT, FIELD, frequency=1
+  *ELEMENT OUTPUT, ELSET=ALL
+  *STEP, NAME=D1,NLGEOM=YES, INC=100000
+  *OUTPUT, FIELD, frequency=1
+  *STEP, NAME=D1,NLGEOM=YES, INC=100000
+  *STEP, NAME=D1,NLGEOM=YES, INC=100000
+  *STATIC
+  *Boundary
+  *Boundary
+  *Boundary
+  *Boundary
+  *OUTPUT, FIELD, frequency=1
+  *ELEMENT OUTPUT, ELSET=ALL
+  *NODE OUTPUT, NSET=ALL
+  *END STEP
+  *STEP, NAME=D1,NLGEOM=YES, INC=100000
+  *STATIC
+  *Boundary
+  *Boundary
+  *Boundary
+  *Boundary
+  *END STEP
+
+
+
+                            P R O B L E M   S I Z E
+
+
+          NUMBER OF ELEMENTS IS                                   784
+          NUMBER OF NODES IS                                     4125
+          NUMBER OF NODES DEFINED BY THE USER                    4125
+          TOTAL NUMBER OF VARIABLES IN THE MODEL                12375
+          (DEGREES OF FREEDOM PLUS MAX NO. OF ANY LAGRANGE MULTIPLIER
+           VARIABLES. INCLUDE *PRINT,SOLVE=YES TO GET THE ACTUAL NUMBER.)
+
+
+
+                              END OF USER INPUT PROCESSING
+
+
+
+     JOB TIME SUMMARY
+       USER TIME (SEC)      =  0.20000    
+       SYSTEM TIME (SEC)    =  0.10000    
+       TOTAL CPU TIME (SEC) =  0.30000    
+       WALLCLOCK TIME (SEC) =          0
+1
+
+   Abaqus 6.14-6                                  Date 30-Aug-2017   Time 15:45:56
+   For use at IMPERIAL COLLEGE OF SCIENCE TECHNOLOGYMEDICINE under license from Dassault Systemes or its subsidiary.
+
+     USER-DEFINED (UMAT) material                                                              STEP    1  INCREMENT    1
+                                                                                          TIME COMPLETED IN THIS STEP   0.00    
+
+
+                        S T E P       1     S T A T I C   A N A L Y S I S
+
+
+                                                                                          
+
+     AUTOMATIC TIME CONTROL WITH -
+          A SUGGESTED INITIAL TIME INCREMENT OF                1.000E-02
+          AND A TOTAL TIME PERIOD OF                            5.00    
+          THE MINIMUM TIME INCREMENT ALLOWED IS                1.000E-05
+          THE MAXIMUM TIME INCREMENT ALLOWED IS                0.100    
+
+     LINEAR EQUATION SOLVER TYPE         DIRECT SPARSE
+
+          LARGE DISPLACEMENT THEORY WILL BE USED
+  
+                   M E M O R Y   E S T I M A T E
+  
+ PROCESS      FLOATING PT       MINIMUM MEMORY        MEMORY TO
+              OPERATIONS           REQUIRED          MINIMIZE I/O
+             PER ITERATION           (MB)               (MB)
+  
+     1         2.91E+009               21                 94
+  
+ NOTE:
+      (1) SINCE ABAQUS DOES NOT PRE-ALLOCATE MEMORY AND ONLY ALLOCATES MEMORY AS NEEDED DURING THE ANALYSIS,
+          THE MEMORY REQUIREMENT PRINTED HERE CAN ONLY BE VIEWED AS A GENERAL GUIDELINE BASED ON THE BEST
+          KNOWLEDGE AVAILABLE AT THE BEGINNING OF A STEP BEFORE THE SOLUTION PROCESS HAS BEGUN.
+      (2) THE ESTIMATE IS NORMALLY UPDATED AT THE BEGINNING OF EVERY STEP. IT IS THE MAXIMUM VALUE OF THE
+          ESTIMATE FROM THE CURRENT STEP TO THE LAST STEP OF THE ANALYSIS, WITH UNSYMMETRIC SOLUTION TAKEN
+          INTO ACCOUNT IF APPLICABLE. 
+      (3) SINCE THE ESTIMATE IS BASED ON THE ACTIVE DEGREES OF FREEDOM IN THE FIRST ITERATION OF THE 
+          CURRENT STEP, THE MEMORY ESTIMATE MIGHT BE SIGNIFICANTLY DIFFERENT THAN ACTUAL USAGE FOR 
+          PROBLEMS WITH SUBSTANTIAL CHANGES IN ACTIVE DEGREES OF FREEDOM BETWEEN STEPS (OR EVEN WITHIN
+          THE SAME STEP). EXAMPLES ARE: PROBLEMS WITH SIGNIFICANT CONTACT CHANGES, PROBLEMS WITH MODEL
+          CHANGE, PROBLEMS WITH BOTH STATIC STEP AND STEADY STATE DYNAMIC PROCEDURES WHERE ACOUSTIC 
+          ELEMENTS WILL ONLY BE ACTIVATED IN THE STEADY STATE DYNAMIC STEPS.
+      (4) FOR MULTI-PROCESS EXECUTION, THE ESTIMATED VALUE OF FLOATING POINT OPERATIONS FOR EACH PROCESS
+          IS BASED ON AN INITIAL SCHEDULING OF OPERATIONS AND MIGHT NOT REFLECT THE ACTUAL FLOATING 
+          POINT OPERATIONS COMPLETED ON EACH PROCESS. OPERATIONS ARE DYNAMICALLY BALANCED DURING EXECUTION, 
+          SO THE ACTUAL BALANCE OF OPERATIONS BETWEEN PROCESSES IS EXPECTED TO BE BETTER THAN THE ESTIMATE
+          PRINTED HERE.
+      (5) THE UPPER LIMIT OF MEMORY THAT CAN BE ALLOCATED BY ABAQUS WILL IN GENERAL DEPEND ON THE VALUE OF
+          THE "MEMORY" PARAMETER AND THE AMOUNT OF PHYSICAL MEMORY AVAILABLE ON THE MACHINE. PLEASE SEE
+          THE "ABAQUS ANALYSIS USER'S MANUAL" FOR MORE DETAILS. THE ACTUAL USAGE OF MEMORY AND OF DISK
+          SPACE FOR SCRATCH DATA WILL DEPEND ON THIS UPPER LIMIT AS WELL AS THE MEMORY REQUIRED TO MINIMIZE
+          I/O. IF THE MEMORY UPPER LIMIT IS GREATER THAN THE MEMORY REQUIRED TO MINIMIZE I/O, THEN THE ACTUAL
+          MEMORY USAGE WILL BE CLOSE TO THE ESTIMATED "MEMORY TO MINIMIZE I/O" VALUE, AND THE SCRATCH DISK
+          USAGE WILL BE CLOSE-TO-ZERO; OTHERWISE, THE ACTUAL MEMORY USED WILL BE CLOSE TO THE PREVIOUSLY
+          MENTIONED MEMORY LIMIT, AND THE SCRATCH DISK USAGE WILL BE ROUGHLY PROPORTIONAL TO THE DIFFERENCE
+          BETWEEN THE ESTIMATED "MEMORY TO MINIMIZE I/O" AND THE MEMORY UPPER LIMIT. HOWEVER ACCURATE
+          ESTIMATE OF THE SCRATCH DISK SPACE IS NOT POSSIBLE.
+      (6) USING "*RESTART, WRITE" CAN GENERATE A LARGE AMOUNT OF DATA WRITTEN IN THE WORK DIRECTORY.
+
+
+          THE ANALYSIS HAS BEEN COMPLETED
+
+
+
+                              ANALYSIS COMPLETE
+                              WITH    238 WARNING MESSAGES ON THE MSG FILE
+                                        1 WARNINGS ARE FOR NUMERICAL PROBLEMS
+                                      237 WARNINGS ARE FOR NEGATIVE EIGENVALUES
+
+
+
+     JOB TIME SUMMARY
+       USER TIME (SEC)      =   3559.0    
+       SYSTEM TIME (SEC)    =   494.20    
+       TOTAL CPU TIME (SEC) =   4053.2    
+       WALLCLOCK TIME (SEC) =        173
