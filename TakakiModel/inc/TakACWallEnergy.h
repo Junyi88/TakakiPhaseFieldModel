@@ -15,7 +15,7 @@ public:
 
   // Getter Functions
   TakPhase<FDClass> * PhiP(){return &(_Phi);};
-  double dFdPhase(const int &y, const int &x) {return _dFdphase(y,x);};
+  double dFdPhase(const int &y, const int &x) {return _dFdPhase(y,x);};
   JMat * dFdPhasePointer() {return &(_dFdPhase);};
 
 protected:
