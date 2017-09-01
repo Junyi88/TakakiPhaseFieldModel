@@ -5,7 +5,6 @@
 #include "TakAngle.h"
 
 //##========================================================================
-// @@ -- Constructor ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
 class TakACTOriEnergy {
 public:

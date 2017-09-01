@@ -4,7 +4,6 @@
 #include "TakPhase.h"
 
 //##========================================================================
-// @@ -- Constructor ----------------------------------------------------
 template <class FDClass>
 class TakACBulkEnergy {
 public:
