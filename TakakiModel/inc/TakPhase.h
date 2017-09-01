@@ -29,17 +29,17 @@ public:
   FDClass * DP(){return &_D;};
 
   // GetValues
-  double F(const int &y, const int &x){return _F.Value(j,i);};
-  double F2(const int &y, const int &x){return _F.Value(j,i);};
-  double P(const int &y, const int &x){return _P.Value(j,i);};
-  double dP(const int &y, const int &x){return _dP.Value(j,i);};
+  double F(const int &y, const int &x){return _F.Value(y,x);};
+  double F2(const int &y, const int &x){return _F.Value(y,x);};
+  double P(const int &y, const int &x){return _P.Value(y,x);};
+  double dP(const int &y, const int &x){return _dP.Value(y,x);};
 
-  double Dx(const int &y, const int &x){return _D.Dx(j,i);};
-  double Dy(const int &y, const int &x){return _D.Dy(j,i);};
-  double Dxy(const int &y, const int &x){return _D.Dxy(j,i);};
-  double Dxx(const int &y, const int &x){return _D.Dxx(j,i);};
-  double Dyy(const int &y, const int &x){return _D.Dyy(j,i);};
-  double D2(const int &y, const int &x){return _D.D2(j,i);};
+  double Dx(const int &y, const int &x){return _D.Dx(y,x);};
+  double Dy(const int &y, const int &x){return _D.Dy(y,x);};
+  double Dxy(const int &y, const int &x){return _D.Dxy(y,x);};
+  double Dxx(const int &y, const int &x){return _D.Dxx(y,x);};
+  double Dyy(const int &y, const int &x){return _D.Dyy(y,x);};
+  double D2(const int &y, const int &x){return _D.D2(y,x);};
 
 protected:
   JMpi _MpiObj;
