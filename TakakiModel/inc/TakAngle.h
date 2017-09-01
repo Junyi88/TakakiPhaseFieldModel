@@ -1,5 +1,5 @@
-#ifndef TAKPHASE_H
-#define TAKPHASE_H
+#ifndef TAKANGLE_H
+#define TAKANGLE_H
 
 #include "JFDMpiAngle.h"
 
