@@ -15,7 +15,7 @@ all : $(OBJ_DIR)/TakACTOriEnergy.o $(OBJ_DIR)/TakACBulkEnergy.o \
 	$(FDOBJ_DIR)/JMat.o $(FDOBJ_DIR)/JMpi.o $(FDOBJ_DIR)/JFDMpi.o $(FDOBJ_DIR)/AuxFunctions.o \
 	$(FDOBJ_DIR)/JFDMpiAngle.o
 
-$(OBJ_DIR)/TakACTOriEnergy.o : $(SRC_DIR)/TakACTOriEnergy.cpp $(INC_DIR)/TakACTOriEnergy.h $(OBJ_DIR)/TakPhase.o $(FDOBJ_DIR)/TakAngle.o
+$(OBJ_DIR)/TakACTOriEnergy.o : $(SRC_DIR)/TakACTOriEnergy.cpp $(INC_DIR)/TakACTOriEnergy.h $(OBJ_DIR)/TakPhase.o $(OBJ_DIR)/TakAngle.o
 	mpicxx -c $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -I$(INC_DIR) -I$(SRC_DIR) -o \
 		$(OBJ_DIR)/TakACTOriEnergy.o $(SRC_DIR)/TakACTOriEnergy.cpp \
 		$(OBJ_DIR)/TakPhase.o $(OBJ_DIR)/TakAngle.o\
