@@ -1,38 +1,34 @@
 #ifndef TAKPHASE_H
 #define TAKPHASE_H
 
-#include "JFDMpi.h"
+#include "JFDMpiAngle.h"
 
 template <class FDClass>
-class TakPhase {
+class TakAngle {
 public:
-  TakPhase(JMpi inJMpi, const JMat &in_F);
-  TakPhase(JMpi inJMpi);
-	TakPhase<FDClass> & operator= (const TakPhase<FDClass> &in1); //Write to operator
+  TakAngle(JMpi inJMpi, const JMat &in_F, const double &inMinMag);
+  TakAngle(JMpi inJMpi, const double &inMinMag);
+	TakAngle<FDClass> & operator= (const TakAngle<FDClass> &in1); //Write to operator
 
   //=========================
   // Useful Functions
   // void SetF(const JMat &in_F); // DANGER DON'T USE
 
   void Calc_FD();
-  void Calc_Powers();
-  void Calc_P();
-  void Calc_dP();
+  void Calc_Rs();
   void Calc_All();
 
   //=========================
   // GetPointers
   JMat * FP(){return &_F;};
-  JMat * F2P(){return &_F2;};
-  JMat * PP(){return &_P;};
-  JMat * dPP(){return &_dP;};
   FDClass * DP(){return &_D;};
 
   // GetValues
   double F(const int &y, const int &x){return _F.Value(y,x);};
-  double F2(const int &y, const int &x){return _F2.Value(y,x);};
-  double P(const int &y, const int &x){return _P.Value(y,x);};
-  double dP(const int &y, const int &x){return _dP.Value(y,x);};
+
+  double Mag(const int &y, const int &x){return _Mag.Value(y,x);};
+  double R(const int &y, const int &x){return _R.Value(y,x);};
+  double R3(const int &y, const int &x){return _R3.Value(y,x);};
 
   double Dx(const int &y, const int &x){return _D.Dx(y,x);};
   double Dy(const int &y, const int &x){return _D.Dy(y,x);};
@@ -46,10 +42,9 @@ protected:
 	int _NY, _NX, _Ny;
 
   JMat _F;
-  JMat _F2, _F3, _F4, _F5;
   FDClass _D;
-  JMat _P;
-  JMat _dP;
+  JMat _Mag , _R, _R3;
+  double _MinMag;
 
   MPI_Status _status;
 };

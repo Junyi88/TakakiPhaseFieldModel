@@ -29,7 +29,8 @@ TakPhase<FDClass> & TakPhase<FDClass>::operator= (const TakPhase<FDClass> &in1) 
   _F4=in1._F4;
   _F5=in1._F5;
 
-  _D=in1._D;
+  _D=_D.SetF(_F); //DANGER
+  //_D=in1._D;
   _P=in1._P;
   _dP=in1._dP;
 }
