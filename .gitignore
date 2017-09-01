@@ -30,3 +30,8 @@
 #Abaqus Odb
 *.odb
 *.cae
+
+#Matlab Stuff
+*Ignore.mat
+*.asv
+*.pyc
