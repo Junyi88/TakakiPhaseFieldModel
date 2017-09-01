@@ -3,6 +3,7 @@
 
 #include "JFDMpi.h"
 
+//## ===================================
 template <class FDClass>
 class TakPhase {
 public:
@@ -31,6 +32,10 @@ public:
   // GetValues
   double F(const int &y, const int &x){return _F.Value(y,x);};
   double F2(const int &y, const int &x){return _F2.Value(y,x);};
+  double F3(const int &y, const int &x){return _F3.Value(y,x);};
+  double F4(const int &y, const int &x){return _F4.Value(y,x);};
+  double F5(const int &y, const int &x){return _F5.Value(y,x);};
+
   double P(const int &y, const int &x){return _P.Value(y,x);};
   double dP(const int &y, const int &x){return _dP.Value(y,x);};
 
