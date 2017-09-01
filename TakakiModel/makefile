@@ -1,0 +1,30 @@
+MOD_DIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+SRC_DIR=$(MOD_DIR)src
+INC_DIR=$(MOD_DIR)inc
+OBJ_DIR=$(MOD_DIR)obj
+FD_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD
+FDSRC_DIR=$(MOD_DIR)../JunyiFDMpiCpp/src
+FDINC_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/inc
+FDOBJ_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/obj
+CFLAGS=-std=c++11 -O2 -Wreorder
+
+all : $(FDOBJ_DIR)/JMat.o $(FDOBJ_DIR)/JMpi.o $(FDOBJ_DIR)/JFDMpi.o $(FDOBJ_DIR)/AuxFunctions.o \
+	$(FDOBJ_DIR)/JFDMpiAngle.o
+
+$(FDOBJ_DIR)/JFDMpiAngle.o  : $(FDOBJ_DIR)/JFDMpi.o $(FDSRC_DIR)/JFDMpiAngle.cpp $(FDINC_DIR)/JFDMpiAngle.h
+	mpicxx -c $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -o $(FDOBJ_DIR)/JFDMpiAngle.o $(FDSRC_DIR)/JFDMpiAngle.cpp \
+		$(FDOBJ_DIR)/JMat.o $(FDOBJ_DIR)/JMpi.o $(FDOBJ_DIR)/JFDMpi.o
+
+$(FDOBJ_DIR)/AuxFunctions.o  : $(FDOBJ_DIR)/JMat.o $(FDOBJ_DIR)/JMpi.o $(FDSRC_DIR)/AuxFunctions.cpp $(FDINC_DIR)/AuxFunctions.h
+	mpicxx -c $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -o $(FDOBJ_DIR)/AuxFunctions.o $(FDSRC_DIR)/AuxFunctions.cpp \
+		$(FDOBJ_DIR)/JMat.o $(FDOBJ_DIR)/JMpi.o
+
+$(FDOBJ_DIR)/JFDMpi.o  : $(FDOBJ_DIR)/JMat.o $(FDOBJ_DIR)/JMpi.o $(FDSRC_DIR)/JFDMpi.cpp $(FDINC_DIR)/JFDMpi.h
+	mpicxx -c $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -o $(FDOBJ_DIR)/JFDMpi.o $(FDSRC_DIR)/JFDMpi.cpp \
+		$(FDOBJ_DIR)/JMat.o $(FDOBJ_DIR)/JMpi.o
+
+$(FDOBJ_DIR)/JMpi.o  : $(FDSRC_DIR)/JMpi.cpp $(FDINC_DIR)/JMpi.h
+	mpicxx -c $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -o $(FDOBJ_DIR)/JMpi.o $(FDSRC_DIR)/JMpi.cpp
+
+$(FDOBJ_DIR)/JMat.o  : $(FDSRC_DIR)/JMat.cpp $(FDINC_DIR)/JMat.h
+	mpicxx -c $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -o $(FDOBJ_DIR)/JMat.o $(FDSRC_DIR)/JMat.cpp
