@@ -3,7 +3,7 @@
 //##========================================================================
 // @@ -- Constructor ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakACTOriEnergy<class FDClass, class FDAngleClass>::TakACTOriEnergy(
+TakACTOriEnergy<FDClass, FDAngleClass>::TakACTOriEnergy(
   TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
   const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
   JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta), _MpiObj(inJMpi),
@@ -15,8 +15,8 @@ TakACTOriEnergy<class FDClass, class FDAngleClass>::TakACTOriEnergy(
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakACTOriEnergy<class FDClass, class FDAngleClass> & TakACTOriEnergy<class FDClass,
-  class FDAngleClass>::operator= (const TakACTOriEnergy<class FDClass, class FDAngleClass> &in1) {
+TakACTOriEnergy<FDClass, FDAngleClass> & TakACTOriEnergy<FDClass, FDAngleClass>::operator=
+  (const TakACTOriEnergy<FDClass, FDAngleClass> &in1) {
 
     _Phi=in1._Phi;
     _Theta=in1._Theta;
@@ -40,7 +40,7 @@ TakACTOriEnergy<class FDClass, class FDAngleClass> & TakACTOriEnergy<class FDCla
 
 // @@ -- Function ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_dFdPhase(){
+TakACTOriEnergy<FDClass, FDAngleClass>::Calc_dFdPhase(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dFdPhase(j,i)=_s2*(_Phi->F(j,i))*(_Theta->Mag(j,i));
@@ -49,7 +49,7 @@ TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_dFdPhase(){
 
 // @@ -- Function ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_MTheta(){
+TakACTOriEnergy<FDClass, FDAngleClass>::Calc_MTheta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _MTheta(j,i)=_Ms*(1.0-(_Phi->P(j,i)));
@@ -58,7 +58,7 @@ TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_MTheta(){
 
 // @@ -- Function ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_dAngleFront(){
+TakACTOriEnergy<FDClass, FDAngleClass>::Calc_dAngleFront(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dAngleFront(j,i)=(_Theta->Dy(j,i))*(_Theta->Dy(j,i))*(_Theta->Dxx(j,i));
@@ -73,7 +73,7 @@ TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_dAngleFront(){
 
 // @@ -- Function ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_dAngleRear(){
+TakACTOriEnergy<FDClass, FDAngleClass>::Calc_dAngleRear(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dAngleRear(j,i)=(_Phi->Dx(j,i))*(_Theta->Dx(j,i));
@@ -88,14 +88,14 @@ TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_dAngleRear(){
 
 // @@ -- Function ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_dThetadt(){
+TakACTOriEnergy<FDClass, FDAngleClass>::Calc_dThetadt(){
   _dThetadt(j,i)=_dAngleFront(j,i)+_dAngleRear(j,i);
   _dThetadt(j,i)*=_MTheta(j,i);
 }
 
 // @@ -- Function ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakACTOriEnergy<class FDClass, class FDAngleClass>::Calc_All(){
+TakACTOriEnergy<FDClass, FDAngleClass>::Calc_All(){
   Calc_dFdPhase();
   Calc_MTheta();
   Calc_dAngleFront();
