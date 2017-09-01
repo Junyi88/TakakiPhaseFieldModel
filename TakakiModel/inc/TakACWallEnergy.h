@@ -14,7 +14,7 @@ public:
   void Calc_All();
 
   // Getter Functions
-  TakPhase PhiP(){return _Phi;};
+  TakPhase<FDClass> * PhiP(){return &(_Phi);};
   double dFdPhase(const int &y, const int &x) {return _dFdphase(y,x);};
   JMat * dFdPhasePointer() {return &(_dFdPhase);};
 
