@@ -4,7 +4,7 @@ INC_DIR=$(MOD_DIR)inc
 OBJ_DIR=$(MOD_DIR)obj
 EXE_DIR=$(MOD_DIR)exec
 FD_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD
-FDSRC_DIR=$(MOD_DIR)../JunyiFDMpiCpp/src
+FDSRC_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/src
 FDINC_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/inc
 FDOBJ_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/obj
 CFLAGS=-std=c++11 -O2 -Wreorder
