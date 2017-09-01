@@ -47,7 +47,7 @@ void TakAngle<FDClass>::Calc_Rs(){
     for (int i=0; i<_NX; i++){
       _Mag(j,i)=sqrt(_D.Dx(j,i)*_D.Dx(j,i)+_D.Dy(j,i)*_D.Dy(j,i));
 
-      if (_Mag>=_MinMag){
+      if (_Mag(j,i)>=_MinMag){
         _R(j,i)=1.0/_Mag(j,i);
         _R3(j,i)=_R(j,i)*_R(j,i);
         _R3(j,i)*=_R(j,i);
