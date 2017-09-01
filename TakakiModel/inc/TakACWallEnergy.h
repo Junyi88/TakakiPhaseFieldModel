@@ -1,7 +1,7 @@
 #ifndef TAKACWALLENERGY_H
 #define TAKACWALLENERGY_H
 
-#include "JFPhase.h"
+#include "TakPhase.h"
 
 //##========================================================================
 // @@ -- Constructor ----------------------------------------------------
@@ -13,7 +13,10 @@ public:
 
   void Calc_All();
 
+  // Getter Functions
   TakPhase PhiP(){return _Phi;};
+  double dFdPhase(const int &y, const int &x) {return _dFdphase(y,x);};
+  JMat * dFdPhasePointer() {return &(_dFdPhase);};
 
 protected:
   TakPhase<FDClass> * _Phi;
