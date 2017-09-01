@@ -7,11 +7,11 @@ template <class FDClass>
 class ACBulk {
 public:
   ACBulk(JMpi inJMpi, const JMat &in_F);
-  // ACBulk(JMpi inJMpi);
-	// ACBulk & operator= (const ACBulk &in1); //Write to operator
-  //
-  // //=========================
-  // // Useful Functions
+  ACBulk(JMpi inJMpi);
+	ACBulk & operator= (const ACBulk &in1); //Write to operator
+
+  //=========================
+  // Useful Functions
   // void SetF(const JMat &in_F);
   // void Calc_All();
   // void Calc_FD();
