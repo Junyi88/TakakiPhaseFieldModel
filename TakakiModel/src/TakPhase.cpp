@@ -30,8 +30,8 @@ TakPhase<FDClass> & TakPhase<FDClass>::operator= (const TakPhase<FDClass> &in1) 
   _F5=in1._F5;
 
   _D=in1._D;
-  _P=in._P;
-  _dP=in._dP;
+  _P=in1._P;
+  _dP=in1._dP;
 }
 
 // @@ -- Functions  ----------------------------------------------------
@@ -44,7 +44,7 @@ void TakPhase<FDClass>::Calc_FD(){
 // @@ -- Functions  ----------------------------------------------------
 template <class FDClass>
 void TakPhase<FDClass>::Calc_Powers(){
-   for (int j=0; j<Ny; j++)
+   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _F2.Replace(j,i, _F.Value(j,i)*_F.Value(j,i));
       _F3.Replace(j,i, _F2.Value(j,i)*_F.Value(j,i));
@@ -57,7 +57,7 @@ void TakPhase<FDClass>::Calc_Powers(){
 // @@ -- Functions  ----------------------------------------------------
 template <class FDClass>
 void TakPhase<FDClass>::Calc_P(){
-   for (int j=0; j<Ny; j++)
+   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _P(j,i)=(10.0*_F3(j,i))-(15.0*_F4(j,i))+(6.0*_F5(j,i));
     }
@@ -66,7 +66,7 @@ void TakPhase<FDClass>::Calc_P(){
 // @@ -- Functions  ----------------------------------------------------
 template <class FDClass>
 void TakPhase<FDClass>::Calc_dP(){
-   for (int j=0; j<Ny; j++)
+   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dP(j,i)=(30.0*_F2(j,i))-(60.0*_F3(j,i))+(30.0*_F4(j,i));
     }
