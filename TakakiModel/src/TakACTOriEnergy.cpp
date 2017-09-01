@@ -89,8 +89,11 @@ void TakACTOriEnergy<FDClass, FDAngleClass>::Calc_dAngleRear(){
 // @@ -- Function ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
 void TakACTOriEnergy<FDClass, FDAngleClass>::Calc_dThetadt(){
-  _dThetadt(j,i)=_dAngleFront(j,i)+_dAngleRear(j,i);
-  _dThetadt(j,i)*=_MTheta(j,i);
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      _dThetadt(j,i)=_dAngleFront(j,i)+_dAngleRear(j,i);
+      _dThetadt(j,i)*=_MTheta(j,i);
+    }
 }
 
 // @@ -- Function ----------------------------------------------------
