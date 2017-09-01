@@ -8,7 +8,7 @@ class ACBulk {
 public:
   ACBulk(JMpi inJMpi, const JMat &in_F);
   ACBulk(JMpi inJMpi);
-	ACBulk & operator= (const ACBulk &in1); //Write to operator
+	ACBulk<FDClass> & operator= (const ACBulk<FDClass> &in1); //Write to operator
 
   //=========================
   // Useful Functions

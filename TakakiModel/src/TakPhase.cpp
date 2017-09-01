@@ -17,7 +17,7 @@ ACBulk<FDClass>::ACBulk(JMpi inJMpi) :
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass>
-ACBulk & ACBulk<FDClass>::operator= (const ACBulk &in1) {
+ACBulk<FDClass> & ACBulk<FDClass>::operator= (const ACBulk<FDClass> &in1) {
   _MpiObj=in1._MpiObj;
 	_NY=in1._NY;
   _NX=in1._NX;
