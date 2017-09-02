@@ -13,25 +13,29 @@ template <class FDClass, class FDAngleClass>
 class TakakiSolver {
 public:
   TakakiSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-    const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
+    TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
+    TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
+    const double &inMPhiConst, const double &indt,
     JMpi inJMpi);
 	TakakiSolver<FDClass, FDAngleClass> & operator= (
     const TakakiSolver<FDClass, FDAngleClass> &in1); //Write to operator
 
-  void Calc_dEtadt();
-  void Calc_dThetadt();
-  void Calc_All();
 
+  void Step_NoUpdate();
+
+  void Calc_dEtadt();
+  // void Calc_dThetadt();
+  //void Calc_All();
 
   void Update_Eta();
   void Update_Theta();
   void Update_Eta(const double &dtimeCustom);
   void Update_Theta(const double &dtimeCustom);
 
-  void First_Step();
-  void Step_all(const double &dtimeCustom);
-  void Step_all();
-  
+
+  void Step_All(const double &dtimeCustom);
+  void Step_All();
+
   // Getter Functions
 
 protected:
@@ -48,7 +52,7 @@ protected:
   double _MPhiConst;
   double _dt;
   JMat _dEtadt;
-  JMat _dThetadt;
+  // JMat _dThetadt;
 
 };
 

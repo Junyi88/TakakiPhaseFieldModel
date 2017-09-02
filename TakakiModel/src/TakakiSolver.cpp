@@ -1,0 +1,71 @@
+#include "TakakiSolver.h"
+
+//##========================================================================
+// @@ -- Constructor ----------------------------------------------------
+template <class FDClass, class FDAngleClass>
+TakakiSolver<FDClass, FDAngleClass>::TakakiSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
+   TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
+   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
+   const double &inMPhiConst, const double &indt,
+   JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta),
+   _BulkEnergy(inBulkEnergy), _WallEnergy(inWallEnergy), _GradEnergy(inGradEnergy),
+   _OriEnergy(inOriEnergy), _MpiObj(inJMpi),
+   _NY(_MpiObj.NYGl()), _NX(_MpiObj.NX()), _Ny(_MpiObj.NYLo()),
+   _MPhiConst(inMPhiConst), _dt(indt),
+   _dEtadt(_NY,_NX) {Step_NoUpdate();}
+
+// @@ -- Write over operator ----------------------------------------------------
+template <class FDClass, class FDAngleClass>
+TakakiSolver<FDClass, FDAngleClass> & TakakiSolver<FDClass, FDAngleClass>::operator= (
+ const TakakiSolver<FDClass, FDAngleClass> &in1) {
+
+  _Phi=in1._Phi;
+  _Theta=in1._Theta;
+  _BulkEnergy=in1._BulkEnergy;
+  _WallEnergy=in1._WallEnergy;
+  _GradEnergy=in1._GradEnergy;
+  _OriEnergy=in1._OriEnergy;
+  _MpiObj=in1._MpiObj;
+  _NY=in1._NY;
+  _NX=in1._NX;
+  _Ny=in1._Ny;
+  _MPhiConst=in1._MPhiConst;
+  _dt=in1._dt;
+  _dEtadt=in1._dEtadt;
+  // _dThetadt=in1._dThetadt;
+}
+
+// @@ ------------------------------------------------------
+template <class FDClass, class FDAngleClass>
+void TakakiSolver<FDClass, FDAngleClass>::Step_NoUpdate(){
+  _BulkEnergy->Calc_All();
+  _WallEnergy->Calc_All();
+  _GradEnergy->Calc_All();
+  _OriEnergy->Calc_All();
+}
+
+// @@ ------------------------------------------------------
+template <class FDClass, class FDAngleClass>
+void TakakiSolver<FDClass, FDAngleClass>::Calc_dEtadt(){
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      _dEtadt(j,i)=-(_BulkEnergy->dFdPhase(j,i));
+      _dEtadt(j,i)-=(_WallEnergy->dFdPhase(j,i));
+      _dEtadt(j,i)-=(_GradEnergy->dFdPhase(j,i));
+      _dEtadt(j,i)-=(_OriEnergy->dFdPhase(j,i));
+      _dEtadt(j,i)*=_MPhiConst;
+    }
+}
+
+// @@ ------------------------------------------------------
+template <class FDClass, class FDAngleClass>
+void TakakiSolver<FDClass, FDAngleClass>::Calc_dEtadt(){
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      _dEtadt(j,i)=-(_BulkEnergy->dFdPhase(j,i));
+      _dEtadt(j,i)-=(_WallEnergy->dFdPhase(j,i));
+      _dEtadt(j,i)-=(_GradEnergy->dFdPhase(j,i));
+      _dEtadt(j,i)-=(_OriEnergy->dFdPhase(j,i));
+      _dEtadt(j,i)*=_MPhiConst;
+    }
+}
