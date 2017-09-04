@@ -168,8 +168,9 @@ int main(int argc, char ** argv){
   // FDAngleClass=JFDMpi2DReflectHighAngle;
   LogFile << "========================================" << std::endl;
   LogFile << "Setup Phase Class " << std::endl;
-  // TakPhase<JFDMpi2DReflectHighAngle> Phi(MPIOBJ, Eta0);
+
   GClass<JMat> G(Eta0);
+  TakPhase<JFDMpi2DBase> Phi(MPIOBJ, Eta0);
   LogFile << "Setup Phase Class Completed \n" << std::endl;
   //
   // LogFile << "========================================" << std::endl;
