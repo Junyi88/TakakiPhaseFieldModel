@@ -216,10 +216,10 @@ int main(int argc, char ** argv){
   //   const double &inMPhiConst, const double &indt,
   //   JMpi inJMpi);
 
-  LogFile << "========================================" << std::endl;
-  LogFile << "Do 1 Step " << std::endl;
-  Solver.Step_NoUpdate();
-  LogFile << "Done \n" << std::endl;
+  // LogFile << "========================================" << std::endl;
+  // LogFile << "Do 1 Step " << std::endl;
+  // Solver.Step_NoUpdate();
+  // LogFile << "Done \n" << std::endl;
 
   //===============================================================
   LogFile << "Finished Run \n" << std::endl;
