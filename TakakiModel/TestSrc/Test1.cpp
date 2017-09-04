@@ -42,7 +42,7 @@ int main(int argc, char ** argv){
   // Setup Initial File Name and Inputs
   std::string BufferString;
   std::string InitialConditionFile;
-  vector <std::string> InitialConditionFileList;
+  std::vector <std::string> InitialConditionFileList;
   std::string InputFile;
   std::ifstream BufferInputStream1;
 
@@ -71,7 +71,8 @@ int main(int argc, char ** argv){
   LogFile << "Reading Input Parameters " << Nnode << std::endl;
   LogFile << "Input Parameter File =  " << InputFile << std::endl;
   int NY, NX, ntStart, ntEnd, WriteCount;
-  double dy, dx, dt, MinAngle0, BVec, mu, MTheta0, InvPhiMin, inMPhiConst;
+  double dy, dx, dt, MinAngle0, BVec, mu, MTheta0, InvPhiMin, inMPhiConst,
+    alpha, Wa, S;
 
   double InputParameters[50];
   ReadTextFile(&InputParameters[0], InputFile, 1, NInputParameters, ',');
@@ -143,7 +144,7 @@ int main(int argc, char ** argv){
   LogFile << "Reading Initial Conditions Eta =  " << InitialConditionFileList[0] << std::endl;
   BufferString=InitialConditionFileList[0];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull(NY, NX), Eta0, MPIOBJ);
+  Splitter(BufferFull, Eta0, MPIOBJ);
   LogFile << "Reading Initial Conditions Eta Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
@@ -177,11 +178,6 @@ int main(int argc, char ** argv){
   LogFile << "Setup TakACBulkEnergy Class " << std::endl;
   TakACBulkEnergy<JFDMpi2DReflectHigh> BulkEnergy(&Phi, BVec, mu, Rho0, MPIOBJ);
   LogFile << "Setup TakACBulkEnergy Class Completed \n" << std::endl;
-
-  LogFile << "========================================" << std::endl;
-  LogFile << "Setup TakACGradEnergy Class " << std::endl;
-  TakACGradEnergy<JFDMpi2DReflectHigh> GradEnergy(&Phi, alpha, MPIOBJ);
-  LogFile << "Setup TakACGradEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACGradEnergy Class " << std::endl;
