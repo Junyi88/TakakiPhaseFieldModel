@@ -171,10 +171,10 @@ int main(int argc, char ** argv){
   TakPhase<JFDMpi2DReflectHigh> Phi(MPIOBJ, Eta0);
   LogFile << "Setup Phase Class Completed \n" << std::endl;
 
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup Theta Class " << std::endl;
-  // TakAngle<JFDMpi2DReflectHighAngle> Theta(MPIOBJ, Theta0, MinAngle0);
-  // LogFile << "Setup Theta Class Completed \n" << std::endl;
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup Theta Class " << std::endl;
+  TakAngle<JFDMpi2DReflectHighAngle> Theta(MPIOBJ, Theta0, MinAngle0);
+  LogFile << "Setup Theta Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACBulkEnergy Class " << std::endl;
@@ -191,24 +191,24 @@ int main(int argc, char ** argv){
   TakACWallEnergy<JFDMpi2DReflectHigh> WallEnergy(&Phi, Wa, MPIOBJ);
   LogFile << "Setup TakACGradEnergy Class Completed \n" << std::endl;
 
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup TakACTOriEnergy Class " << std::endl;
-  // TakACTOriEnergy<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta,
-  //   S, MTheta0, InvPhiMin, MPIOBJ);
-  // LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
-  //
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup TakakiSolver Class " << std::endl;
-  // TakakiSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(&Phi, &Theta,
-  //   &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
-  //   inMPhiConst , dt, MPIOBJ);
-  // LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakACTOriEnergy Class " << std::endl;
+  TakACTOriEnergy<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta,
+    S, MTheta0, InvPhiMin, MPIOBJ);
+  LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakakiSolver Class " << std::endl;
+  TakakiSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(&Phi, &Theta,
+    &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
+    inMPhiConst , dt, MPIOBJ);
+  LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
 
 
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Do 1 Step " << std::endl;
-  // Solver.Step_NoUpdate();
-  // LogFile << "Done \n" << std::endl;
+  LogFile << "========================================" << std::endl;
+  LogFile << "Do 1 Step " << std::endl;
+  Solver.Step_NoUpdate();
+  LogFile << "Done \n" << std::endl;
 
   //===============================================================
   LogFile << "Finished Run \n" << std::endl;
