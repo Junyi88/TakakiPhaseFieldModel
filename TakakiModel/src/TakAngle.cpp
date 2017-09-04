@@ -78,7 +78,7 @@ void TakAngle<FDClass>::WrapToPi(double &ValIn){
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass>
-double TakAngle<FDClass>::Update_Theta(const double &dThetadt, const double &dt, const int &y, const int &x){
+void TakAngle<FDClass>::Update_Theta(const double &dThetadt, const double &dt, const int &y, const int &x){
   _F(y,x)+=dThetadt*dt;
   WrapToPi(_F(y,x));
 }
