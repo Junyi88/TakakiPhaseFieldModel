@@ -11,6 +11,7 @@ public:
   T _F;
 };
 
+template <class T>
+GClass<T>::GClass(const T &in_F) : _F(in_F){};
 
-GClass<class T>::GClass(const T &in_F) : _F(in_F){};
 #endif
