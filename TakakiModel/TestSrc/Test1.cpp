@@ -211,6 +211,11 @@ int main(int argc, char ** argv){
   LogFile << "Done \n" << std::endl;
 
   //===============================================================
+  // Write outputs
+  BufferString="Phi.csv";
+  WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+  //===============================================================
   LogFile << "Finished Run \n" << std::endl;
   LogFile.close();
   MPI_Finalize();
