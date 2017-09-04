@@ -104,7 +104,7 @@ void TakakiSolver<FDClass, FDAngleClass>::Step_All(){
 // @@ ------------------------------------------------------
 template <class FDClass, class FDAngleClass>
 void TakakiSolver<FDClass, FDAngleClass>::Step_All(const double &dtimeCustom){
-  Update_Eta(const double &dtimeCustom);
-  Update_Theta(const double &dtimeCustom);
+  Update_Eta(dtimeCustom);
+  Update_Theta(dtimeCustom);
   Step_NoUpdate();
 }
