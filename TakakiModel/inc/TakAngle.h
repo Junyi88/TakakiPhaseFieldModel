@@ -18,6 +18,7 @@ public:
   void Calc_Rs();
   void Calc_All();
 
+  void Update_Theta(const double &dThetadt, const double &dt, const int &y, const int &x);
   //=========================
   // GetPointers
   JMat * FP(){return &_F;};
@@ -47,6 +48,10 @@ protected:
   double _MinMag;
 
   MPI_Status _status;
+
+private:
+  void WrapToPi(double &ValIn); 
+  const double pidouble=2*M_PI;
 };
 
 

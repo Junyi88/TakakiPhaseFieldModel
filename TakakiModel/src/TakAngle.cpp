@@ -66,3 +66,19 @@ void TakAngle<FDClass>::Calc_All() {
   Calc_FD();
   Calc_Rs();
 }
+
+// @@ -- Write over operator ----------------------------------------------------
+template <class FDClass>
+void TakAngle<FDClass>::WrapToPi(double &ValIn){
+  if (ValIn>M_PI)
+    ValIn-=pidouble;
+  else if (ValIn<-M_PI)
+    ValIn+=pidouble;
+}
+
+// @@ -- Write over operator ----------------------------------------------------
+template <class FDClass>
+double TakAngle<FDClass>::Update_Theta(const double &dThetadt, const double &dt, const int &y, const int &x){
+  _F(y,x)+=dThetadt*dt;
+  WrapToPi(_F(y,x));
+}

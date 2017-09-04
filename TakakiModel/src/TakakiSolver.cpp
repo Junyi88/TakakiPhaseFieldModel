@@ -59,13 +59,52 @@ void TakakiSolver<FDClass, FDAngleClass>::Calc_dEtadt(){
 
 // @@ ------------------------------------------------------
 template <class FDClass, class FDAngleClass>
-void TakakiSolver<FDClass, FDAngleClass>::Calc_dEtadt(){
+void TakakiSolver<FDClass, FDAngleClass>::Update_Eta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _dEtadt(j,i)=-(_BulkEnergy->dFdPhase(j,i));
-      _dEtadt(j,i)-=(_WallEnergy->dFdPhase(j,i));
-      _dEtadt(j,i)-=(_GradEnergy->dFdPhase(j,i));
-      _dEtadt(j,i)-=(_OriEnergy->dFdPhase(j,i));
-      _dEtadt(j,i)*=_MPhiConst;
+      _Phi.Update_Eta(_dEtadt(j,i),_dt,j,i);
     }
+}
+
+// @@ ------------------------------------------------------
+template <class FDClass, class FDAngleClass>
+void TakakiSolver<FDClass, FDAngleClass>::Update_Theta(){
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      _Theta.Update_Theta(_OriEnergy->dThetadt(j,i),_dt,j,i);
+    }
+}
+
+// @@ ------------------------------------------------------
+template <class FDClass, class FDAngleClass>
+void TakakiSolver<FDClass, FDAngleClass>::Update_Eta(const double &dtimeCustom){
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      _Phi.Update_Eta(_dEtadt(j,i),dtimeCustom,j,i);
+    }
+}
+
+// @@ ------------------------------------------------------
+template <class FDClass, class FDAngleClass>
+void TakakiSolver<FDClass, FDAngleClass>::Update_Theta(const double &dtimeCustom){
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      _Theta.Update_Theta(_OriEnergy->dThetadt(j,i),dtimeCustom,j,i);
+    }
+}
+
+// @@ ------------------------------------------------------
+template <class FDClass, class FDAngleClass>
+void TakakiSolver<FDClass, FDAngleClass>::Step_All(){
+  Update_Eta();
+  Update_Theta();
+  Step_NoUpdate();
+}
+
+// @@ ------------------------------------------------------
+template <class FDClass, class FDAngleClass>
+void TakakiSolver<FDClass, FDAngleClass>::Step_All(const double &dtimeCustom){
+  Update_Eta(const double &dtimeCustom);
+  Update_Theta(const double &dtimeCustom);
+  Step_NoUpdate();
 }

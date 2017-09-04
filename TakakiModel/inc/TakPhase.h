@@ -21,6 +21,7 @@ public:
   void Calc_dP();
   void Calc_All();
 
+  void Update_Eta(const double &dEtadt, const double &dt, const int &y, const int &x);
   //=========================
   // GetPointers
   JMat * FP(){return &_F;};
@@ -45,6 +46,9 @@ public:
   double Dxx(const int &y, const int &x){return _D.Dxx(y,x);};
   double Dyy(const int &y, const int &x){return _D.Dyy(y,x);};
   double D2(const int &y, const int &x){return _D.D2(y,x);};
+
+  //
+
 
 protected:
   JMpi _MpiObj;

@@ -81,3 +81,9 @@ void TakPhase<FDClass>::Calc_All(){
   Calc_P();
   Calc_dP();
 }
+
+// @@ -- Functions  ----------------------------------------------------
+template <class FDClass>
+void TakPhase<FDClass>::Update_Eta(const double &dEtadt, const double &dt, const int &y, const int &x){
+  _F(y,x)+=dEtadt*dt;
+}
