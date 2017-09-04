@@ -9,7 +9,7 @@
 #include "JMpi.h"
 #include "JMat.h"
 #include "JFDMpi.h"
-#include "JMpiAngle.h"
+#include "JFDMpiAngle.h"
 #include "AuxFunctions.h"
 
 #include "TakPhase.h"
