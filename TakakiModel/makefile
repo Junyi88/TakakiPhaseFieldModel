@@ -10,7 +10,7 @@ FDINC_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/inc
 FDOBJ_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/obj
 CFLAGS=-std=c++11 -O2 -Wreorder
 
-all : $(EXE_DIR)/Test1.cpp \
+all : $(EXE_DIR)/Test1.o \
 	$(OBJ_DIR)/TakakiSolver.o $(OBJ_DIR)/TakACTOriEnergy.o $(OBJ_DIR)/TakACBulkEnergy.o \
 	$(OBJ_DIR)/TakACWallEnergy.o $(OBJ_DIR)/TakACGradEnergy.o \
 	$(OBJ_DIR)/TakPhase.o $(OBJ_DIR)/TakAngle.o \
