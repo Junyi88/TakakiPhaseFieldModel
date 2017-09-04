@@ -23,7 +23,7 @@ $(EXE_DIR)/Test1.out : $(TESTSRC_DIR)/Test1.cpp $(OBJ_DIR)/TakakiSolver.o
 		$(OBJ_DIR)/TakakiSolver.o \
 		$(OBJ_DIR)/TakACTOriEnergy.o $(OBJ_DIR)/TakACBulkEnergy.o $(OBJ_DIR)/TakACGradEnergy.o $(OBJ_DIR)/TakACWallEnergy.o \
 		$(SRC_DIR)/TakPhase.cpp $(OBJ_DIR)/TakAngle.o \
-		$(FDOBJ_DIR)/JMat.o $(FDOBJ_DIR)/JMpi.o $(FDOBJ_DIR)/JFDMpi.o $(FDOBJ_DIR)/AuxFunctions.o
+		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp $(FDSRC_DIR)/AuxFunctions.cpp $(FDSRC_DIR)/JFDMpiAngle.cpp
 
 $(OBJ_DIR)/TakakiSolver.o : $(SRC_DIR)/TakakiSolver.cpp $(INC_DIR)/TakakiSolver.h $(OBJ_DIR)/TakPhase.o $(OBJ_DIR)/TakAngle.o \
 	$(OBJ_DIR)/TakACTOriEnergy.o $(OBJ_DIR)/TakACBulkEnergy.o $(OBJ_DIR)/TakACGradEnergy.o $(OBJ_DIR)/TakACWallEnergy.o
