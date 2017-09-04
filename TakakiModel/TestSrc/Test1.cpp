@@ -162,64 +162,64 @@ int main(int argc, char ** argv){
   LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
 
   //*************************************************************************
-  //FDClass=JFDMpi2DReflectHigh;
-  //FDAngleClass=JFDMpi2DReflectHighAngle;
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup Phase Class " << std::endl;
-  // TakPhase<JFDMpi2DReflectHigh> Phi(MPIOBJ, Eta0);
-  // LogFile << "Setup Phase Class Completed \n" << std::endl;
-  //
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup Theta Class " << std::endl;
-  // TakAngle<JFDMpi2DReflectHighAngle> Theta(MPIOBJ, Theta0, MinAngle0);
-  // LogFile << "Setup Theta Class Completed \n" << std::endl;
-  //
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup TakACBulkEnergy Class " << std::endl;
-  // TakACBulkEnergy<JFDMpi2DReflectHigh> BulkEnergy(&Phi, BVec, mu, Rho0, MPIOBJ);
-  // LogFile << "Setup TakACBulkEnergy Class Completed \n" << std::endl;
-  //
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup TakACGradEnergy Class " << std::endl;
-  // TakACGradEnergy<JFDMpi2DReflectHigh> GradEnergy(&Phi, alpha, MPIOBJ);
-  // LogFile << "Setup TakACGradEnergy Class Completed \n" << std::endl;
-  //
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup TakACGradEnergy Class " << std::endl;
-  // TakACWallEnergy<JFDMpi2DReflectHigh> WallEnergy(&Phi, Wa, MPIOBJ);
-  // LogFile << "Setup TakACGradEnergy Class Completed \n" << std::endl;
-  //
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup TakACTOriEnergy Class " << std::endl;
-  // TakACTOriEnergy<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta,
-  //   S, MTheta0, InvPhiMin, MPIOBJ);
-  // LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
-  //
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Setup TakakiSolver Class " << std::endl;
-  // TakakiSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(&Phi, &Theta,
-  //   &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
-  //   inMPhiConst , dt, MPIOBJ);
-  // LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
-  //TakPhase(JMpi inJMpi, const JMat &in_F);
-  //TakAngle(JMpi inJMpi, const JMat &in_F, const double &inMinMag);
-  // TakACBulkEnergy(TakPhase<FDClass> * inPhi, const double &BVec, const double &mu,
-  //   const JMat &RhoIn, JMpi inJMpi);
-  // TakACGradEnergy(TakPhase<FDClass> * inPhi, const double &inalpha, JMpi inJMpi);
-  // TakACWallEnergy(TakPhase<FDClass> * inPhi, const double &inWa, JMpi inJMpi);
-  // TakACTOriEnergy(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-  //   const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
-  //   JMpi inJMpi);
-  // TakakiSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-  //   TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
-  //   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
-  //   const double &inMPhiConst, const double &indt,
-  //   JMpi inJMpi);
+  FDClass=JFDMpi2DReflectHigh;
+  FDAngleClass=JFDMpi2DReflectHighAngle;
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup Phase Class " << std::endl;
+  TakPhase<JFDMpi2DReflectHigh> Phi(MPIOBJ, Eta0);
+  LogFile << "Setup Phase Class Completed \n" << std::endl;
 
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Do 1 Step " << std::endl;
-  // Solver.Step_NoUpdate();
-  // LogFile << "Done \n" << std::endl;
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup Theta Class " << std::endl;
+  TakAngle<JFDMpi2DReflectHighAngle> Theta(MPIOBJ, Theta0, MinAngle0);
+  LogFile << "Setup Theta Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakACBulkEnergy Class " << std::endl;
+  TakACBulkEnergy<JFDMpi2DReflectHigh> BulkEnergy(&Phi, BVec, mu, Rho0, MPIOBJ);
+  LogFile << "Setup TakACBulkEnergy Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakACGradEnergy Class " << std::endl;
+  TakACGradEnergy<JFDMpi2DReflectHigh> GradEnergy(&Phi, alpha, MPIOBJ);
+  LogFile << "Setup TakACGradEnergy Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakACGradEnergy Class " << std::endl;
+  TakACWallEnergy<JFDMpi2DReflectHigh> WallEnergy(&Phi, Wa, MPIOBJ);
+  LogFile << "Setup TakACGradEnergy Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakACTOriEnergy Class " << std::endl;
+  TakACTOriEnergy<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta,
+    S, MTheta0, InvPhiMin, MPIOBJ);
+  LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakakiSolver Class " << std::endl;
+  TakakiSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(&Phi, &Theta,
+    &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
+    inMPhiConst , dt, MPIOBJ);
+  LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
+  TakPhase(JMpi inJMpi, const JMat &in_F);
+  TakAngle(JMpi inJMpi, const JMat &in_F, const double &inMinMag);
+  TakACBulkEnergy(TakPhase<FDClass> * inPhi, const double &BVec, const double &mu,
+    const JMat &RhoIn, JMpi inJMpi);
+  TakACGradEnergy(TakPhase<FDClass> * inPhi, const double &inalpha, JMpi inJMpi);
+  TakACWallEnergy(TakPhase<FDClass> * inPhi, const double &inWa, JMpi inJMpi);
+  TakACTOriEnergy(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
+    const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
+    JMpi inJMpi);
+  TakakiSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
+    TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
+    TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
+    const double &inMPhiConst, const double &indt,
+    JMpi inJMpi);
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Do 1 Step " << std::endl;
+  Solver.Step_NoUpdate();
+  LogFile << "Done \n" << std::endl;
 
   //===============================================================
   LogFile << "Finished Run \n" << std::endl;
