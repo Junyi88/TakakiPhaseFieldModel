@@ -162,8 +162,8 @@ int main(int argc, char ** argv){
   LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
 
   //*************************************************************************
-  FDClass=JFDMpi2DReflectHigh;
-  FDAngleClass=JFDMpi2DReflectHighAngle;
+  // FDClass=JFDMpi2DReflectHigh;
+  // FDAngleClass=JFDMpi2DReflectHighAngle;
   LogFile << "========================================" << std::endl;
   LogFile << "Setup Phase Class " << std::endl;
   TakPhase<JFDMpi2DReflectHigh> Phi(MPIOBJ, Eta0);
@@ -201,20 +201,20 @@ int main(int argc, char ** argv){
     &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
     inMPhiConst , dt, MPIOBJ);
   LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
-  TakPhase(JMpi inJMpi, const JMat &in_F);
-  TakAngle(JMpi inJMpi, const JMat &in_F, const double &inMinMag);
-  TakACBulkEnergy(TakPhase<FDClass> * inPhi, const double &BVec, const double &mu,
-    const JMat &RhoIn, JMpi inJMpi);
-  TakACGradEnergy(TakPhase<FDClass> * inPhi, const double &inalpha, JMpi inJMpi);
-  TakACWallEnergy(TakPhase<FDClass> * inPhi, const double &inWa, JMpi inJMpi);
-  TakACTOriEnergy(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-    const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
-    JMpi inJMpi);
-  TakakiSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-    TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
-    TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
-    const double &inMPhiConst, const double &indt,
-    JMpi inJMpi);
+  // TakPhase(JMpi inJMpi, const JMat &in_F);
+  // TakAngle(JMpi inJMpi, const JMat &in_F, const double &inMinMag);
+  // TakACBulkEnergy(TakPhase<FDClass> * inPhi, const double &BVec, const double &mu,
+  //   const JMat &RhoIn, JMpi inJMpi);
+  // TakACGradEnergy(TakPhase<FDClass> * inPhi, const double &inalpha, JMpi inJMpi);
+  // TakACWallEnergy(TakPhase<FDClass> * inPhi, const double &inWa, JMpi inJMpi);
+  // TakACTOriEnergy(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
+  //   const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
+  //   JMpi inJMpi);
+  // TakakiSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
+  //   TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
+  //   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
+  //   const double &inMPhiConst, const double &indt,
+  //   JMpi inJMpi);
 
   LogFile << "========================================" << std::endl;
   LogFile << "Do 1 Step " << std::endl;
