@@ -170,7 +170,7 @@ int main(int argc, char ** argv){
   LogFile << "Setup Phase Class " << std::endl;
 
   GClass<JMat> G(Eta0);
-  TakPhase<JFDMpi2DBase> Phi(MPIOBJ, Eta0);
+  TakPhase<JFDMpi2DReflectHigh> Phi(MPIOBJ, Eta0);
   // TakPhase<JMat> Phi(MPIOBJ, Eta0);
   LogFile << "Setup Phase Class Completed \n" << std::endl;
   //
