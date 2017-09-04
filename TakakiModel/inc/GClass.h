@@ -1,5 +1,5 @@
-#ifndef TAKPHASE_H
-#define TAKPHASE_H
+#ifndef GClass_H
+#define GClass_H
 
 #include "JMat.h"
 
