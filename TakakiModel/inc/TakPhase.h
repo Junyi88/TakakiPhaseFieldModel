@@ -11,15 +11,10 @@ public:
 
 protected:
   JMpi _MpiObj;
-	int _NY, _NX, _Ny;
 
-  JMat _F;
-  JMat _F2, _F3, _F4, _F5;
-  FDClass _D;
-  JMat _P;
-  JMat _dP;
 
-  MPI_Status _status;
+  FDClass _F;
+  
 };
 
 
