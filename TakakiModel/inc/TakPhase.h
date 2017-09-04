@@ -7,7 +7,7 @@
 template <class FDClass>
 class TakPhase {
 public:
-  TakPhase(JMpi inJMpi, JMat &in_F);
+  TakPhase(JMpi inJMpi,const JMat &in_F);
   TakPhase(JMpi inJMpi);
 	TakPhase<FDClass> & operator= (const TakPhase<FDClass> &in1); //Write to operator
 
