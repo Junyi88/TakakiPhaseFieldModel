@@ -54,11 +54,11 @@ int main(int argc, char ** argv){
   LogFile << "Reading Initial Files List On Node" << Nnode << std::endl;
   BufferInputStream1.open(InitialConditionFile);
 
-  BuffInputStream1>>BufferString;
+  BufferInputStream1>>BufferString;
   InitialConditionFileList.push_back(BufferString); // Eta
-  BuffInputStream1>>BufferString;
+  BufferInputStream1>>BufferString;
   InitialConditionFileList.push_back(BufferString); // Theta
-  BuffInputStream1>>BufferString;
+  BufferInputStream1>>BufferString;
   InitialConditionFileList.push_back(BufferString); // Rho
 
   BufferInputStream1.close();
@@ -151,14 +151,14 @@ int main(int argc, char ** argv){
   LogFile << "Reading Initial Conditions Theta =  " << InitialConditionFileList[1] << std::endl;
   BufferString=InitialConditionFileList[1];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull(NY, NX), Theta0, MPIOBJ);
+  Splitter(BufferFull, Theta0, MPIOBJ);
   LogFile << "Reading Initial Conditions Theta Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[2] << std::endl;
   BufferString=InitialConditionFileList[2];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull(NY, NX), Rho0, MPIOBJ);
+  Splitter(BufferFull, Rho0, MPIOBJ);
   LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
 
   //*************************************************************************
