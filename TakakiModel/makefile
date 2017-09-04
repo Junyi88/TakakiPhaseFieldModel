@@ -15,5 +15,5 @@ all : $(EXE_DIR)/Test1.out
 $(EXE_DIR)/Test1.out : $(TESTSRC_DIR)/Test1.cpp
 	mpicxx $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -I$(INC_DIR) -I$(SRC_DIR) -o \
 		$(EXE_DIR)/Test1.out $(TESTSRC_DIR)/Test1.cpp \
-		$(SRC_DIR)/TakPhase.cpp \
-		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp $(FDSRC_DIR)/AuxFunctions.cpp
+		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp \
+		$(FDSRC_DIR)/AuxFunctions.cpp $(FDSRC_DIR)/JFDMpiAngle.cpp
