@@ -215,6 +215,8 @@ int main(int argc, char ** argv){
   BufferString="Phi.csv";
   WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
+  BufferString="Theta.csv";
+  WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
   //===============================================================
   LogFile << "Finished Run \n" << std::endl;
   LogFile.close();
