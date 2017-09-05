@@ -207,7 +207,7 @@ int main(int argc, char ** argv){
 
   LogFile << "========================================" << std::endl;
   LogFile << "Do 1 Step " << std::endl;
-  // Solver.Step_NoUpdate();
+  Solver.Step_NoUpdate();
   LogFile << "Done \n" << std::endl;
 
   //===============================================================
