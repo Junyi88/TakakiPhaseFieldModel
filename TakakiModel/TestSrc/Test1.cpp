@@ -278,6 +278,11 @@ int main(int argc, char ** argv){
   BufferString="EStored_0.csv";
   WriteMPITextFile(BulkEnergy.EStoredPointer(), BufferString, MPIOBJ);
 
+  BufferString=HeaderName + "_Phi_0.csv";
+  WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+  BufferString=HeaderName + "_Theta_0.csv";
+  WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
   // ***********************************************
   // Loop
   LogFile << "Start Loop \n" << std::endl;
@@ -297,11 +302,11 @@ int main(int argc, char ** argv){
       BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
 
-      BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
-      WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
-
-      BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
-      WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+      // BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
+      // WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+      //
+      // BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
+      // WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
 
       if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<<"nTime = "<< ntime <<std::endl;
