@@ -275,6 +275,10 @@ int main(int argc, char ** argv){
   BufferString="dPhidt_0.csv";
   WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
 
+  BufferString="Rho_0.csv";
+  WriteMPITextFile(Phi.RhoPointer(), BufferString, MPIOBJ);
+  BufferString="EStored_0.csv";
+  WriteMPITextFile(Phi.EStoredPointer(), BufferString, MPIOBJ);
 
   //===============================================================
   LogFile << "Finished Run \n" << std::endl;
