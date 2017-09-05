@@ -5,7 +5,7 @@ clear;
 Prefix0=['../exec/'];
 
 
-for nt=0
+for nt=0:1000:5000
     filename=[Prefix0 'Test_Phi_' num2str(nt) '.csv'];
     Phi=csvread(filename);
 
