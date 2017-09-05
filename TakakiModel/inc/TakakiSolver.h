@@ -102,6 +102,7 @@ void TakakiSolver<FDClass, FDAngleClass>::Step_NoUpdate(){
   _WallEnergy->Calc_All();
   _GradEnergy->Calc_All();
   _OriEnergy->Calc_All();
+  Calc_dEtadt();
 }
 
 // @@ ------------------------------------------------------
