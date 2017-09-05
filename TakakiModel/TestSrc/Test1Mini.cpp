@@ -146,7 +146,7 @@ int main(int argc, char ** argv){
   LogFile << "Reading Initial Conditions Eta =  " << InitialConditionFileList[0] << std::endl;
   BufferString=InitialConditionFileList[0];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  // Splitter(BufferFull, Eta0, MPIOBJ);
+  Splitter(Eta0, BufferFull,  MPIOBJ);
   LogFile << "Reading Initial Conditions Eta Completed \n" << std::endl;
   //
   // LogFile << "========================================" << std::endl;
