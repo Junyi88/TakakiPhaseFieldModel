@@ -96,4 +96,9 @@ plot(OdFdPhase(ypos,:),'bo-');
 plot(GdFdPhase(ypos,:),'k>-');
 plot(WdFdPhase(ypos,:),'gx-');
 
+figure(6);
+clf;
+hold on;
+plot(dPhidt(ypos,:),'r-');
+
 % plot(100.*dThetadt(ypos,:),'k-');
