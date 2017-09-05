@@ -123,7 +123,7 @@ template <class FDClass, class FDAngleClass>
 void TakakiSolver<FDClass, FDAngleClass>::Update_Eta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _Phi.Update_Eta(_dEtadt(j,i),_dt,j,i);
+      _Phi->Update_Eta(_dEtadt(j,i),_dt,j,i);
     }
 }
 
@@ -132,7 +132,7 @@ template <class FDClass, class FDAngleClass>
 void TakakiSolver<FDClass, FDAngleClass>::Update_Theta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _Theta.Update_Theta(_OriEnergy->dThetadt(j,i),_dt,j,i);
+      _Theta->Update_Theta(_OriEnergy->dThetadt(j,i),_dt,j,i);
     }
 }
 
@@ -141,7 +141,7 @@ template <class FDClass, class FDAngleClass>
 void TakakiSolver<FDClass, FDAngleClass>::Update_Eta(const double &dtimeCustom){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _Phi.Update_Eta(_dEtadt(j,i),dtimeCustom,j,i);
+      _Phi->Update_Eta(_dEtadt(j,i),dtimeCustom,j,i);
     }
 }
 
@@ -150,7 +150,7 @@ template <class FDClass, class FDAngleClass>
 void TakakiSolver<FDClass, FDAngleClass>::Update_Theta(const double &dtimeCustom){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _Theta.Update_Theta(_OriEnergy->dThetadt(j,i),dtimeCustom,j,i);
+      _Theta->Update_Theta(_OriEnergy->dThetadt(j,i),dtimeCustom,j,i);
     }
 }
 

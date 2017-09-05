@@ -284,7 +284,7 @@ int main(int argc, char ** argv){
   int counter=0;
 
   ntEnd++;
-  for (int ntime=ntStart; ntime<ntEnd, ntime++){
+  for (int ntime=ntStart; ntime<ntEnd; ntime++){
     Solver.Step_All();
     if (counter<WriteCount){
       counter++;
@@ -296,7 +296,7 @@ int main(int argc, char ** argv){
       BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
 
-      if (_MpiObj.Nnode()==_MpiObj.NLast())
+      if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std:cout<<"nTime = "<< ntime <<std::endl;
     }
 
