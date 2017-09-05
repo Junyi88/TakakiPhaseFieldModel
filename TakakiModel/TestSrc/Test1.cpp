@@ -284,12 +284,13 @@ int main(int argc, char ** argv){
   int counter=0;
 
   ntEnd++;
+
   for (int ntime=ntStart; ntime<ntEnd; ntime++){
     Solver.Step_All();
     if (counter<WriteCount){
       counter++;
     } else{
-      counter=0;
+      counter=1;
       BufferString=HeaderName + "_Phi_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
