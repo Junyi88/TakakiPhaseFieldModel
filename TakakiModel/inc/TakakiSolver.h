@@ -37,6 +37,7 @@ public:
   void Step_All();
 
   // Getter Functions
+  JMat * dEtadtPointer() {return &(_dEtadt);};
 
 protected:
   TakPhase<FDClass> * _Phi;

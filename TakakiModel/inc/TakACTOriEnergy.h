@@ -27,6 +27,10 @@ public:
   double dFdPhase(const int &y, const int &x) {return _dFdPhase(y,x);};
   double dThetadt(const int &y, const int &x) {return _dThetadt(y,x);};
 
+  JMat * dFdPhasePointer() {return &(_dFdPhase);};
+  JMat * dThetadtPointer() {return &(_dThetadt);};
+  JMat * MThetaPointer() {return &(_MTheta);};
+
 protected:
   TakPhase<FDClass> * _Phi;
   TakAngle<FDAngleClass> * _Theta;
