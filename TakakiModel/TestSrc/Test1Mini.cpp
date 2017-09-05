@@ -142,12 +142,12 @@ int main(int argc, char ** argv){
 
   LogFile << "Setup MPI Object Completed \n" << std::endl;
 
-  // LogFile << "========================================" << std::endl;
-  // LogFile << "Reading Initial Conditions Eta =  " << InitialConditionFileList[0] << std::endl;
-  // BufferString=InitialConditionFileList[0];
-  // ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
+  LogFile << "========================================" << std::endl;
+  LogFile << "Reading Initial Conditions Eta =  " << InitialConditionFileList[0] << std::endl;
+  BufferString=InitialConditionFileList[0];
+  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
   // Splitter(BufferFull, Eta0, MPIOBJ);
-  // LogFile << "Reading Initial Conditions Eta Completed \n" << std::endl;
+  LogFile << "Reading Initial Conditions Eta Completed \n" << std::endl;
   //
   // LogFile << "========================================" << std::endl;
   // LogFile << "Reading Initial Conditions Theta =  " << InitialConditionFileList[1] << std::endl;
