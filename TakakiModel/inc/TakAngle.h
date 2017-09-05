@@ -26,12 +26,6 @@ public:
 
   //=========================
   // GetPointers
-  JMat * FP(){return &_F;};
-  JMat * F2P(){return &_F2;};
-  JMat * PP(){return &_P;};
-  JMat * dPP(){return &_dP;};
-  FDClass * DP(){return &_D;};
-
   JMat * DxP(){return _D.DxP();};
   JMat * DyP(){return _D.DyP();};
 
