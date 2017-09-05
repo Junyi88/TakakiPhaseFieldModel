@@ -203,9 +203,9 @@ int main(int argc, char ** argv){
     &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
     inMPhiConst , dt, MPIOBJ);
   LogFile << "Setup PhiCalc " << std::endl;
-  Theta->Calc_All();
+  Theta.Calc_All();
   LogFile << "Setup ThetaCalc " << std::endl;
-  Phi->Calc_All();
+  Phi.Calc_All();
   LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
 
 
