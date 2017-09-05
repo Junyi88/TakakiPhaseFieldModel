@@ -202,23 +202,6 @@ int main(int argc, char ** argv){
   TakakiSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(&Phi, &Theta,
     &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
     inMPhiConst , dt, MPIOBJ);
-  LogFile << "Setup PhiCalc " << std::endl;
-  // Phi.Calc_All();
-  LogFile << "Dx" << std::endl;
-  (Phi.DP())->Calc_Dx();
-  LogFile << "Dy" << std::endl;
-  (Phi.DP())->Calc_Dy();
-  LogFile << "Dxx" << std::endl;
-  (Phi.DP())->Calc_Dxx();
-  LogFile << "Dyy" << std::endl;
-  (Phi.DP())->Calc_Dyy();
-  LogFile << "Dxy" << std::endl;
-  (Phi.DP())->Calc_Dxy();
-
-  LogFile << "Setup ThetaCalc " << std::endl;
-  Theta.Calc_All();
-  LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
-
 
   LogFile << "========================================" << std::endl;
   LogFile << "Do 1 Step " << std::endl;
@@ -226,7 +209,7 @@ int main(int argc, char ** argv){
   LogFile << "Done \n" << std::endl;
 
   //===============================================================
-  // Write outputs
+  // Write outputs For First STep
   LogFile << "========================================" << std::endl;
   LogFile << "Write Outputs - Phi" << std::endl;
 
@@ -294,6 +277,30 @@ int main(int argc, char ** argv){
   WriteMPITextFile(BulkEnergy.RhoPointer(), BufferString, MPIOBJ);
   BufferString="EStored_0.csv";
   WriteMPITextFile(BulkEnergy.EStoredPointer(), BufferString, MPIOBJ);
+
+  // ***********************************************
+  // Loop
+  LogFile << "Start Loop \n" << std::endl;
+  int counter=0;
+
+  ntEnd++;
+  for (int ntime=ntStart; ntime<ntEnd, ntime++){
+    Solver.Step_All();
+    if (counter<WriteCount){
+      counter++;
+    } else{
+      counter=0;
+      BufferString=HeaderName + "_Phi_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+      BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+      if (_MpiObj.Nnode()==_MpiObj.NLast())
+        std:cout<<"nTime = "<< ntime <<std::endl;
+    }
+
+  }
 
   //===============================================================
   LogFile << "Finished Run \n" << std::endl;
