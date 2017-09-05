@@ -203,7 +203,17 @@ int main(int argc, char ** argv){
     &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
     inMPhiConst , dt, MPIOBJ);
   LogFile << "Setup PhiCalc " << std::endl;
-  Phi.Calc_All();
+  // Phi.Calc_All();
+  LogFile << "Dx" << std::endl;
+  (Phi.DP())->Calc_Dx();
+  LogFile << "Dy" << std::endl;
+  (Phi.DP())->Calc_Dy();
+  LogFile << "Dxx" << std::endl;
+  (Phi.DP())->Calc_Dxx();
+  LogFile << "Dyy" << std::endl;
+  (Phi.DP())->Calc_Dyy();
+  LogFile << "Dxy" << std::endl;
+  (Phi.DP())->Calc_Dxy();
 
   LogFile << "Setup ThetaCalc " << std::endl;
   Theta.Calc_All();
