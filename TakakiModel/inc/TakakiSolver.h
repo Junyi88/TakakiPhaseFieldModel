@@ -96,8 +96,8 @@ TakakiSolver<FDClass, FDAngleClass> & TakakiSolver<FDClass, FDAngleClass>::opera
 // @@ ------------------------------------------------------
 template <class FDClass, class FDAngleClass>
 void TakakiSolver<FDClass, FDAngleClass>::Step_NoUpdate(){
-  _Phi->Calc_All();
-  _Theta->Calc_All();
+  // _Phi->Calc_All();
+  // _Theta->Calc_All();
   _BulkEnergy->Calc_All();
   _WallEnergy->Calc_All();
   _GradEnergy->Calc_All();
