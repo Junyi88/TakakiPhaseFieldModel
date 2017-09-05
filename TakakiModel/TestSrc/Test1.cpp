@@ -212,11 +212,70 @@ int main(int argc, char ** argv){
 
   //===============================================================
   // Write outputs
-  BufferString="Phi.csv";
-  WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+  LogFile << "========================================" << std::endl;
+  LogFile << "Write Outputs - Phi" << std::endl;
 
-  BufferString="Theta.csv";
+  BufferString="Phi_0.csv";
+  WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+  BufferString="Phi2_0.csv";
+  WriteMPITextFile(Phi.F2P(), BufferString, MPIOBJ);
+  BufferString="Phi3_0.csv";
+  WriteMPITextFile(Phi.F3P(), BufferString, MPIOBJ);
+  BufferString="Phi4_0.csv";
+  WriteMPITextFile(Phi.F4P(), BufferString, MPIOBJ);
+  BufferString="Phi5_0.csv";
+  WriteMPITextFile(Phi.F5P(), BufferString, MPIOBJ);
+
+  BufferString="PhiDx_0.csv";
+  WriteMPITextFile(Phi.DxP(), BufferString, MPIOBJ);
+  BufferString="PhiDy_0.csv";
+  WriteMPITextFile(Phi.DyP(), BufferString, MPIOBJ);
+  BufferString="PhiDxx_0.csv";
+  WriteMPITextFile(Phi.DxxP(), BufferString, MPIOBJ);
+  BufferString="PhiDyy_0.csv";
+  WriteMPITextFile(Phi.DyyP(), BufferString, MPIOBJ);
+  BufferString="PhiDxy_0.csv";
+  WriteMPITextFile(Phi.DxyP(), BufferString, MPIOBJ);
+  BufferString="PhiD2_0.csv";
+  WriteMPITextFile(Phi.D2P(), BufferString, MPIOBJ);
+
+  LogFile << "Write Outputs - Theta" << std::endl;
+  BufferString="Theta_0.csv";
   WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+  BufferString="ThetaDx_0.csv";
+  WriteMPITextFile(Theta.DxP(), BufferString, MPIOBJ);
+  BufferString="ThetaDy_0.csv";
+  WriteMPITextFile(Theta.DyP(), BufferString, MPIOBJ);
+  BufferString="ThetaDxx_0.csv";
+  WriteMPITextFile(Theta.DxxP(), BufferString, MPIOBJ);
+  BufferString="ThetaDyy_0.csv";
+  WriteMPITextFile(Theta.DyyP(), BufferString, MPIOBJ);
+  BufferString="ThetaDxy_0.csv";
+  WriteMPITextFile(Theta.DxyP(), BufferString, MPIOBJ);
+  BufferString="ThetaD2_0.csv";
+  WriteMPITextFile(Theta.D2P(), BufferString, MPIOBJ);
+
+  LogFile << "Write Outputs - dFdPhase" << std::endl;
+  BufferString="Bulk_dFdPhase_0.csv";
+  WriteMPITextFile(BulkEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
+  BufferString="Grad_dFdPhase_0.csv";
+  WriteMPITextFile(GradEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
+  BufferString="Wall_dFdPhase_0.csv";
+  WriteMPITextFile(WallEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
+  BufferString="Ori_dFdPhase_0.csv";
+  WriteMPITextFile(OriEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
+
+  LogFile << "Write Outputs - Others" << std::endl;
+  BufferString="dThetadt_0.csv";
+  WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+  BufferString="MTheta_0.csv";
+  WriteMPITextFile(OriEnergy.MThetaPointer(), BufferString, MPIOBJ);
+
+  BufferString="dPhidt_0.csv";
+  WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+
+
   //===============================================================
   LogFile << "Finished Run \n" << std::endl;
   LogFile.close();
