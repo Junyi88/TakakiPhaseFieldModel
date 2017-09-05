@@ -142,26 +142,26 @@ int main(int argc, char ** argv){
 
   LogFile << "Setup MPI Object Completed \n" << std::endl;
 
-  LogFile << "========================================" << std::endl;
-  LogFile << "Reading Initial Conditions Eta =  " << InitialConditionFileList[0] << std::endl;
-  BufferString=InitialConditionFileList[0];
-  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull, Eta0, MPIOBJ);
-  LogFile << "Reading Initial Conditions Eta Completed \n" << std::endl;
-
-  LogFile << "========================================" << std::endl;
-  LogFile << "Reading Initial Conditions Theta =  " << InitialConditionFileList[1] << std::endl;
-  BufferString=InitialConditionFileList[1];
-  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull, Theta0, MPIOBJ);
-  LogFile << "Reading Initial Conditions Theta Completed \n" << std::endl;
-
-  LogFile << "========================================" << std::endl;
-  LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[2] << std::endl;
-  BufferString=InitialConditionFileList[2];
-  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull, Rho0, MPIOBJ);
-  LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
+  // LogFile << "========================================" << std::endl;
+  // LogFile << "Reading Initial Conditions Eta =  " << InitialConditionFileList[0] << std::endl;
+  // BufferString=InitialConditionFileList[0];
+  // ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
+  // Splitter(BufferFull, Eta0, MPIOBJ);
+  // LogFile << "Reading Initial Conditions Eta Completed \n" << std::endl;
+  //
+  // LogFile << "========================================" << std::endl;
+  // LogFile << "Reading Initial Conditions Theta =  " << InitialConditionFileList[1] << std::endl;
+  // BufferString=InitialConditionFileList[1];
+  // ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
+  // Splitter(BufferFull, Theta0, MPIOBJ);
+  // LogFile << "Reading Initial Conditions Theta Completed \n" << std::endl;
+  //
+  // LogFile << "========================================" << std::endl;
+  // LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[2] << std::endl;
+  // BufferString=InitialConditionFileList[2];
+  // ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
+  // Splitter(BufferFull, Rho0, MPIOBJ);
+  // LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
 
   //*************************************************************************
   // FDClass=JFDMpi2DReflectHigh;
