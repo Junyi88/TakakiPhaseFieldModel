@@ -24,6 +24,23 @@ public:
   JMat * FP(){return &_F;};
   FDClass * DP(){return &_D;};
 
+  //=========================
+  // GetPointers
+  JMat * FP(){return &_F;};
+  JMat * F2P(){return &_F2;};
+  JMat * PP(){return &_P;};
+  JMat * dPP(){return &_dP;};
+  FDClass * DP(){return &_D;};
+
+  JMat * DxP(){return _D.DxP();};
+  JMat * DyP(){return _D.DyP();};
+
+  JMat * DxxP(){return _D.DxxP();};
+  JMat * DyyP(){return _D.DyyP();};
+
+  JMat * DxyP(){return _D.DxyP();};
+  JMat * D2P(){return _D.D2P();};
+
   // GetValues
   double F(const int &y, const int &x){return _F.Value(y,x);};
 
