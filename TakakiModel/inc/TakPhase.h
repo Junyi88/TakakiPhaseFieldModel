@@ -137,7 +137,13 @@ template <class FDClass>
 void TakPhase<FDClass>::Calc_P(){
    for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _P(j,i)=(10.0*_F3(j,i))-(15.0*_F4(j,i))+(6.0*_F5(j,i));
+
+      if ((_F(j,i)>0.0)&&(_F(j,i)<1.0))
+        _P(j,i)=(10.0*_F3(j,i))-(15.0*_F4(j,i))+(6.0*_F5(j,i));
+      else if (_F(j,i)<=0.0)
+        _P(j,i)=0.0;
+      else
+        _P(j,i)=1.0;
     }
 };
 
@@ -146,7 +152,10 @@ template <class FDClass>
 void TakPhase<FDClass>::Calc_dP(){
    for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _dP(j,i)=(30.0*_F2(j,i))-(60.0*_F3(j,i))+(30.0*_F4(j,i));
+      if ((_F(j,i)>0.0)&&(_F(j,i)<1.0))
+        _dP(j,i)=(30.0*_F2(j,i))-(60.0*_F3(j,i))+(30.0*_F4(j,i));
+      else
+        _dP(j,i)=0.0;
     }
 };
 
