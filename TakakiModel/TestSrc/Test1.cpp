@@ -297,7 +297,7 @@ int main(int argc, char ** argv){
       WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
 
       if (MPIOBJ.Nnode()==MPIOBJ.NLast())
-        std:cout<<"nTime = "<< ntime <<std::endl;
+        std::cout<<"nTime = "<< ntime <<std::endl;
     }
 
   }
