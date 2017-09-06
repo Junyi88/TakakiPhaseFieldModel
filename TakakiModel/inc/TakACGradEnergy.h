@@ -47,6 +47,7 @@ TakACGradEnergy<FDClass> & TakACGradEnergy<FDClass>::operator= (const TakACGradE
    _alpha=in1._alpha;
    _alpha2=in1._alpha2;
    _dFdPhase=in1._dFdPhase;
+   return *this;
  }
 
 // @@ -- Write over operator ----------------------------------------------------

@@ -91,6 +91,8 @@ TakakiSolver<FDClass, FDAngleClass> & TakakiSolver<FDClass, FDAngleClass>::opera
   _dt=in1._dt;
   _dEtadt=in1._dEtadt;
   // _dThetadt=in1._dThetadt;
+
+  return *this;
 }
 
 // @@ ------------------------------------------------------

@@ -45,6 +45,7 @@ TakACWallEnergy<FDClass> & TakACWallEnergy<FDClass>::operator= (const TakACWallE
    _Ny=in1._Ny;
    _Wa=in1._Wa;
    _dFdPhase=in1._dFdPhase;
+   return *this;
  }
 
 // @@ -- Write over operator ----------------------------------------------------

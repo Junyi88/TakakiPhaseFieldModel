@@ -97,6 +97,8 @@ TakAngle<FDClass> & TakAngle<FDClass>::operator= (const TakAngle<FDClass> &in1) 
   _R3=in1._R3;
 
   _MinMag=in1._MinMag;
+
+  return *this;
 }
 
 // @@ -- Write over operator ----------------------------------------------------
