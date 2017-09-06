@@ -83,6 +83,7 @@ TakACTOriEnergy<FDClass, FDAngleClass> & TakACTOriEnergy<FDClass, FDAngleClass>:
     _dAngleFront=in1._dAngleFront;
     _dAngleRear=in1._dAngleRear;
     _dThetadt=in1._dThetadt;
+    return *this;
  }
 
 // @@ -- Function ----------------------------------------------------

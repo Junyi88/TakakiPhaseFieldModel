@@ -62,6 +62,8 @@ TakACBulkEnergy<FDClass> & TakACBulkEnergy<FDClass>::operator= (const TakACBulkE
    _rho=in1._rho;
    _EStored=in1._EStored;
    _dFdPhase=in1._dFdPhase;
+
+   return *this;
  }
 
 // @@ -- Write over operator ----------------------------------------------------

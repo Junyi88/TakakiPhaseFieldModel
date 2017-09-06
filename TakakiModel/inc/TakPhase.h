@@ -110,6 +110,8 @@ TakPhase<FDClass> & TakPhase<FDClass>::operator= (const TakPhase<FDClass> &in1) 
   //_D=in1._D;
   _P=in1._P;
   _dP=in1._dP;
+
+  return *this;
 }
 
 // @@ -- Functions  ----------------------------------------------------
