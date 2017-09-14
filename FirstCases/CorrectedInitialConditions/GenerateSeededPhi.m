@@ -129,3 +129,13 @@ hi=histogram(Estored(:));
 xlabel('Estored');
 ylabel('Counts');
 title(['EStored Distribution']);
+
+
+figure(4);
+clf;
+dTheta=DTheta(:);
+dTheta=dTheta(dTheta>0);
+hi2=histogram(dTheta);
+xlabel('|\nabla \theta|');
+ylabel('Counts');
+title(['|\nabla \theta| Distribution']);
