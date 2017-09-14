@@ -135,6 +135,7 @@ figure(4);
 clf;
 dTheta=DTheta(:);
 dTheta=dTheta(dTheta>0);
+dTheta=log(dTheta);
 hi2=histogram(dTheta);
 xlabel('|\nabla \theta|');
 ylabel('Counts');
