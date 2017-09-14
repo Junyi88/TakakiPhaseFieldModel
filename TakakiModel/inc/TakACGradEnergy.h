@@ -34,7 +34,7 @@ protected:
 template <class FDClass>
 TakACGradEnergy<FDClass>::TakACGradEnergy(TakPhase<FDClass> * inPhi, const double &inalpha, JMpi inJMpi) :
  _Phi(inPhi), _MpiObj(inJMpi), _NY(_MpiObj.NYGl()),  _NX(_MpiObj.NX()),
- _Ny(_MpiObj.NYLo()), _alpha(inalpha), _alpha2(2.0*_alpha), _dFdPhase(_NY,_NX)  {}
+ _Ny(_MpiObj.NYLo()), _alpha(inalpha), _alpha2(_alpha*_alpha), _dFdPhase(_NY,_NX)  {}
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass>
