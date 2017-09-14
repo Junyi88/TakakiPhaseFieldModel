@@ -13,6 +13,13 @@ y=1:NY;
 [X,Y]=meshgrid(x,y);
 Ecritical=0.7;
 DThetaCrit=1.0e-3;
+EMin=1e-8;
+
+SeedSize=3;
+SeedDist=10;
+
+PhiMin=0.0;
+PhiMax=1.0;
 %%
 [Estored]=CalculateEstored(Rho,mu,bvec);
 
@@ -71,13 +78,48 @@ for ny=1:NY
     end
 end
 EThetaLarge=ELarge.*ThetaLarge;
-
-
-
 ESeeds=EThetaLarge.*Estored;
+EVal=EThetaLarge.*Estored;
 
+
+[Seeded,SeedList,SeedNum]=GenerateSeedList(EVal,X,Y,EMin);
+
+[ListLength,~]=size(SeedList);
+
+while (ListLength>0)
+
+[Seeded,SeedList,SeedNum]=...
+    AddSeedPoint(SeedSize,SeedDist,Seeded,SeedList,SeedNum,X,Y);
+[ListLength,~]=size(SeedList);
+end
 figure(4);
 clf;
 hold on;
 surf(ESeeds,'EdgeColor','none');
 pbaspect([1 1 1]);
+
+figure(5);
+clf;
+hold on;
+surf(Seeded,'EdgeColor','none');
+pbaspect([1 1 1]);
+
+Phi=zeros(NY,NX);
+for ny=1:NY
+    for nx=1:NX
+        if (Seeded(ny,nx)>0.5)
+            Phi(ny,nx)=PhiMax;
+        else
+            Phi(ny,nx)=PhiMin;
+        end
+
+    end
+end
+
+figure(6);
+clf;
+hold on;
+surf(Phi,'EdgeColor','none');
+pbaspect([1 1 1]);
+
+csvwrite('PhiSeeded.csv',Phi);
