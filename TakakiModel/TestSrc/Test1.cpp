@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include <iostream>
 #include <string>
 #include <istream>
@@ -5,6 +6,8 @@
 #include <sstream>
 #include <cmath>
 #include <vector>
+
+#include "mpi.h"
 
 #include "JMpi.h"
 #include "JMat.h"
@@ -20,11 +23,13 @@
 #include "TakACTOriEnergy.h"
 #include "TakakiSolver.h"
 
+
+
 // #include "GClass.h"
 
 int main(int argc, char ** argv){
 
-  const int NInputParameters=17;
+  const int NInputParameters=18;
   //================================================================
   // # Initialise the MPI and system
   int NPrs, Nnode;
@@ -74,7 +79,7 @@ int main(int argc, char ** argv){
   LogFile << "Input Parameter File =  " << InputFile << std::endl;
   int NY, NX, ntStart, ntEnd, WriteCount;
   double dy, dx, dt, MinAngle0, BVec, mu, MTheta0, InvPhiMin, inMPhiConst,
-    alpha, Wa, S;
+    alpha, Wa, S, T, b, M0, Q, sg;
 
   double InputParameters[50];
   ReadTextFile(&InputParameters[0], InputFile, 1, NInputParameters, ',');
@@ -90,30 +95,42 @@ int main(int argc, char ** argv){
   MinAngle0=InputParameters[8];
   BVec=InputParameters[9];
   mu=InputParameters[10];
-  MTheta0=InputParameters[11];
+  T=InputParameters[11];
   InvPhiMin=InputParameters[12];
-  inMPhiConst=InputParameters[13];
-  alpha=InputParameters[14];
-  Wa=InputParameters[15];
-  S=InputParameters[16];
+  b=InputParameters[13];
+  M0=InputParameters[14];
+  Q=InputParameters[15];
+  sg = InputParameters[16];
 
   LogFile << "NY =  " << NY << std::endl;
   LogFile << "NX =  " << NX << std::endl;
-  LogFile << "dy =  " << dy << std::endl;
-  LogFile << "dx =  " << dx << std::endl;
-  LogFile << "dt =  " << dt << std::endl;
-  LogFile << "ntStart =  " << ntStart << std::endl;
-  LogFile << "ntEnd =  " << ntEnd << std::endl;
-  LogFile << "WriteCount =  " << WriteCount << std::endl;
-  LogFile << "MinAngle0 =  " << MinAngle0 << std::endl;
-  LogFile << "BVec =  " << BVec << std::endl;
-  LogFile << "mu =  " << mu << std::endl;
-  LogFile << "MTheta0 =  " << MTheta0 << std::endl;
+  LogFile << "dy =  " << dy << std::endl; //delta y
+  LogFile << "dx =  " << dx << std::endl; //delta x = 1 um
+  LogFile << "dt =  " << dt << std::endl; 
+  LogFile << "ntStart =  " << ntStart << std::endl; //start time
+  LogFile << "ntEnd =  " << ntEnd << std::endl; //finish time
+  LogFile << "WriteCount =  " << WriteCount << std::endl; //output interval
+  LogFile << "MinAngle0 =  " << MinAngle0 << std::endl; //Delta theta_min
+  LogFile << "BVec =  " << BVec << std::endl; //burgers vector
+  LogFile << "mu =  " << mu << std::endl; //shear modulus MPa
+  LogFile << "T =  " << T << std::endl; //temperature
   LogFile << "InvPhiMin =  " << InvPhiMin << std::endl;
-  LogFile << "inMPhiConst =  " << inMPhiConst << std::endl;
-  LogFile << "alpha =  " << alpha << std::endl;
-  LogFile << "Wa =  " << Wa << std::endl;
-  LogFile << "S =  " << S << std::endl;
+  LogFile << "b =  " << b << std::endl; //
+  LogFile << "M0 =  " << M0 << std::endl; //M_0
+  LogFile << "Q =  " << Q << std::endl;  //
+  LogFile << "sg =  " << sg << std::endl; //sigma
+ 
+
+  // Calculate All
+  const double kb = 1.38e-23;
+  double M = M0*exp(-Q / (kb*T));
+  
+  Wa = 6.0*sg*b / (4.0*dx);
+  alpha = sqrt(3.0*4.0*dx*sg / b);
+  MTheta0 = M*sqrt(2 * Wa) / (6 * alpha);
+  inMPhiConst = M*sqrt(2.0*Wa) / (6.0*alpha);
+  S = sqrt(3.0*4.0*dx*sg / b);
+
   // Input Parameters List
   // InputParameters[0] 1=NY
   // InputParameters[1] 2=NX
@@ -129,6 +146,9 @@ int main(int argc, char ** argv){
   // InputParameters[11] 12=MTheta0
   // InputParameters[12] 13=InvPhiMin
   // InputParameters[13] 14=inMPhiConst
+  // InputParameters[11] 15=alpha
+  // InputParameters[12] 16=Wa
+  // InputParameters[13] 17=S
 
   LogFile << "Reading Parameter Files Completed \n" << std::endl;
 
