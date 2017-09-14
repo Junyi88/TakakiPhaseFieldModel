@@ -5,11 +5,11 @@ Theta=csvread('EulerAngles.csv'); % Euler Angle
 Rho=csvread('Rho.csv'); % Rho
 
 mu=25.0e3; % Shear Modulus
-bvec=0.28; % Burgess Vector
+bvec=0.286e-3; % Burgess Vector
 
-Ecritical=0.7; % Critical Stored Energy to start Seed
-DThetaCrit=0.1;  % Minimum gradient of euler angle to seed
-EMin=1e-8; % Minimum Stored Energy to be swtiched on for seeding (set to a small value)
+Ecritical=1.8e-5; % Critical Stored Energy to start Seed
+DThetaCrit=0.001;  % Minimum gradient of euler angle to seed
+EMin=1e-9; % Minimum Stored Energy to be swtiched on for seeding (set to a small value)
 
 SeedSize=3; % radius of seeds
 SeedDist=10; % Minimum Distance Between seeds
@@ -82,7 +82,7 @@ figure(1);
 clf;
 subplot(2,2,1);
 surf(X,Y,Estored,'EdgeColor','none');
-title(['\phi ']);
+title(['Estored ']);
 view([0 90]);
 xlim([0 211]);
 ylim([0 211]);
