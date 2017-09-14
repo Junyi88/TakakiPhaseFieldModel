@@ -121,3 +121,11 @@ view([0 90]);
 xlim([0 211]);
 ylim([0 211]);
 pbaspect([1 1 1]);
+
+
+figure(3);
+clf;
+hi=histogram(Estored(:));
+xlabel('Estored');
+ylabel('Counts');
+title(['EStored Distribution']);
