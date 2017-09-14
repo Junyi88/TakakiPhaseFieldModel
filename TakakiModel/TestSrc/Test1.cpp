@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <iostream>
 #include <string>
 #include <istream>
@@ -6,6 +6,8 @@
 #include <sstream>
 #include <cmath>
 #include <vector>
+
+#include "mpi.h"
 
 #include "JMpi.h"
 #include "JMat.h"
@@ -20,6 +22,8 @@
 #include "TakACGradEnergy.h"
 #include "TakACTOriEnergy.h"
 #include "TakakiSolver.h"
+
+
 
 // #include "GClass.h"
 
