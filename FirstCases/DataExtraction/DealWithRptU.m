@@ -1,6 +1,7 @@
 clear;
-
-SDVFilename='../G49/Displacements.rpt';
+load names;
+UFilename='../G49/Displacements.rpt';
+SDVFilename=UFilename;
 
 fid = fopen(SDVFilename);
 count=1;

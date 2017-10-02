@@ -1,6 +1,7 @@
 clear;
-
-Filename='../G49/rotationMatrix.inc';
+load names;
+Filename=FilenameGetRotationMAtrix;
+% Filename='../G49/rotationMatrix.inc';
 
 fid = fopen(Filename);
 count=1;

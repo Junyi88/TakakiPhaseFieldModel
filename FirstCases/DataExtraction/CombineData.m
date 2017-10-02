@@ -4,9 +4,10 @@ load SetsIgnore;
 load EulerAnglesIgnore;
 load SDVSortedIgnore;
 load NodeDataIgnore;
+load names numberOfNodes pname;
 
 %%
-Nnodes=211;
+Nnodes=numberOfNodes;
 x=linspace(min(SDV(1).Xo),max(SDV(1).Xo),Nnodes);
 y=linspace(min(SDV(1).Yo),max(SDV(1).Yo),Nnodes);
 [X,Y]=meshgrid(x,y);
@@ -62,10 +63,14 @@ figure(1);
 clf;
 hold on;
 surf(X,Y,S2,'EdgeColor','none')
+title('Grain ID')
 
 figure(2);
 clf;
 hold on;
 surf(X,Y,A,'EdgeColor','none');
+title('Grain Orientation')
+
+csvwrite([pname '\Theta.csv'],A);
 
 save EulerAnglesSorted1;
