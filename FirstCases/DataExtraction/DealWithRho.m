@@ -6,7 +6,9 @@ load SDVSortedIgnore;
 load NodeDataIgnore;
 
 %%
-Nnodes=211;
+load names;
+
+Nnodes=numberOfNodes;
 x=linspace(min(SDV(1).Xo),max(SDV(1).Xo),Nnodes);
 y=linspace(min(SDV(1).Yo),max(SDV(1).Yo),Nnodes);
 [X,Y]=meshgrid(x,y);
@@ -31,5 +33,8 @@ figure(1);
 clf;
 hold on;
 surf(X,Y,rho,'EdgeColor','none');
+% csvwrite(['pname','Rho.csv'],rho);
 
+csvwrite([pname '\Rho.csv'],rho);
+% csvwrite('Rho.csv',rho);
 save RhoIgnore;

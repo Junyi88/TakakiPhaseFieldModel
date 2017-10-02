@@ -1,17 +1,18 @@
 %% Setup Parameters (User Input)
 clear;
+pname = 'E:\projects\TakakiPhaseFieldModel\FirstCases\G49 Strain10%';
 
-Theta=csvread('EulerAngles.csv'); % Euler Angle
-Rho=csvread('Rho.csv'); % Rho
+Theta=csvread([pname '\EulerAngles.csv']); % Euler Angle
+Rho=csvread([pname '\Rho.csv']); % Rho
 
 mu=25.0e3; % Shear Modulus
 bvec=0.286e-3; % Burgess Vector
 
-Ecritical=1.8e-5; % Critical Stored Energy to start Seed
+Ecritical=1.0e-5; % Critical Stored Energy to start Seed
 DThetaCrit=0.001;  % Minimum gradient of euler angle to seed
 EMin=1e-9; % Minimum Stored Energy to be swtiched on for seeding (set to a small value)
 
-SeedSize=3; % radius of seeds
+SeedSize=5; % radius of seeds
 SeedDist=10; % Minimum Distance Between seeds
 
 PhiMin=0.0; % Phi for not seeds
@@ -75,8 +76,49 @@ for ny=1:NY
     end
 end
 
-csvwrite('PhiSeeded.csv',Phi);
+csvwrite([pname '\SeededValues\PhiSeeded.csv'],Phi);
 
+%% Calculate Theta
+ThetaSeed=pi.*rand(SeedNum+1,1);
+for ny=1:NY
+    for nx=1:NX
+        if (Seeded(ny,nx)>0.5)
+            Theta(ny,nx)=ThetaSeed(Seeded(ny,nx));
+        end
+    end
+end
+
+csvwrite([pname '\SeededValues\ThetaSeeded.csv'],Theta);
+
+figure(22)
+clf;
+surf(X,Y,Theta,'EdgeColor','none');
+title(['\theta ']);
+view([0 90]);
+xlim([0 211]);
+ylim([0 211]);
+pbaspect([1 1 1]);
+
+%% Calculate Rho
+RhoSeed=0*rand(SeedNum+1,1);
+for ny=1:NY
+    for nx=1:NX
+        if (Seeded(ny,nx)>0.5)
+            Rho(ny,nx)=RhoSeed(Seeded(ny,nx));
+        end
+    end
+end
+
+csvwrite([pname '\SeededValues\RhoSeeded.csv'],Rho);
+
+figure(33)
+clf;
+surf(X,Y,Rho,'EdgeColor','none');
+title(['\rho ']);
+view([0 90]);
+xlim([0 211]);
+ylim([0 211]);
+pbaspect([1 1 1]);
 %% Plot Curves
 figure(1);
 clf;

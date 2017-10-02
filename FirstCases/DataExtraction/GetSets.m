@@ -1,6 +1,7 @@
 clear;
-
-Filename='../G49/sets.inc';
+load names;
+Filename=GetSetsFilename;
+% Filename='../G49/sets.inc';
 
 fid = fopen(Filename);
 count=1;

@@ -1,8 +1,8 @@
 clear;
 
-NodesRaw.NodeFile='../G49/nodes.inc';
+load names;
+% NodesRaw.NodeFile='../G49/nodes.inc';
 NodesRaw.N=csvread(NodesRaw.NodeFile);
-
 
 
 %% Determine How many Z layers
