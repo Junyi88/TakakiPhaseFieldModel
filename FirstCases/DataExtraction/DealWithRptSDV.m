@@ -1,6 +1,9 @@
-clear;
+%% 4/9 to run: Get SDVNodal.rpt (i.e.rho_dislocation density)
 
-SDVFilename='../G49/SDVNodal.rpt';
+clear;
+load names;
+
+% SDVFilename='../G49/SDVNodal.rpt';
 
 fid = fopen(SDVFilename);
 count=1;

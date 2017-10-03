@@ -1,6 +1,7 @@
+%% 5/9 to run: Get Displacement.rpt (i.e.U1 U2 U3_Displacemnt)
 clear;
 load names;
-UFilename='../G49/Displacements.rpt';
+% UFilename='../G49/Displacements.rpt';
 SDVFilename=UFilename;
 
 fid = fopen(SDVFilename);

@@ -1,3 +1,4 @@
+%% 8/9 to run: Write phi in .csv
 clear;
 load names;
 

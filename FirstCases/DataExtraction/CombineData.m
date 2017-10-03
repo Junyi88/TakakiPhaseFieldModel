@@ -1,3 +1,4 @@
+%% 9/9 to run: Write theta in.csv
 clear;
 
 load SetsIgnore;
@@ -59,18 +60,21 @@ for ny=1:length(y)
     end
 end
 
-figure(1);
+%% Figure: Grain ID
+figure(91);
 clf;
 hold on;
 surf(X,Y,S2,'EdgeColor','none')
 title('Grain ID')
 
-figure(2);
+%% Figure: Grain Orientation
+figure(92);
 clf;
 hold on;
 surf(X,Y,A,'EdgeColor','none');
 title('Grain Orientation')
 
+%% Write Theta into .csv
 csvwrite([pname '\Theta.csv'],A);
 
 save EulerAnglesSorted1;

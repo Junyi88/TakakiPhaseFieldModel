@@ -1,3 +1,4 @@
+%% 7/9 to run: Write rho in .csv
 clear;
 
 load SetsIgnore;
@@ -9,8 +10,10 @@ load NodeDataIgnore;
 load names;
 
 Nnodes=numberOfNodes;
-x=linspace(min(SDV(1).Xo),max(SDV(1).Xo),Nnodes);
-y=linspace(min(SDV(1).Yo),max(SDV(1).Yo),Nnodes);
+% x=xmin:dx:xmax;
+% x=min(SDV(1).Xo):0.1:max(SDV(1).Xo); dx=x(2)-x(1);
+x=linspace(min(SDV(1).Xo),max(SDV(1).Xo),Nnodes); dx=x(2)-x(1);
+y=linspace(min(SDV(1).Yo),max(SDV(1).Yo),Nnodes); dy=y(2)-y(1);
 [X,Y]=meshgrid(x,y);
 rho1=zeros(size(X));
 rho2=zeros(size(X));
@@ -33,7 +36,6 @@ figure(1);
 clf;
 hold on;
 surf(X,Y,rho,'EdgeColor','none');
-% csvwrite(['pname','Rho.csv'],rho);
 
 csvwrite([pname '\Rho.csv'],rho);
 % csvwrite('Rho.csv',rho);
