@@ -1,6 +1,7 @@
+%% 5/9 to run: Get Displacement.rpt (i.e.U1 U2 U3_Displacemnt)
 clear;
 load names;
-UFilename='../G49/Displacements.rpt';
+% UFilename='../G49/Displacements.rpt';
 SDVFilename=UFilename;
 
 fid = fopen(SDVFilename);
@@ -40,7 +41,7 @@ for n1=1:length(SDVS2)
    Fx(SDVS2(n1,1),:)=SDVS2(n1,:);
 end
 
-figure(1);
+figure(51);
 clf;
 plot(NodeCounts,'rx-');
 

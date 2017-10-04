@@ -1,6 +1,9 @@
-clear;
+%% 4/9 to run: Get SDVNodal.rpt (i.e.rho_dislocation density)
 
-SDVFilename='../G49/SDVNodal.rpt';
+clear;
+load names;
+
+% SDVFilename='../G49/SDVNodal.rpt';
 
 fid = fopen(SDVFilename);
 count=1;
@@ -39,11 +42,11 @@ for n1=1:length(SDVS2)
    Fx(SDVS2(n1,1),:)=SDVS2(n1,:);
 end
 
-figure(1);
+figure(41);
 clf;
 plot(NodeCounts,'rx-');
 
-NN=Fx(8749,:,:);
+% NN=Fx(8749,:,:);
 
 SDVs=Fx;
 save SDVDataIgnore SDVs;

@@ -1,3 +1,4 @@
+%% 9/9 to run: Write theta in.csv
 clear;
 
 load SetsIgnore;
@@ -5,11 +6,13 @@ load EulerAnglesIgnore;
 load SDVSortedIgnore;
 load NodeDataIgnore;
 load names numberOfNodes pname;
-
+% load cut;
 %%
 Nnodes=numberOfNodes;
 x=linspace(min(SDV(1).Xo),max(SDV(1).Xo),Nnodes);
 y=linspace(min(SDV(1).Yo),max(SDV(1).Yo),Nnodes);
+% load RhoIgnore x y;
+
 [X,Y]=meshgrid(x,y);
 S=zeros(size(X));
 A=zeros(size(X));
@@ -24,9 +27,9 @@ for n1=1:length(SetNodes)
    end
 end
 
+% x5=SDV(5).X;
+% y5=SDV(5).Y;
 No5=Nodes(5).N(:,1);
-x5=Nodes(5).N(:,2);
-y5=(Nodes(5).N(:,3));
 s5=zeros(size(No5));
 angle5=zeros(size(No5));
 for n1=1:length(No5)
@@ -37,8 +40,18 @@ for n1=1:length(No5)
    
 end
 
+load SDVSortedIgnore SDV;
+x5=SDV(5).X;
+y5=SDV(5).Y;
+
 Surf1=fit([x5 y5],s5,'linearinterp');
 Surf2=fit([x5 y5],angle5,'linearinterp');
+load RhoIgnore x y;
+
+[X,Y]=meshgrid(x,y);
+S=zeros(size(X));
+A=zeros(size(X));
+
 for ny=1:length(y)
     for nx=1:length(x)
         S(ny,nx)=(feval(Surf1,[X(ny,nx),Y(ny,nx)]));
@@ -59,17 +72,23 @@ for ny=1:length(y)
     end
 end
 
-figure(1);
+%% Figure: Grain ID
+figure(91);
 clf;
 hold on;
 surf(X,Y,S2,'EdgeColor','none')
 title('Grain ID')
 
-figure(2);
+%% Figure: Grain Orientation
+figure(92);
 clf;
 hold on;
 surf(X,Y,A,'EdgeColor','none');
 title('Grain Orientation')
+
+%% Write Theta into .csv
+load cut;
+A=A(Ysmall+1:Ylarge-1,Xsmall+1:Xlarge-1);
 
 csvwrite([pname '\Theta.csv'],A);
 

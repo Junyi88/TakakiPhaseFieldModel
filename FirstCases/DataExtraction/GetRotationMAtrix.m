@@ -1,3 +1,5 @@
+%% 3/9 to run: Get rotationMatrix.inc (i.e.Eular Angles)
+
 clear;
 load names;
 Filename=FilenameGetRotationMAtrix;

@@ -1,5 +1,6 @@
-clear;
+%% 1/9 to run: Get nodes.inc
 
+clear;
 load names;
 % NodesRaw.NodeFile='../G49/nodes.inc';
 NodesRaw.N=csvread(NodesRaw.NodeFile);
@@ -37,17 +38,22 @@ for n1=1:Layers
     Nodes(n1).N=Nodes(n1).N(1:LayerCount(n1),:);
 end
 
-figure(1);
-clf;
-plot3(NodesRaw.N(:,2),NodesRaw.N(:,3),NodesRaw.N(:,4),'rx')
+%% Figure: Nodes Layers
+% figure(11);
+% clf;
+% title('Nodes layers');
+% plot3(NodesRaw.N(:,2),NodesRaw.N(:,3),NodesRaw.N(:,4),'rx')
 
 
-figure(2);
-clf;
-hold on;
-plot(Nodes(1).N(:,2),Nodes(1).N(:,3),'rx');
-plot(Nodes(2).N(:,2),Nodes(2).N(:,3),'bs');
+%% Figure: Nodes on 2D map
+% figure(12);
+% clf;
+% title('Nodes on 2D map');
+% hold on;
+% plot(Nodes(1).N(:,2),Nodes(1).N(:,3),'rx');
+% plot(Nodes(2).N(:,2),Nodes(2).N(:,3),'bs');
 
+%% Read csv
 ElRaw.ElFile='../G49/elements.inc';
 ElRaw.ElRaw=csvread(ElRaw.ElFile);
 [Ny,Nx]=size(ElRaw.ElRaw);
@@ -66,10 +72,10 @@ for n1=1:NyReal
     count=count+1;
 end
 
-%%
-
-figure(200);
+%% Figure: Element nodes location and arrangement
+figure(13);
 clf;
+title('Element nodes location and arrangement');
 hold on;
 nEl=5;
 x=zeros(1,20);
