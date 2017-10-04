@@ -12,7 +12,7 @@ end
 for n2=1:length(NodeLayers)
 for n1=1:length((Nodes(n2).N))
     SDV(n2).S(n1,1:2)=Nodes(n2).N(n1,2:3);
-    SDV(n2).S(n1,3)=SDVs(Nodes(n2).N(n1,1),4); %DANGER HARD CODING
+    SDV(n2).S(n1,3)=SDVs(Nodes(n2).N(n1,1),4); %DANGER HARD CODING %%Choose gnd+ssd rho (column 4) as the dislocation density
     SDV(n2).U(n1,:)=Us(Nodes(n2).N(n1,1),2:4);
 end
 end
@@ -22,9 +22,9 @@ for n1=1:length(NodeLayers)
    SDV(n1).Yo=SDV(n1).S(:,2); 
    SDV(n1).Zo=SDV(n1).S(:,3); 
    
-   SDV(n1).X=SDV(n1).Xo;%+SDV(n2).U(n1,1); 
-   SDV(n1).Y=SDV(n1).Yo;%+SDV(n2).U(n1,2); 
-   SDV(n1).Z=SDV(n1).Zo; 
+   SDV(n1).X=SDV(n1).Xo+SDV(n1).U(:,1); %Model shape changed due to the deformation
+   SDV(n1).Y=SDV(n1).Yo+SDV(n1).U(:,2); %Model shape change due to the deformation
+   SDV(n1).Z=SDV(n1).Zo; %2D used in this case, thus, no change on z-axis 
 end
 
 for n1=1:length(NodeLayers)

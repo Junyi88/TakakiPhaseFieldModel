@@ -6,7 +6,7 @@ load EulerAnglesIgnore;
 load SDVSortedIgnore;
 load NodeDataIgnore;
 load names numberOfNodes pname;
-
+% load cut;
 %%
 Nnodes=numberOfNodes;
 x=linspace(min(SDV(1).Xo),max(SDV(1).Xo),Nnodes);
@@ -75,6 +75,9 @@ surf(X,Y,A,'EdgeColor','none');
 title('Grain Orientation')
 
 %% Write Theta into .csv
+load cut;
+A=A(Ysmall+1:Ylarge-1,Xsmall+1:Xlarge-1);
+
 csvwrite([pname '\Theta.csv'],A);
 
 save EulerAnglesSorted1;

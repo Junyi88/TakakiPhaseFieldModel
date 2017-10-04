@@ -8,11 +8,11 @@ Rho=csvread([pname '\Rho.csv']); % Rho
 mu=25.0e3; % Shear Modulus
 bvec=0.286e-3; % Burgess Vector
 
-Ecritical=1.0e-5; % Critical Stored Energy to start Seed
+Ecritical=0.05; % Critical Stored Energy to start Seed
 DThetaCrit=0.001;  % Minimum gradient of euler angle to seed
 EMin=1e-9; % Minimum Stored Energy to be swtiched on for seeding (set to a small value)
 
-SeedSize=5; % radius of seeds
+SeedSize=4; % radius of seeds
 SeedDist=10; % Minimum Distance Between seeds
 
 PhiMin=0.0; % Phi for not seeds
@@ -76,7 +76,7 @@ for ny=1:NY
     end
 end
 
-csvwrite([pname '\SeededValues\PhiSeeded.csv'],Phi);
+csvwrite([pname '\SeededValues\Phi.csv'],Phi);
 
 %% Calculate Theta
 ThetaSeed=pi.*rand(SeedNum+1,1);
@@ -88,7 +88,7 @@ for ny=1:NY
     end
 end
 
-csvwrite([pname '\SeededValues\ThetaSeeded.csv'],Theta);
+csvwrite([pname '\SeededValues\Theta.csv'],Theta);
 
 figure(22)
 clf;
@@ -109,7 +109,7 @@ for ny=1:NY
     end
 end
 
-csvwrite([pname '\SeededValues\RhoSeeded.csv'],Rho);
+csvwrite([pname '\SeededValues\Rho.csv'],Rho);
 
 figure(33)
 clf;
