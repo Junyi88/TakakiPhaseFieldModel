@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\TakakiModel\TestSrc\Test1.cpp" />
+    <ClCompile Include="..\..\..\JunyiFDMpiCpp\TwoD\src\AuxFunctions.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\JunyiFDMpiCpp\TwoD\src\JFDMpi.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\JunyiFDMpiCpp\TwoD\src\JFDMpiAngle.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\JunyiFDMpiCpp\TwoD\src\JMat.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\JunyiFDMpiCpp\TwoD\src\JMpi.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\JunyiFDMpiCpp\TwoD\inc\AuxFunctions.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\TakakiModel\inc\GClass.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\JunyiFDMpiCpp\TwoD\inc\JFDMpi.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\JunyiFDMpiCpp\TwoD\inc\JFDMpiAngle.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\JunyiFDMpiCpp\TwoD\inc\JMat.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\JunyiFDMpiCpp\TwoD\inc\JMpi.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\TakakiModel\inc\TakACBulkEnergy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TakakiQuaternion\TakQuaternion.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\TakakiModel\inc\TakPhase.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\TakakiModel\inc\TakAngle.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\TakakiModel\inc\TakakiSolver.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\TakakiModel\inc\TakACWallEnergy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\TakakiModel\inc\TakACTOriEnergy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\TakakiModel\inc\TakACGradEnergy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TakakiQuaternion\TakACTOriEnergyQuaternion.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{8cfd1b8e-d2d1-491b-a5f8-8b634e026a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{630d8c7e-7349-42ca-bf06-22914d431998}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
