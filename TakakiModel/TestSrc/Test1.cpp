@@ -16,12 +16,12 @@
 #include "AuxFunctions.h"
 
 #include "TakPhase.h"
-#include "TakAngle.h"
+#include "TakQuaternion.h"
 #include "TakACBulkEnergy.h"
 #include "TakACWallEnergy.h"
 #include "TakACGradEnergy.h"
-#include "TakACTOriEnergy.h"
-#include "TakakiSolver.h"
+#include "TakACTOriEnergyQuaternion.h"
+#include "TakakiSolverQuaternion.h"
 
 
 
@@ -64,8 +64,14 @@ int main(int argc, char ** argv){
   BufferInputStream1>>BufferString;
   InitialConditionFileList.push_back(BufferString); // Eta
   BufferInputStream1>>BufferString;
-  InitialConditionFileList.push_back(BufferString); // Theta
+  InitialConditionFileList.push_back(BufferString); // Q1
   BufferInputStream1>>BufferString;
+  InitialConditionFileList.push_back(BufferString); // Q2
+  BufferInputStream1 >> BufferString;
+  InitialConditionFileList.push_back(BufferString); // Q3
+  BufferInputStream1 >> BufferString;
+  InitialConditionFileList.push_back(BufferString); // Q4
+  BufferInputStream1 >> BufferString;
   InitialConditionFileList.push_back(BufferString); // Rho
 
   BufferInputStream1.close();
@@ -158,7 +164,11 @@ int main(int argc, char ** argv){
 
   JMpi MPIOBJ(Nnode, NPrs, NY, NX, dy, dx);
   JMat BufferFull(NY, NX), Eta0(MPIOBJ.NYLo(), NX),
-    Theta0(MPIOBJ.NYLo(), NX), Rho0(MPIOBJ.NYLo(), NX);
+      Q10(MPIOBJ.NYLo(), NX),
+	  Q20(MPIOBJ.NYLo(), NX),
+	  Q30(MPIOBJ.NYLo(), NX),
+	  Q40(MPIOBJ.NYLo(), NX),
+	  Rho0(MPIOBJ.NYLo(), NX);
 
   LogFile << "Setup MPI Object Completed \n" << std::endl;
 
@@ -170,14 +180,35 @@ int main(int argc, char ** argv){
   LogFile << "Reading Initial Conditions Eta Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
-  LogFile << "Reading Initial Conditions Theta =  " << InitialConditionFileList[1] << std::endl;
+  LogFile << "Reading Initial Conditions Q10 =  " << InitialConditionFileList[1] << std::endl;
   BufferString=InitialConditionFileList[1];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(Theta0, BufferFull,  MPIOBJ);
-  LogFile << "Reading Initial Conditions Theta Completed \n" << std::endl;
+  Splitter(Q10, BufferFull,  MPIOBJ);
+  LogFile << "Reading Initial Conditions Q1 Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
-  LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[2] << std::endl;
+  LogFile << "Reading Initial Conditions Q20 =  " << InitialConditionFileList[2] << std::endl;
+  BufferString = InitialConditionFileList[1];
+  ReadTextFile(BufferFull.Pointer(), BufferString, NX, NY, ',');
+  Splitter(Q20, BufferFull, MPIOBJ);
+  LogFile << "Reading Initial Conditions Q2 Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Reading Initial Conditions Q30 =  " << InitialConditionFileList[3] << std::endl;
+  BufferString = InitialConditionFileList[1];
+  ReadTextFile(BufferFull.Pointer(), BufferString, NX, NY, ',');
+  Splitter(Q30, BufferFull, MPIOBJ);
+  LogFile << "Reading Initial Conditions Q3 Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Reading Initial Conditions Q40 =  " << InitialConditionFileList[4] << std::endl;
+  BufferString = InitialConditionFileList[1];
+  ReadTextFile(BufferFull.Pointer(), BufferString, NX, NY, ',');
+  Splitter(Q40, BufferFull, MPIOBJ);
+  LogFile << "Reading Initial Conditions Q4 Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[5] << std::endl;
   BufferString=InitialConditionFileList[2];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
   Splitter( Rho0, BufferFull, MPIOBJ);
@@ -193,7 +224,9 @@ int main(int argc, char ** argv){
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup Theta Class " << std::endl;
-  TakAngle<JFDMpi2DReflectHighAngle> Theta(MPIOBJ, Theta0, MinAngle0);
+  TakQuaternion<JFDMpi2DReflectHigh> Theta(MPIOBJ, 
+	  Q10, Q20, Q30, Q40, 
+	  MinAngle0);
   LogFile << "Setup Theta Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
@@ -213,13 +246,13 @@ int main(int argc, char ** argv){
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACTOriEnergy Class " << std::endl;
-  TakACTOriEnergy<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta,
+  TakACTOriEnergyQuaternion<JFDMpi2DReflectHigh, JFDMpi2DReflectHigh> OriEnergy(&Phi, &Theta,
     S, MTheta0, InvPhiMin, MPIOBJ);
   LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakakiSolver Class " << std::endl;
-  TakakiSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(&Phi, &Theta,
+  TakakiSolverQuaternion<JFDMpi2DReflectHigh, JFDMpi2DReflectHigh> Solver(&Phi, &Theta,
     &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
     inMPhiConst , dt, MPIOBJ);
 
@@ -257,22 +290,66 @@ int main(int argc, char ** argv){
   BufferString="PhiD2_0.csv";
   WriteMPITextFile(Phi.D2P(), BufferString, MPIOBJ);
 
-  LogFile << "Write Outputs - Theta" << std::endl;
-  BufferString="Theta_0.csv";
-  WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+  LogFile << "Write Outputs - Quaternions" << std::endl;
+  BufferString="Q1_0.csv";
+  WriteMPITextFile(Theta.FP1(), BufferString, MPIOBJ);
+  BufferString="Q1x_0.csv";
+  WriteMPITextFile(Theta.DxP1(), BufferString, MPIOBJ);
+  BufferString="Q1Dy_0.csv";
+  WriteMPITextFile(Theta.DyP1(), BufferString, MPIOBJ);
+  BufferString="Q1Dxx_0.csv";
+  WriteMPITextFile(Theta.DxxP1(), BufferString, MPIOBJ);
+  BufferString="Q1Dyy_0.csv";
+  WriteMPITextFile(Theta.DyyP1(), BufferString, MPIOBJ);
+  BufferString="Q1Dxy_0.csv";
+  WriteMPITextFile(Theta.DxyP1(), BufferString, MPIOBJ);
+  BufferString="Q1D2_0.csv";
+  WriteMPITextFile(Theta.D2P1(), BufferString, MPIOBJ);
 
-  BufferString="ThetaDx_0.csv";
-  WriteMPITextFile(Theta.DxP(), BufferString, MPIOBJ);
-  BufferString="ThetaDy_0.csv";
-  WriteMPITextFile(Theta.DyP(), BufferString, MPIOBJ);
-  BufferString="ThetaDxx_0.csv";
-  WriteMPITextFile(Theta.DxxP(), BufferString, MPIOBJ);
-  BufferString="ThetaDyy_0.csv";
-  WriteMPITextFile(Theta.DyyP(), BufferString, MPIOBJ);
-  BufferString="ThetaDxy_0.csv";
-  WriteMPITextFile(Theta.DxyP(), BufferString, MPIOBJ);
-  BufferString="ThetaD2_0.csv";
-  WriteMPITextFile(Theta.D2P(), BufferString, MPIOBJ);
+  BufferString = "Q2_0.csv";
+  WriteMPITextFile(Theta.FP2(), BufferString, MPIOBJ);
+  BufferString = "Q2x_0.csv";
+  WriteMPITextFile(Theta.DxP2(), BufferString, MPIOBJ);
+  BufferString = "Q2Dy_0.csv";
+  WriteMPITextFile(Theta.DyP2(), BufferString, MPIOBJ);
+  BufferString = "Q2Dxx_0.csv";
+  WriteMPITextFile(Theta.DxxP2(), BufferString, MPIOBJ);
+  BufferString = "Q2Dyy_0.csv";
+  WriteMPITextFile(Theta.DyyP2(), BufferString, MPIOBJ);
+  BufferString = "Q2Dxy_0.csv";
+  WriteMPITextFile(Theta.DxyP2(), BufferString, MPIOBJ);
+  BufferString = "Q2D2_0.csv";
+  WriteMPITextFile(Theta.D2P2(), BufferString, MPIOBJ);
+
+  BufferString = "Q3_0.csv";
+  WriteMPITextFile(Theta.FP3(), BufferString, MPIOBJ);
+  BufferString = "Q3x_0.csv";
+  WriteMPITextFile(Theta.DxP3(), BufferString, MPIOBJ);
+  BufferString = "Q3Dy_0.csv";
+  WriteMPITextFile(Theta.DyP3(), BufferString, MPIOBJ);
+  BufferString = "Q3Dxx_0.csv";
+  WriteMPITextFile(Theta.DxxP3(), BufferString, MPIOBJ);
+  BufferString = "Q3Dyy_0.csv";
+  WriteMPITextFile(Theta.DyyP3(), BufferString, MPIOBJ);
+  BufferString = "Q3Dxy_0.csv";
+  WriteMPITextFile(Theta.DxyP3(), BufferString, MPIOBJ);
+  BufferString = "Q3D2_0.csv";
+  WriteMPITextFile(Theta.D2P3(), BufferString, MPIOBJ);
+
+  BufferString = "Q4_0.csv";
+  WriteMPITextFile(Theta.FP1(), BufferString, MPIOBJ);
+  BufferString = "Q4x_0.csv";
+  WriteMPITextFile(Theta.DxP1(), BufferString, MPIOBJ);
+  BufferString = "Q4Dy_0.csv";
+  WriteMPITextFile(Theta.DyP1(), BufferString, MPIOBJ);
+  BufferString = "Q4Dxx_0.csv";
+  WriteMPITextFile(Theta.DxxP1(), BufferString, MPIOBJ);
+  BufferString = "Q4Dyy_0.csv";
+  WriteMPITextFile(Theta.DyyP1(), BufferString, MPIOBJ);
+  BufferString = "Q4Dxy_0.csv";
+  WriteMPITextFile(Theta.DxyP1(), BufferString, MPIOBJ);
+  BufferString = "Q4D2_0.csv";
+  WriteMPITextFile(Theta.D2P1(), BufferString, MPIOBJ);
 
   LogFile << "Write Outputs - dFdPhase" << std::endl;
   BufferString="Bulk_dFdPhase_0.csv";
@@ -285,8 +362,15 @@ int main(int argc, char ** argv){
   WriteMPITextFile(OriEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
 
   LogFile << "Write Outputs - Others" << std::endl;
-  BufferString="dThetadt_0.csv";
-  WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+  BufferString="dThetadt1_0.csv";
+  WriteMPITextFile(OriEnergy.dThetadt1Pointer(), BufferString, MPIOBJ);
+  BufferString = "dThetadt2_0.csv";
+  WriteMPITextFile(OriEnergy.dThetadt2Pointer(), BufferString, MPIOBJ);
+  BufferString = "dThetadt3_0.csv";
+  WriteMPITextFile(OriEnergy.dThetadt3Pointer(), BufferString, MPIOBJ);
+  BufferString = "dThetadt4_0.csv";
+  WriteMPITextFile(OriEnergy.dThetadt4Pointer(), BufferString, MPIOBJ);
+
   BufferString="MTheta_0.csv";
   WriteMPITextFile(OriEnergy.MThetaPointer(), BufferString, MPIOBJ);
 
@@ -301,8 +385,8 @@ int main(int argc, char ** argv){
   BufferString=HeaderName + "_Phi_0.csv";
   WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
-  BufferString=HeaderName + "_Theta_0.csv";
-  WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+//  BufferString=HeaderName + "_Q1_0.csv";
+//  WriteMPITextFile(Theta.FP1(), BufferString, MPIOBJ);
   // ***********************************************
   // Loop
   LogFile << "Start Loop \n" << std::endl;
@@ -319,8 +403,17 @@ int main(int argc, char ** argv){
       BufferString=HeaderName + "_Phi_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
-      BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
-      WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+      BufferString=HeaderName + "_Q1_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Theta.FP1(), BufferString, MPIOBJ);
+
+	  BufferString = HeaderName + "_Q2_" + std::to_string(ntime) + ".csv";
+	  WriteMPITextFile(Theta.FP2(), BufferString, MPIOBJ);
+
+	  BufferString = HeaderName + "_Q3_" + std::to_string(ntime) + ".csv";
+	  WriteMPITextFile(Theta.FP3(), BufferString, MPIOBJ);
+
+	  BufferString = HeaderName + "_Q4_" + std::to_string(ntime) + ".csv";
+	  WriteMPITextFile(Theta.FP4(), BufferString, MPIOBJ);
 
       // BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
       // WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);

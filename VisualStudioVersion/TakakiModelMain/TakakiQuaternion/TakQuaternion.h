@@ -67,7 +67,11 @@ public:
 	JMat * D2P4() { return _D4.D2P(); };
 
 	// GetValues
-	double F(const int &y, const int &x) { return _F.Value(y, x); };
+	double F1(const int &y, const int &x) { return _F1.Value(y, x); };
+	double F2(const int &y, const int &x) { return _F2.Value(y, x); };
+	double F3(const int &y, const int &x) { return _F3.Value(y, x); };
+	double F4(const int &y, const int &x) { return _F4.Value(y, x); };
+
 
 	double Mag(const int &y, const int &x) { return _Mag.Value(y, x); };
 	double R(const int &y, const int &x) { return _R.Value(y, x); };
@@ -105,7 +109,7 @@ protected:
 	JMpi _MpiObj;
 	int _NY, _NX, _Ny;
 
-	JMat _F1,_F2,_F3,_F3;
+	JMat _F1,_F2,_F3,_F4;
 	FDClass _D1,_D2,_D3,_D4;
 	JMat _Mag, _R, _R3;
 	double _MinMag;
@@ -127,7 +131,7 @@ TakQuaternion<FDClass>::TakQuaternion(JMpi inJMpi,
 	_MpiObj(inJMpi), _NY(_MpiObj.NYGl()), _NX(_MpiObj.NX()),
 	_Ny(_MpiObj.NYLo()), 
 	_F1(in_F1), _F2(in_F2), _F3(in_F3), _F4(in_F4),
-	_D1(_MpiObj, _F1), _D2(_MpiObj, _F2), _D2(_MpiObj, _F2), _D4(_MpiObj, _F4),
+	_D1(_MpiObj, _F1), _D2(_MpiObj, _F2), _D3(_MpiObj, _F2), _D4(_MpiObj, _F4),
 	_Mag(_NY, _NX), _R(_NY, _NX), _R3(_NY, _NX), _MinMag(inMinMag) {}
 
 // @@ -- Constructor ----------------------------------------------------
@@ -205,7 +209,7 @@ void TakQuaternion<FDClass>::Update_Theta(
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass>
-void TakAngle<FDClass>::Calc_Rs() {
+void TakQuaternion<FDClass>::Calc_Rs() {
 	for (int j = 0; j<_Ny; j++)
 		for (int i = 0; i<_NX; i++) {
 			_Mag(j, i) = sqrt(

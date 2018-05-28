@@ -75,14 +75,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\src;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\inc;$(SolutionDir)..\..\TakakiQuarternion;$(SolutionDir)..\..\TakakiModel\TestSrc;$(SolutionDir)..\..\TakakiModel\inc;$(MSMPI_INC);$(MSMPI_INC)\x64;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\src;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\inc;$(SolutionDir)TakakiQuarternion;$(SolutionDir)..\..\TakakiModel\TestSrc;$(SolutionDir)..\..\TakakiModel\inc;$(MSMPI_INC);$(MSMPI_INC)\x64;$(IncludePath)</IncludePath>
+    <SourcePath>Y:\GitKrakenRes\TakakiPhaseFieldModel\VisualStudioVersion\TakakiModelMain\TakakiQuaternion;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\src;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\inc;$(SolutionDir)..\..\TakakiQuarternion;$(SolutionDir)..\..\TakakiModel\TestSrc;$(SolutionDir)..\..\TakakiModel\inc;$(MSMPI_INC);$(MSMPI_INC)\x64;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\src;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\inc;$(SolutionDir)TakakiQuarternion;$(SolutionDir)..\..\TakakiModel\TestSrc;$(SolutionDir)..\..\TakakiModel\inc;$(MSMPI_INC);$(MSMPI_INC)\x64;$(IncludePath)</IncludePath>
+    <SourcePath>Y:\GitKrakenRes\TakakiPhaseFieldModel\VisualStudioVersion\TakakiModelMain\TakakiQuaternion;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -103,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\TakakiModel\TestSrc;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\src;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\inc;$(SolutionDir)..\..\TakakiModel\inc;$(MSMPI_INC);$(MSMPI_INC)\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)TakakiQuaternion;$(SolutionDir)..\..\TakakiModel\TestSrc;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\src;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\inc;$(SolutionDir)..\..\TakakiModel\inc;$(MSMPI_INC);$(MSMPI_INC)\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -137,7 +139,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\TakakiModel\TestSrc;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\src;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\inc;$(SolutionDir)..\..\TakakiModel\inc;$(MSMPI_INC);$(MSMPI_INC)\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)TakakiQuaternion;$(SolutionDir)..\..\TakakiModel\TestSrc;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\src;$(SolutionDir)..\..\JunyiFDMpiCpp\TwoD\inc;$(SolutionDir)..\..\TakakiModel\inc;$(MSMPI_INC);$(MSMPI_INC)\x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -166,6 +168,7 @@
     <ClInclude Include="..\..\..\TakakiModel\inc\TakAngle.h" />
     <ClInclude Include="..\..\..\TakakiModel\inc\TakPhase.h" />
     <ClInclude Include="..\TakakiQuaternion\TakACTOriEnergyQuaternion.h" />
+    <ClInclude Include="..\TakakiQuaternion\TakakiSolverQuaternion.h" />
     <ClInclude Include="..\TakakiQuaternion\TakQuaternion.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
