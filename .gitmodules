@@ -1,3 +1,3 @@
-[submodule "JunyiFDMpiCpp"]
-	path = JunyiFDMpiCpp
-	url = https://github.com/Junyi88/JunyiFDMpiCpp.git
+[submodule "FiniteDifferenceModuleCpp"]
+	path = FiniteDifferenceModuleCpp
+	url = git@github.com:Junyi88/FiniteDifferenceModuleCpp.git
