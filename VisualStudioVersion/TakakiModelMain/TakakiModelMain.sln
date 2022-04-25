@@ -5,10 +5,6 @@ VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TakakiModelMain", "TakakiModelMain\TakakiModelMain.vcxproj", "{FA5DE69D-1F3B-4CE8-85D1-7D4C0F4F16A8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{BD4E74C7-F654-4544-98B1-921D53959812}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TakakiModelQuaternion", "TakakiModelMain\TakakiModelQuaternion.vcxproj", "{B22F5CFF-3144-4CDF-863F-C05AAFD77751}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -25,14 +21,6 @@ Global
 		{FA5DE69D-1F3B-4CE8-85D1-7D4C0F4F16A8}.Release|x64.Build.0 = Release|x64
 		{FA5DE69D-1F3B-4CE8-85D1-7D4C0F4F16A8}.Release|x86.ActiveCfg = Release|Win32
 		{FA5DE69D-1F3B-4CE8-85D1-7D4C0F4F16A8}.Release|x86.Build.0 = Release|Win32
-		{B22F5CFF-3144-4CDF-863F-C05AAFD77751}.Debug|x64.ActiveCfg = Debug|x64
-		{B22F5CFF-3144-4CDF-863F-C05AAFD77751}.Debug|x64.Build.0 = Debug|x64
-		{B22F5CFF-3144-4CDF-863F-C05AAFD77751}.Debug|x86.ActiveCfg = Debug|Win32
-		{B22F5CFF-3144-4CDF-863F-C05AAFD77751}.Debug|x86.Build.0 = Debug|Win32
-		{B22F5CFF-3144-4CDF-863F-C05AAFD77751}.Release|x64.ActiveCfg = Release|x64
-		{B22F5CFF-3144-4CDF-863F-C05AAFD77751}.Release|x64.Build.0 = Release|x64
-		{B22F5CFF-3144-4CDF-863F-C05AAFD77751}.Release|x86.ActiveCfg = Release|Win32
-		{B22F5CFF-3144-4CDF-863F-C05AAFD77751}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
