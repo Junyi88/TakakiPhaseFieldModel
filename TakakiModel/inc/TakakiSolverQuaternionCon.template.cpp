@@ -19,13 +19,12 @@ TakakiSolverQuaternionCon<FDClass, FDAngleClass>::TakakiSolverQuaternionCon(
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
-TakakiSolverQuaternion<FDClass, FDAngleClass>& 
-  TakakiSolverQuaternion<FDClass, FDAngleClass>::operator= (
-  const TakakiSolverQuaternion<FDClass, FDAngleClass> &in1) {
+TakakiSolverQuaternionCon<FDClass, FDAngleClass>& TakakiSolverQuaternionCon<FDClass, FDAngleClass>::operator= (
+  const TakakiSolverQuaternionCon<FDClass, FDAngleClass> &in1) {
 
   _Phi = in1._Phi;
   _Theta = in1._Theta;
-  _con = con;
+  _con = in1._con;
 
   _BulkEnergy = in1._BulkEnergy;
   _WallEnergy = in1._WallEnergy;
@@ -47,7 +46,7 @@ TakakiSolverQuaternion<FDClass, FDAngleClass>&
 
 //-- Step_NoUpdate ----
 template <class FDClass, class FDAngleClass>
-void TakakiSolverQuaternion<FDClass, FDAngleClass>::Step_NoUpdate() {
+void TakakiSolverQuaternionCon<FDClass, FDAngleClass>::Step_NoUpdate() {
   _Phi->Calc_All();
   _Theta->Calc_All();
   _con->Calc_All();
@@ -119,7 +118,7 @@ template <class FDClass, class FDAngleClass>
 void TakakiSolverQuaternionCon<FDClass, FDAngleClass>::Update_Con() {
   for (int j = 0; j<_Ny; j++)
     for (int i = 0; i<_NX; i++) {
-      _con->Update_Con(_ChemEnergy.dcondt->Value(j, i), _dt, j, i);
+      _con->Update_Con(_ChemEnergy->dcondt()->Value(j, i), _dt, j, i);
     }
 }
 
@@ -128,13 +127,13 @@ template <class FDClass, class FDAngleClass>
 void TakakiSolverQuaternionCon<FDClass, FDAngleClass>::Update_Con(const double &dtimeCustom) {
   for (int j = 0; j<_Ny; j++)
     for (int i = 0; i<_NX; i++) {
-      _con->Update_Con(_ChemEnergy.dcondt->Value(j, i), dtimeCustom, j, i);
+      _con->Update_Con(_ChemEnergy->dcondt()->Value(j, i), dtimeCustom, j, i);
     }
 }
 
 // @@ ------------------------------------------------------
 template <class FDClass, class FDAngleClass>
-void TakakiSolverQuaternion<FDClass, FDAngleClass>::Step_All() {
+void TakakiSolverQuaternionCon<FDClass, FDAngleClass>::Step_All() {
   Update_Eta();
   Update_Theta();
   Update_Con();
@@ -143,7 +142,7 @@ void TakakiSolverQuaternion<FDClass, FDAngleClass>::Step_All() {
 
 // @@ ------------------------------------------------------
 template <class FDClass, class FDAngleClass>
-void TakakiSolverQuaternion<FDClass, FDAngleClass>::Step_All(const double &dtimeCustom) {
+void TakakiSolverQuaternionCon<FDClass, FDAngleClass>::Step_All(const double &dtimeCustom) {
   Update_Eta(dtimeCustom);
   Update_Theta(dtimeCustom);
   Update_Con(dtimeCustom);

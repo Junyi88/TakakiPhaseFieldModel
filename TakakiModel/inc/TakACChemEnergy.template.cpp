@@ -29,7 +29,7 @@ void TakACChemEnergy<FDClass>::Calc_All()
   {
     for (unsigned int i = 0; i < _NX; i++)
     {
-      _dcondt(j, i) = _MChem * _con.D2_mu(j, i);
+      _dcondt(j, i) = _MChem * _con->D2_mu(j, i);
     }
   }
 }

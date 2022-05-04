@@ -26,7 +26,7 @@ public:
 
   JMat * FP(){return &con_;}
   double con(const int &y, const int &x){return con_.Value(y,x);}
-  double D2_mu(const int &y, const int &x){return D_mu_(x);};
+  double D2_mu(const int &y, const int &x){return D_mu_.D2(y,x);};
 protected:
   JMpi _MpiObj;
   int _NY, _NX, _Ny;
@@ -42,5 +42,5 @@ protected:
 };
 
 
-#include <BasicChemPotential.template.h>
+#include <BasicChemPotential.template.cpp>
 #endif

@@ -2,7 +2,7 @@
 #define TAKACCHEMENERGY_H
 
 #include <JFDMpi.h>
-#include <JMAT.h>
+#include <JMat.h>
 #include "BasicChemPotential.h"
 
 //== 
@@ -21,7 +21,7 @@ public:
 private:
   BasicChemPotential<FDClass>* _con;
 
-  JMPi _MpiObj;
+  JMpi _MpiObj;
   int _NY, _NX, _Ny;
 
   const double _MChem;

@@ -58,10 +58,9 @@ protected:
 	TakACGradEnergy<FDClass> * _GradEnergy;
 	TakACTOriEnergyQuaternion<FDClass, FDAngleClass> * _OriEnergy;
 
-	TakACChemEnergy<FDClass>* _ChemEnergy;
-
 	JMpi _MpiObj;
 	int _NY, _NX, _Ny;
+	TakACChemEnergy<FDClass>* _ChemEnergy;
 
 	double _MPhiConst;
 	double _dt;
@@ -71,7 +70,7 @@ protected:
 
 };
 
-#include "TakakiSolverQuaternionCon.template.cpp";
+#include "TakakiSolverQuaternionCon.template.cpp"
 
 #endif
 
