@@ -24,6 +24,7 @@ public:
   
   void Update_Con(const double &dcondt, const double &dt, const int &y, const int &x);
 
+  JMat * FP(){return &con_;}
   double con(const int &y, const int &x){return con_.Value(y,x);}
   double D2_mu(const int &y, const int &x){return D_mu_(x);};
 protected:

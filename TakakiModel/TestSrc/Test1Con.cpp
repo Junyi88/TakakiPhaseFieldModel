@@ -33,7 +33,7 @@
 
 int main(int argc, char ** argv){
 
-  const int NInputParameters=18;
+  const int NInputParameters=20;
   //================================================================
   // # Initialise the MPI and system
   int NPrs, Nnode;
@@ -77,6 +77,8 @@ int main(int argc, char ** argv){
   InitialConditionFileList.push_back(BufferString); // Q4
   BufferInputStream1 >> BufferString;
   InitialConditionFileList.push_back(BufferString); // Rho
+  BufferInputStream1 >> BufferString;
+  InitialConditionFileList.push_back(BufferString); // Con
 
   BufferInputStream1.close();
   for (int i=0; i<InitialConditionFileList.size(); i++)
@@ -90,6 +92,8 @@ int main(int argc, char ** argv){
   int NY, NX, ntStart, ntEnd, WriteCount;
   double dy, dx, dt, MinAngle0, BVec, mu, MTheta0, InvPhiMin, inMPhiConst,
     alpha, Wa, S, T, b, M0, Q, sg;
+
+  double kappa_chem, MChem;
 
   double InputParameters[50];
   ReadTextFile(&InputParameters[0], InputFile, 1, NInputParameters, ',');
@@ -112,6 +116,9 @@ int main(int argc, char ** argv){
   Q=InputParameters[15];
   sg = InputParameters[16];
 
+  kappa_chem = InputParameters[17];
+  MChem = InputParameters[18];
+
   LogFile << "NY =  " << NY << std::endl;
   LogFile << "NX =  " << NX << std::endl;
   LogFile << "dy =  " << dy << std::endl; //delta y
@@ -129,6 +136,9 @@ int main(int argc, char ** argv){
   LogFile << "M0 =  " << M0 << std::endl; //M_0
   LogFile << "Q =  " << Q << std::endl;  //
   LogFile << "sg =  " << sg << std::endl; //sigma
+
+  LogFile << "kappa_chem =  " << kappa_chem << std::endl; //sigma
+  LogFile << "MChem =  " << MChem << std::endl; //sigma
  
 
   // Calculate All
@@ -174,6 +184,8 @@ int main(int argc, char ** argv){
 	  Q40(MPIOBJ.NYLo(), NX),
 	  Rho0(MPIOBJ.NYLo(), NX);
 
+  JMat Con0(MPIOBJ.NYLo(), NX);
+
   LogFile << "Setup MPI Object Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
@@ -218,7 +230,14 @@ int main(int argc, char ** argv){
   Splitter( Rho0, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
 
-  // *************************************************************************
+  LogFile << "========================================" << std::endl;
+  LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[5] << std::endl;
+  BufferString=InitialConditionFileList[3];
+  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
+  Splitter( Con0, BufferFull, MPIOBJ);
+  LogFile << "Reading Initial Conditions Con Completed \n" << std::endl;
+
+  // *********************************X****************************************
   // FDClass=JFDMpi2DReflectHigh;
   // FDAngleClass=JFDMpi2DReflectHighAngle;
   LogFile << "========================================" << std::endl;
@@ -232,6 +251,12 @@ int main(int argc, char ** argv){
 	  Q10, Q20, Q30, Q40, 
 	  MinAngle0);
   LogFile << "Setup Theta Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup Con Class " << std::endl;
+  BasicChemPotential<JFDMpi2DReflectHigh> Con(MPIOBJ, kappa_chem, Con0);
+  LogFile << "Setup Con Class Completed \n" << std::endl;
+
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACBulkEnergy Class " << std::endl;
@@ -255,9 +280,16 @@ int main(int argc, char ** argv){
   LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakACChemEnergy Class " << std::endl;
+  TakACChemEnergy<JFDMpi2DReflectHigh> ChemEnegy(&Con, MChem, MPIOBJ);
+  LogFile << "Setup TakACChemEnergy Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
   LogFile << "Setup TakakiSolver Class " << std::endl;
-  TakakiSolverQuaternion<JFDMpi2DReflectHigh, JFDMpi2DReflectHigh> Solver(&Phi, &Theta,
+  TakakiSolverQuaternionCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHigh> Solver(
+    &Phi, &Theta, &Con,
     &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
+    &ChemEnegy,
     inMPhiConst , dt, MPIOBJ);
 
   LogFile << "========================================" << std::endl;
@@ -389,6 +421,9 @@ int main(int argc, char ** argv){
   BufferString=HeaderName + "_Phi_0.csv";
   WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
+  BufferString=HeaderName + "_Con_0.csv";
+  WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
+
 //  BufferString=HeaderName + "_Q1_0.csv";
 //  WriteMPITextFile(Theta.FP1(), BufferString, MPIOBJ);
   // ***********************************************
@@ -419,6 +454,8 @@ int main(int argc, char ** argv){
 	  BufferString = HeaderName + "_Q4_" + std::to_string(ntime) + ".csv";
 	  WriteMPITextFile(Theta.FP4(), BufferString, MPIOBJ);
 
+    BufferString=HeaderName + "_Con_" + std::to_string(ntime) + ".csv";
+    WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
       // BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
       // WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
       //
