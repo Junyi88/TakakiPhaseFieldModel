@@ -14,11 +14,16 @@
 
 #include "TakPhase.h"
 #include "TakAngle.h"
+#include "BasicChemPotential.h"
+
 #include "TakACBulkEnergy.h"
 #include "TakACWallEnergy.h"
 #include "TakACGradEnergy.h"
-#include "TakACTOriEnergy.h"
-#include "TakakiSolver.h"
+#include "TakACTOriEnergyCon.h"
+
+#include "TakACChemEnergy.h"
+
+#include "TakakiSolverAngleCon.h"
 
 int main(int argc, char ** argv){
 
@@ -61,6 +66,9 @@ int main(int argc, char ** argv){
   BufferInputStream1>>BufferString;
   InitialConditionFileList.push_back(BufferString); // Rho
 
+  BufferInputStream1 >> BufferString;
+  InitialConditionFileList.push_back(BufferString); // Con
+
   BufferInputStream1.close();
   for (int i=0; i<InitialConditionFileList.size(); i++)
     LogFile << "Input Files [" << i << "] : " << InitialConditionFileList[i] <<std::endl;
@@ -72,7 +80,7 @@ int main(int argc, char ** argv){
   LogFile << "Input Parameter File =  " << InputFile << std::endl;
   int NY, NX, ntStart, ntEnd, WriteCount;
   double dy, dx, dt, MinAngle0, BVec, mu, MTheta0, InvPhiMin, inMPhiConst,
-    alpha, Wa, S;
+    alpha, Wa, S, T, b, M0, Q, sg;
 
   double InputParameters[50];
   ReadTextFile(&InputParameters[0], InputFile, 1, NInputParameters, ',');
@@ -95,6 +103,9 @@ int main(int argc, char ** argv){
   Wa=InputParameters[15];
   S=InputParameters[16];
 
+  kappa_chem = InputParameters[17];
+  MChem = InputParameters[18];
+
   LogFile << "NY =  " << NY << std::endl;
   LogFile << "NX =  " << NX << std::endl;
   LogFile << "dy =  " << dy << std::endl;
@@ -112,6 +123,10 @@ int main(int argc, char ** argv){
   LogFile << "alpha =  " << alpha << std::endl;
   LogFile << "Wa =  " << Wa << std::endl;
   LogFile << "S =  " << S << std::endl;
+
+  LogFile << "kappa_chem =  " << kappa_chem << std::endl; //sigma
+  LogFile << "MChem =  " << MChem << std::endl; //sigma
+
   // Input Parameters List
   // InputParameters[0] 1=NY
   // InputParameters[1] 2=NX
@@ -138,6 +153,8 @@ int main(int argc, char ** argv){
   JMat BufferFull(NY, NX), Eta0(MPIOBJ.NYLo(), NX),
     Theta0(MPIOBJ.NYLo(), NX), Rho0(MPIOBJ.NYLo(), NX);
 
+  JMat Con0(MPIOBJ.NYLo(), NX);
+
   LogFile << "Setup MPI Object Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
@@ -161,6 +178,13 @@ int main(int argc, char ** argv){
   Splitter(BufferFull, Rho0, MPIOBJ);
   LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
 
+  LogFile << "========================================" << std::endl;
+  LogFile << "Reading Initial Conditions Con =  " << InitialConditionFileList[3] << std::endl;
+  BufferString=InitialConditionFileList[3];
+  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
+  Splitter( Con0, BufferFull, MPIOBJ);
+  LogFile << "Reading Initial Conditions Con Completed \n" << std::endl;
+
   //*************************************************************************
   //FDClass=JFDMpi2DReflectHigh;
   //FDAngleClass=JFDMpi2DReflectHighAngle;
@@ -173,6 +197,11 @@ int main(int argc, char ** argv){
   LogFile << "Setup Theta Class " << std::endl;
   TakAngle<JFDMpi2DReflectHighAngle> Theta(MPIOBJ, Theta0, MinAngle0);
   LogFile << "Setup Theta Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
+  LogFile << "Setup Con Class " << std::endl;
+  BasicChemPotential<JFDMpi2DReflectHigh> Con(MPIOBJ, kappa_chem, Con0);
+  LogFile << "Setup Con Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACBulkEnergy Class " << std::endl;
@@ -191,14 +220,20 @@ int main(int argc, char ** argv){
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACTOriEnergy Class " << std::endl;
-  TakACTOriEnergy<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta,
+  TakACTOriEnergyCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta, &Con,
     S, MTheta0, InvPhiMin, MPIOBJ);
   LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakACChemEnergy Class " << std::endl;
+  TakACChemEnergy<JFDMpi2DReflectHigh> ChemEnegy(&Con, MChem, MPIOBJ);
+  LogFile << "Setup TakACChemEnergy Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
   LogFile << "Setup TakakiSolver Class " << std::endl;
-  TakakiSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(&Phi, &Theta,
-    &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy,
+  TakakiSolverAngleCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(
+    &Phi, &Theta, &Con,
+    &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy, &ChemEnegy,
     inMPhiConst , dt, MPIOBJ);
   LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
   //TakPhase(JMpi inJMpi, const JMat &in_F);
@@ -220,6 +255,101 @@ int main(int argc, char ** argv){
   LogFile << "Do 1 Step " << std::endl;
   Solver.Step_NoUpdate();
   LogFile << "Done \n" << std::endl;
+
+  //===============================================================
+  // Write outputs For First STep
+  LogFile << "========================================" << std::endl;
+  LogFile << "Write Outputs - Phi" << std::endl;
+
+  BufferString="Phi_0.csv";
+  WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+  BufferString="Phi2_0.csv";
+  WriteMPITextFile(Phi.F2P(), BufferString, MPIOBJ);
+  BufferString="Phi3_0.csv";
+  WriteMPITextFile(Phi.F3P(), BufferString, MPIOBJ);
+  BufferString="Phi4_0.csv";
+  WriteMPITextFile(Phi.F4P(), BufferString, MPIOBJ);
+  BufferString="Phi5_0.csv";
+  WriteMPITextFile(Phi.F5P(), BufferString, MPIOBJ);
+
+  BufferString="PhiDx_0.csv";
+  WriteMPITextFile(Phi.DxP(), BufferString, MPIOBJ);
+  BufferString="PhiDy_0.csv";
+  WriteMPITextFile(Phi.DyP(), BufferString, MPIOBJ);
+  BufferString="PhiDxx_0.csv";
+  WriteMPITextFile(Phi.DxxP(), BufferString, MPIOBJ);
+  BufferString="PhiDyy_0.csv";
+  WriteMPITextFile(Phi.DyyP(), BufferString, MPIOBJ);
+  BufferString="PhiDxy_0.csv";
+  WriteMPITextFile(Phi.DxyP(), BufferString, MPIOBJ);
+  BufferString="PhiD2_0.csv";
+  WriteMPITextFile(Phi.D2P(), BufferString, MPIOBJ);
+
+  LogFile << "Write Outputs - dFdPhase" << std::endl;
+  BufferString="Bulk_dFdPhase_0.csv";
+  WriteMPITextFile(BulkEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
+  BufferString="Grad_dFdPhase_0.csv";
+  WriteMPITextFile(GradEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
+  BufferString="Wall_dFdPhase_0.csv";
+  WriteMPITextFile(WallEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
+  BufferString="Ori_dFdPhase_0.csv";
+  WriteMPITextFile(OriEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
+
+  LogFile << "Write Outputs - Others" << std::endl;
+
+  BufferString="MTheta_0.csv";
+  WriteMPITextFile(OriEnergy.MThetaPointer(), BufferString, MPIOBJ);
+
+  BufferString="dPhidt_0.csv";
+  WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+
+  BufferString="Rho_0.csv";
+  WriteMPITextFile(BulkEnergy.RhoPointer(), BufferString, MPIOBJ);
+  BufferString="EStored_0.csv";
+  WriteMPITextFile(BulkEnergy.EStoredPointer(), BufferString, MPIOBJ);
+
+  BufferString=HeaderName + "_Phi_0.csv";
+  WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+  BufferString=HeaderName + "_Con_0.csv";
+  WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
+
+//  BufferString=HeaderName + "_Q1_0.csv";
+//  WriteMPITextFile(Theta.FP1(), BufferString, MPIOBJ);
+  // ***********************************************
+  // Loop
+  LogFile << "Start Loop \n" << std::endl;
+  int counter=0;
+
+  ntEnd++;
+
+  for (int ntime=ntStart; ntime<ntEnd; ntime++){
+    Solver.Step_All();
+    if (counter<WriteCount){
+      counter++;
+    } else{
+      counter=1;
+      BufferString=HeaderName + "_Phi_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+      BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+
+      BufferString=HeaderName + "_Con_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
+      // BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
+      // WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+      //
+      // BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
+      // WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+
+      if (MPIOBJ.Nnode()==MPIOBJ.NLast())
+        std::cout<<"nTime = "<< ntime <<std::endl;
+    }
+
+  }
+
 
   //===============================================================
   LogFile << "Finished Run \n" << std::endl;
