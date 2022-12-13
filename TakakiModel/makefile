@@ -32,6 +32,6 @@ $(EXE_DIR)/Test1.out : $(TESTSRC_DIR)/Test1.cpp
 
 $(EXE_DIR)/Test1_angle_con.out : $(TESTSRC_DIR)/Test1_angle_con.cpp
 	mpicxx $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -I$(INC_DIR) -I$(SRC_DIR) -o \
-		$(EXE_DIR)/Test1Con.out $(TESTSRC_DIR)/Test1Con.cpp \
+		$(EXE_DIR)/Test1_angle_con.out $(TESTSRC_DIR)/Test1Con.cpp \
 		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp \
 		$(FDSRC_DIR)/AuxFunctions.cpp $(FDSRC_DIR)/JFDMpiAngle.cpp

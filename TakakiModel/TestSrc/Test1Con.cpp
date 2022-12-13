@@ -204,35 +204,35 @@ int main(int argc, char ** argv){
 
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Q20 =  " << InitialConditionFileList[2] << std::endl;
-  BufferString = InitialConditionFileList[1];
+  BufferString = InitialConditionFileList[2];
   ReadTextFile(BufferFull.Pointer(), BufferString, NX, NY, ',');
   Splitter(Q20, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Q2 Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Q30 =  " << InitialConditionFileList[3] << std::endl;
-  BufferString = InitialConditionFileList[1];
+  BufferString = InitialConditionFileList[3];
   ReadTextFile(BufferFull.Pointer(), BufferString, NX, NY, ',');
   Splitter(Q30, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Q3 Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Q40 =  " << InitialConditionFileList[4] << std::endl;
-  BufferString = InitialConditionFileList[1];
+  BufferString = InitialConditionFileList[4];
   ReadTextFile(BufferFull.Pointer(), BufferString, NX, NY, ',');
   Splitter(Q40, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Q4 Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[5] << std::endl;
-  BufferString=InitialConditionFileList[2];
+  BufferString=InitialConditionFileList[5];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
   Splitter( Rho0, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
-  LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[5] << std::endl;
-  BufferString=InitialConditionFileList[3];
+  LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[6] << std::endl;
+  BufferString=InitialConditionFileList[6];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
   Splitter( Con0, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Con Completed \n" << std::endl;

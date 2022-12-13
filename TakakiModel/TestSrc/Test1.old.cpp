@@ -34,7 +34,7 @@ int main(int argc, char ** argv){
   std::string HeaderName, filename;
   std::ofstream LogFile;
 
-  HeaderName=argv[1];
+  HeaderName=argv[1];TakakiSolver
   filename=HeaderName + "_Node" + std::to_string(Nnode) + ".log";
   LogFile.open(filename);
   LogFile << "Open File Node " << Nnode << std::endl;
