@@ -80,7 +80,8 @@ int main(int argc, char ** argv){
   LogFile << "Input Parameter File =  " << InputFile << std::endl;
   int NY, NX, ntStart, ntEnd, WriteCount;
   double dy, dx, dt, MinAngle0, BVec, mu, MTheta0, InvPhiMin, inMPhiConst,
-    alpha, Wa, S, T, b, M0, Q, sg;
+    alpha, Wa, S, T, b, M0, Q, sg, 
+    kappa_chem, MChem;
 
   double InputParameters[50];
   ReadTextFile(&InputParameters[0], InputFile, 1, NInputParameters, ',');

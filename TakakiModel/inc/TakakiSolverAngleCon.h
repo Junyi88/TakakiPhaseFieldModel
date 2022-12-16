@@ -6,7 +6,7 @@
 #include "TakACBulkEnergy.h"
 #include "TakACWallEnergy.h"
 #include "TakACGradEnergy.h"
-#include "TakACTOriEnergy.h"
+#include "TakACTOriEnergyCon.h"
 
 #include "BasicChemPotential.h"
 #include "TakACChemEnergy.h"
@@ -17,12 +17,12 @@ class TakakiSolverAngleCon {
 public:
   TakakiSolverAngleCon(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta, BasicChemPotential<FDClass> * inCon,
     TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
-    TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
+    TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergyCon<FDClass, FDAngleClass> * inOriEnergy,
     TakACChemEnergy<FDClass> * inChemEnergy,
     const double &inMPhiConst, const double &indt,
     JMpi inJMpi);
 	TakakiSolverAngleCon<FDClass, FDAngleClass> & operator= (
-    const TakakiSolver<FDClass, FDAngleClass> &in1); //Write to operator
+    const TakakiSolverAngleCon<FDClass, FDAngleClass> &in1); //Write to operator
 
 
   void Step_NoUpdate();
@@ -53,7 +53,7 @@ protected:
   TakACBulkEnergy<FDClass> * _BulkEnergy;
   TakACWallEnergy<FDClass> * _WallEnergy;
   TakACGradEnergy<FDClass> * _GradEnergy;
-  TakACTOriEnergy<FDClass, FDAngleClass> * _OriEnergy;
+  TakACTOriEnergyCon<FDClass, FDAngleClass> * _OriEnergy;
   TakACChemEnergy<FDClass> * _ChemEnergy;
 
   JMpi _MpiObj;
@@ -73,7 +73,7 @@ template <class FDClass, class FDAngleClass>
 TakakiSolverAngleCon<FDClass, FDAngleClass>::TakakiSolverAngleCon(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
    BasicChemPotential<FDClass> * inCon,
    TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
-   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
+   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergyCon<FDClass, FDAngleClass> * inOriEnergy,
    TakACChemEnergy<FDClass> * inChemEnergy,
    const double &inMPhiConst, const double &indt,
    JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta), _Con(inCon),
@@ -178,7 +178,7 @@ template <class FDClass, class FDAngleClass>
 void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Con(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _Con->Update_Con(_ChemEnergy->dcondt()->operator(j,i),_dt,j,i);
+      _Con->Update_Con(_ChemEnergy->dcondt()->Value(j,i),_dt,j,i);
     }
 }
 
@@ -186,7 +186,7 @@ template <class FDClass, class FDAngleClass>
 void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Con(const double &dtimeCustom){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _Con->Update_Con(_ChemEnergy->dcondt()->operator(j,i),dtimeCustom,j,i);
+      _Con->Update_Con(_ChemEnergy->dcondt()->Value(j,i),dtimeCustom,j,i);
     }
 }
 // @@ ------------------------------------------------------

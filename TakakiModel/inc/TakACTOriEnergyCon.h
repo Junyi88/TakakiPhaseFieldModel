@@ -54,7 +54,7 @@ protected:
 // @@ -- Constructor ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
 TakACTOriEnergyCon<FDClass, FDAngleClass>::TakACTOriEnergyCon(
-  TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta, BasicChemPotential<FDClass> * inCon
+  TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta, BasicChemPotential<FDClass> * inCon,
   const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
   JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta), _Con(inCon),
   _MpiObj(inJMpi),
@@ -148,7 +148,7 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dThetadt(){
       _dThetadt(j,i)*=_MTheta(j,i);
 
 
-      double cc = _Con.con(j,i);
+      double cc = _Con->con(j,i);
       if (cc <= 0.0)
       {
         _dThetadt(j,i) = 0.0;
