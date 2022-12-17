@@ -59,9 +59,9 @@ void JFDMpi2DBase::Transfer()
     }
 
     MPI_Send(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Send(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
-
     MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
+
+    MPI_Send(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
     MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   } else if (_MpiObj.Nnode()==_MpiObj.NLast()){
@@ -74,11 +74,11 @@ void JFDMpi2DBase::Transfer()
       _FBot(0,i)=_F(NDu2,i);
     }
 
+    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
     MPI_Send(_FTop.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
     MPI_Send(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
-    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
   } else{
     NDu1=_MpiObj.NYLo()-1;
     NDu2=0;
@@ -88,11 +88,14 @@ void JFDMpi2DBase::Transfer()
       _FBot(0,i)=_F(NDu2,i);
     }
 
+    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
     MPI_Send(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+
+    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
     MPI_Send(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
-    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+
+
 
   }
 }
@@ -110,9 +113,9 @@ void JFDMpi2DBase::Transfer2()
     }
 
     MPI_Send(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Send(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
-
     MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
+
+    MPI_Send(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
     MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   } else if (_MpiObj.Nnode()==_MpiObj.NLast()){
@@ -125,11 +128,11 @@ void JFDMpi2DBase::Transfer2()
       _FBot2(0,i)=_F(NDu2,i);
     }
 
+    MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
     MPI_Send(_FTop2.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
     MPI_Send(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
-    MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
   } else{
     NDu1=_MpiObj.NYLo()-2;
     NDu2=1;
@@ -139,11 +142,10 @@ void JFDMpi2DBase::Transfer2()
       _FBot2(0,i)=_F(NDu2,i);
     }
 
-    MPI_Send(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Send(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
-
     MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
     MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
   }
 }
@@ -248,9 +250,8 @@ void JFDMpi2DPeriodicHigh::Transfer3()
     }
 
     MPI_Send(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Send(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
-
     MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
     MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   } else if (_MpiObj.Nnode()==_MpiObj.NLast()){
@@ -263,11 +264,13 @@ void JFDMpi2DPeriodicHigh::Transfer3()
       _FBot3(0,i)=_F(NDu2,i);
     }
 
+    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
     MPI_Send(_FTop3.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
     MPI_Send(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
-    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
+
+
   } else{
     NDu1=_MpiObj.NYLo()-3;
     NDu2=2;
@@ -277,11 +280,11 @@ void JFDMpi2DPeriodicHigh::Transfer3()
       _FBot3(0,i)=_F(NDu2,i);
     }
 
+    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
     MPI_Send(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
     MPI_Send(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
-    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   }
 }
@@ -299,9 +302,8 @@ void JFDMpi2DPeriodicHigh::Transfer4()
     }
 
     MPI_Send(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Send(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
-
     MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
     MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   } else if (_MpiObj.Nnode()==_MpiObj.NLast()){
@@ -314,11 +316,12 @@ void JFDMpi2DPeriodicHigh::Transfer4()
       _FBot4(0,i)=_F(NDu2,i);
     }
 
+    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
     MPI_Send(_FTop4.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
     MPI_Send(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
-    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
+
   } else{
     NDu1=_MpiObj.NYLo()-4;
     NDu2=3;
@@ -328,17 +331,18 @@ void JFDMpi2DPeriodicHigh::Transfer4()
       _FBot4(0,i)=_F(NDu2,i);
     }
 
+    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
     MPI_Send(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
     MPI_Send(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
-    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   }
 }
 
 // @@ -----------------------------------------------
 void JFDMpi2DPeriodicHigh::TransferAll(){
+
   Transfer();
   Transfer2();
   Transfer3();

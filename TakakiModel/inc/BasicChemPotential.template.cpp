@@ -21,11 +21,9 @@ BasicChemPotential<FDClass>::BasicChemPotential(JMpi inJMpi, const double& kappa
 template <class FDClass>
 void BasicChemPotential<FDClass>::Calc_Diff_Con()
 {
-  std::cout << "B1" << std::endl;
+
   D_con_.TransferAll();
-  std::cout << "B2" << std::endl;
   D_con_.Calc_All();
-  std::cout << "B3" << std::endl;
 }
 
 template <class FDClass>
@@ -48,13 +46,10 @@ void BasicChemPotential<FDClass>::Calc_Diff_Mu()
 template <class FDClass>
 void BasicChemPotential<FDClass>::Calc_All()
 {
-  std::cout << "A1" << std::endl;
+
   Calc_Diff_Con();
-  std::cout << "A2" << std::endl;
   Calc_Mu();
-  std::cout << "A3" << std::endl;
   Calc_Diff_Mu();
-  std::cout << "A4" << std::endl;
 }
 
 template <class FDClass>
