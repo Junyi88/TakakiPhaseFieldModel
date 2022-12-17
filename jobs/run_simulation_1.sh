@@ -1,0 +1,1 @@
+mpiexec -n 2 ../TakakiModel/exec/Test1_angle_con.out test_run_1 ./InitialInputsAngleCon.inp ./InputParameters.inp

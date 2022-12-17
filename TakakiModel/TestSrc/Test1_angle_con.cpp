@@ -183,7 +183,7 @@ int main(int argc, char ** argv){
   LogFile << "Reading Initial Conditions Con =  " << InitialConditionFileList[3] << std::endl;
   BufferString=InitialConditionFileList[3];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter( Con0, BufferFull, MPIOBJ);
+  Splitter(BufferFull, Con0, MPIOBJ);
   LogFile << "Reading Initial Conditions Con Completed \n" << std::endl;
 
   //*************************************************************************
