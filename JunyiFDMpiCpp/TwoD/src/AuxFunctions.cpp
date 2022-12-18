@@ -36,8 +36,9 @@ void Splitter(JMat & Part, JMat &Full, JMpi & MpiIn){
 
   for (int j=0; j<MpiIn.NYLo(); j++)
       for (int i=0; i<MpiIn.NX(); i++)
+      {
         Part(j,i)=Full.Value(MpiIn.YStart()+j,i);
-
+      }
 }
 
 // ## ----------------------------------------------------------------

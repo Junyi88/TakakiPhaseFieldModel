@@ -158,32 +158,53 @@ int main(int argc, char ** argv){
 
   LogFile << "Setup MPI Object Completed \n" << std::endl;
 
+  LogFile << "Nnode: " << MPIOBJ.Nnode() << std::endl;
+  LogFile << "NPrs: " << MPIOBJ.NPrs() << std::endl;
+  LogFile << "Nwork: " << MPIOBJ.Nwork() << std::endl;
+  LogFile << "NLast: " << MPIOBJ.NLast() << std::endl;
+  LogFile << "dy: " << MPIOBJ.dy() << std::endl;
+  LogFile << "dx: " << MPIOBJ.dx() << std::endl;
+  LogFile << "NX: " << MPIOBJ.NX() << std::endl;
+
+  LogFile << "NYFu: " << MPIOBJ.NYFu() << std::endl;
+  LogFile << "NYLo: " << MPIOBJ.NYLo() << std::endl;
+  LogFile << "NYGl: " << MPIOBJ.NYGl() << std::endl;
+  LogFile << "NYShort: " << MPIOBJ.NYShort() << std::endl;
+  LogFile << "NXYGl: " << MPIOBJ.NXYGl() << std::endl;
+  LogFile << "PosShortLast: " << MPIOBJ.PosShortLast() << std::endl;
+  LogFile << "YStart: " << MPIOBJ.YStart() << std::endl;
+  // LogFile << "Nnode: " << JMpi.Nnode() << std::endl;
+
+
+
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Eta =  " << InitialConditionFileList[0] << std::endl;
   BufferString=InitialConditionFileList[0];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull, Eta0, MPIOBJ);
+  LogFile << "Splitter \n" << std::endl;
+  Splitter(Eta0, BufferFull, MPIOBJ);
+  LogFile << std::endl;
   LogFile << "Reading Initial Conditions Eta Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Theta =  " << InitialConditionFileList[1] << std::endl;
   BufferString=InitialConditionFileList[1];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull, Theta0, MPIOBJ);
+  Splitter(Theta0, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Theta Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[2] << std::endl;
   BufferString=InitialConditionFileList[2];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull, Rho0, MPIOBJ);
+  Splitter(Rho0, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Reading Initial Conditions Con =  " << InitialConditionFileList[3] << std::endl;
   BufferString=InitialConditionFileList[3];
   ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(BufferFull, Con0, MPIOBJ);
+  Splitter(Con0, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Con Completed \n" << std::endl;
 
   //*************************************************************************
@@ -251,6 +272,12 @@ int main(int argc, char ** argv){
   //   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
   //   const double &inMPhiConst, const double &indt,
   //   JMpi inJMpi);
+
+  BufferString="Phi_0_R.csv";
+  WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+  BufferString=HeaderName + "_Con_0_R.csv";
+  WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
 
   LogFile << "========================================" << std::endl;
   LogFile << "Do 1 Step " << std::endl;

@@ -35,3 +35,7 @@ $(EXE_DIR)/Test1_angle_con.out : $(TESTSRC_DIR)/Test1_angle_con.cpp
 		$(EXE_DIR)/Test1_angle_con.out $(TESTSRC_DIR)/Test1_angle_con.cpp \
 		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp \
 		$(FDSRC_DIR)/AuxFunctions.cpp $(FDSRC_DIR)/JFDMpiAngle.cpp
+
+.PHONY: clean
+clean:
+		rm -f $(EXE_DIR)/*.out
