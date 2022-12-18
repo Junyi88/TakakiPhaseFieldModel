@@ -174,6 +174,9 @@ void TakPhase<FDClass>::Calc_All(){
 template <class FDClass>
 void TakPhase<FDClass>::Update_Eta(const double &dEtadt, const double &dt, const int &y, const int &x){
   _F(y,x)+=dEtadt*dt;
+
+  if (_F(y,x) > 1.0) {_F(y,x)  = 1.0;}
+  if (_F(y,x) < 0.0) {_F(y,x)  = 0.0;}
 }
 
 

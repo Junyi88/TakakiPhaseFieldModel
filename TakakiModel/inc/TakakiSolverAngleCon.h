@@ -1,6 +1,7 @@
 #ifndef TAKAKISOLVERANGLECON_H
 #define TAKAKISOLVERANGLECON_H
 
+
 #include "TakPhase.h"
 #include "TakAngle.h"
 #include "TakACBulkEnergy.h"
@@ -10,7 +11,9 @@
 
 #include "BasicChemPotential.h"
 #include "TakACChemEnergy.h"
-
+#include <cmath>
+#include <iostream>
+#include "math.h"
 //##========================================================================
 template <class FDClass, class FDAngleClass>
 class TakakiSolverAngleCon {
@@ -133,6 +136,34 @@ void TakakiSolverAngleCon<FDClass, FDAngleClass>::Calc_dEtadt(){
       _dEtadt(j,i)-=(_GradEnergy->dFdPhase(j,i));
       _dEtadt(j,i)-=(_OriEnergy->dFdPhase(j,i));
       _dEtadt(j,i)*=_MPhiConst;
+
+      if (isnan(_BulkEnergy->dFdPhase(j,i)))
+      {
+        std::cout << "Bulk is Nan" << std::endl;
+        std::cin.get();
+      }
+      if (isnan(_WallEnergy->dFdPhase(j,i)))
+      {
+        std::cout << "Wall is Nan" << std::endl;
+        std::cin.get();
+      }
+      if (isnan(_GradEnergy->dFdPhase(j,i)))
+      {
+        std::cout << "Grad is Nan" << std::endl;
+        std::cin.get();
+      }
+      if (isnan(_OriEnergy->dFdPhase(j,i)))
+      {
+        std::cout << "Ori is Nan" << std::endl;
+        std::cin.get();
+      }
+      if (isnan(_MPhiConst))
+      {
+        std::cout << "Mphi is Nan" << std::endl;
+        std::cin.get();
+      }
+
+
     }
 }
 
