@@ -143,6 +143,9 @@ void TakAngle<FDClass>::WrapToPi(double &ValIn){
     ValIn-=pidouble;
   else if (ValIn<-M_PI)
     ValIn+=pidouble;
+
+  if ((ValIn>M_PI) || (ValIn<-M_PI))
+    std::cout << "Theta is large: " << ValIn << std::endl;
 }
 
 // @@ -- Write over operator ----------------------------------------------------

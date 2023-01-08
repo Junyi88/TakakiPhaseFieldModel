@@ -152,7 +152,7 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dThetadt(){
       if (cc <= 0.0)
       {
         _dThetadt(j,i) = 0.0;
-      }
+      } else
       if (cc < 1.0)
       {
         _dThetadt(j,i) *= cc;

@@ -6,6 +6,7 @@ JFDMpi2DBase::JFDMpi2DBase(JMpi inJMpi, JMat &in_F) :
   _MpiObj(inJMpi), _F(in_F), _NY(_F.SizeY()), _NX(_F.SizeX()), _Ny(inJMpi.NYLo()),
   _Dx(_NY, _NX), _Dxx(_NY, _NX), _Dy(_NY, _NX), _Dyy(_NY, _NX), _D2(_NY, _NX),
   _FTop(1, _NX), _FBot(1, _NX), _FTop2(1, _NX), _FBot2(1, _NX),
+  _FTopSend(1, _NX), _FBotSend(1, _NX), _FTop2Send(1, _NX), _FBot2Send(1, _NX),
   _dx(_MpiObj.dx()), _dy(_MpiObj.dy()),
   _dxdouble(2.0*_MpiObj.dx()), _dydouble(2.0*_MpiObj.dy()),
   _dxdx(_MpiObj.dx()*_MpiObj.dx()), _dydy(_MpiObj.dy()*_MpiObj.dy())
@@ -235,7 +236,10 @@ void JFDMpi2DBase::Calc_All()
 JFDMpi2DPeriodicHigh::JFDMpi2DPeriodicHigh(JMpi inJMpi, JMat &in_F) :
 	JFDMpi2DBase(inJMpi, in_F),
   _FTop3(1, _NX), _FBot3(1, _NX),
-  _FTop4(1, _NX), _FBot4(1, _NX), _Dxy(_NY,_NX) {}
+  _FTop4(1, _NX), _FBot4(1, _NX),
+  _FTop3Send(1, _NX), _FBot3Send(1, _NX),
+  _FTop4Send(1, _NX), _FBot4Send(1, _NX), 
+  _Dxy(_NY,_NX) {}
 
 // @@ -----------------------------------------------
 void JFDMpi2DPeriodicHigh::Transfer3()
@@ -688,6 +692,18 @@ double JFDMpi2DReflectHigh::FVal(const int &y, const int &x){
 }
 
 // @@ ------------------------------------------------------------------
+// double JFDMpi2DReflectHigh::DyVal(const int &y, const int &x){
+
+//   if ((x>=0)&&(x<_NX))
+//     xTemp=x;
+//   else if (x<0)
+//     xTemp=-x;
+//   else
+//     xTemp=_NX+_NX-2-x;
+
+// 	return _Dy(y,xTemp);
+// }
+
 double JFDMpi2DReflectHigh::DyVal(const int &y, const int &x){
 
   if ((x>=0)&&(x<_NX))
@@ -697,5 +713,6 @@ double JFDMpi2DReflectHigh::DyVal(const int &y, const int &x){
   else
     xTemp=_NX+_NX-2-x;
 
-	return _Dy(y,xTemp);
+  return _Dy(y,xTemp);
 }
+

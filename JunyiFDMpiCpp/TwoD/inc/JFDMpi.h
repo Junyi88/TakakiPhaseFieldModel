@@ -76,6 +76,7 @@ protected:
 	int _NY, _NX, _Ny;
   JMat _Dx, _Dxx, _Dy, _Dyy, _D2;
   JMat _FTop, _FBot, _FTop2, _FBot2;
+  JMAT _FTopSend, _FBotSend, _FTop2Send, _FBot2Send;
   double _dx,_dy,_dxdouble, _dydouble, _dxdx, _dydy;
 
   MPI_Status _status;
@@ -128,6 +129,7 @@ protected:
 	const double O2C[9] = {-1.0/560.0, 8.0/315.0, -1.0/5.0, 8.0/5.0, -205.0/72.0,
 	   	8.0/5.0, -1.0/5.0, 8.0/315.0, -1.0/560.0};
 	JMat _FTop3, _FBot3, _FTop4, _FBot4;
+	JMat _FTop3Send, _FBot3Send, _FTop4Send, _FBot4Send;
 
 	JMat _Dxy;
 	int xTemp, yTemp;
