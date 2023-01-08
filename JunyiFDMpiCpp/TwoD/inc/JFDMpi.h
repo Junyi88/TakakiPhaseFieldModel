@@ -76,7 +76,7 @@ protected:
 	int _NY, _NX, _Ny;
   JMat _Dx, _Dxx, _Dy, _Dyy, _D2;
   JMat _FTop, _FBot, _FTop2, _FBot2;
-  JMAT _FTopSend, _FBotSend, _FTop2Send, _FBot2Send;
+  JMat _FTopSend, _FBotSend, _FTop2Send, _FBot2Send;
   double _dx,_dy,_dxdouble, _dydouble, _dxdx, _dydy;
 
   MPI_Status _status;

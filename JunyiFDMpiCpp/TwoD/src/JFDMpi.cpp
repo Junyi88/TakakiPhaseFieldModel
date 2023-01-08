@@ -55,15 +55,15 @@ void JFDMpi2DBase::Transfer()
     NDu2=0;
 
     for (int i=0; i<_NX; i++){
-      _FTop(0,i)=_F(NDu1,i);
-      _FBot(0,i)=_F(NDu2,i);
+      _FTopSend(0,i)=_F(NDu1,i);
+      _FBotSend(0,i)=_F(NDu2,i);
     }
 
-    MPI_Send(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTopSend.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
 
-    MPI_Send(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
-    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBotSend.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
+    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   } else if (_MpiObj.Nnode()==_MpiObj.NLast()){
 
@@ -71,32 +71,29 @@ void JFDMpi2DBase::Transfer()
     NDu2=0;
 
     for (int i=0; i<_NX; i++){
-      _FTop(0,i)=_F(NDu1,i);
-      _FBot(0,i)=_F(NDu2,i);
+      _FTopSend(0,i)=_F(NDu1,i);
+      _FBotSend(0,i)=_F(NDu2,i);
     }
 
-    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FTop.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
-    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
+    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTopSend.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
+    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBotSend.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
   } else{
     NDu1=_MpiObj.NYLo()-1;
     NDu2=0;
 
     for (int i=0; i<_NX; i++){
-      _FTop(0,i)=_F(NDu1,i);
-      _FBot(0,i)=_F(NDu2,i);
+      _FTopSend(0,i)=_F(NDu1,i);
+      _FBotSend(0,i)=_F(NDu2,i);
     }
 
-    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTopSend.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
 
-    MPI_Recv(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
-
-
-
+    MPI_Recv(_FTop.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBotSend.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
   }
 }
@@ -109,15 +106,15 @@ void JFDMpi2DBase::Transfer2()
     NDu2=1;
 
     for (int i=0; i<_NX; i++){
-      _FTop2(0,i)=_F(NDu1,i);
-      _FBot2(0,i)=_F(NDu2,i);
+      _FTop2Send(0,i)=_F(NDu1,i);
+      _FBot2Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Send(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop2Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
 
-    MPI_Send(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
-    MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot2Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
+    MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   } else if (_MpiObj.Nnode()==_MpiObj.NLast()){
 
@@ -125,28 +122,28 @@ void JFDMpi2DBase::Transfer2()
     NDu2=1;
 
     for (int i=0; i<_NX; i++){
-      _FTop2(0,i)=_F(NDu1,i);
-      _FBot2(0,i)=_F(NDu2,i);
+      _FTop2Send(0,i)=_F(NDu1,i);
+      _FBot2Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FTop2.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
-    MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
+    MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop2Send.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
+    MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot2Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
   } else{
     NDu1=_MpiObj.NYLo()-2;
     NDu2=1;
 
     for (int i=0; i<_NX; i++){
-      _FTop2(0,i)=_F(NDu1,i);
-      _FBot2(0,i)=_F(NDu2,i);
+      _FTop2Send(0,i)=_F(NDu1,i);
+      _FBot2Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
+    MPI_Recv(_FBot2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop2Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FTop2.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot2Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
   }
 }
@@ -249,14 +246,14 @@ void JFDMpi2DPeriodicHigh::Transfer3()
     NDu2=2;
 
     for (int i=0; i<_NX; i++){
-      _FTop3(0,i)=_F(NDu1,i);
-      _FBot3(0,i)=_F(NDu2,i);
+      _FTop3Send(0,i)=_F(NDu1,i);
+      _FBot3Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Send(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
-    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop3Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot3Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
+    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   } else if (_MpiObj.Nnode()==_MpiObj.NLast()){
 
@@ -264,14 +261,14 @@ void JFDMpi2DPeriodicHigh::Transfer3()
     NDu2=2;
 
     for (int i=0; i<_NX; i++){
-      _FTop3(0,i)=_F(NDu1,i);
-      _FBot3(0,i)=_F(NDu2,i);
+      _FTop3Send(0,i)=_F(NDu1,i);
+      _FBot3Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FTop3.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
-    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
+    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop3Send.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
+    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot3Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
 
 
@@ -280,14 +277,14 @@ void JFDMpi2DPeriodicHigh::Transfer3()
     NDu2=2;
 
     for (int i=0; i<_NX; i++){
-      _FTop3(0,i)=_F(NDu1,i);
-      _FBot3(0,i)=_F(NDu2,i);
+      _FTop3Send(0,i)=_F(NDu1,i);
+      _FBot3Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
+    MPI_Recv(_FBot3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop3Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FTop3.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot3Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
 
   }
@@ -301,14 +298,14 @@ void JFDMpi2DPeriodicHigh::Transfer4()
     NDu2=3;
 
     for (int i=0; i<_NX; i++){
-      _FTop4(0,i)=_F(NDu1,i);
-      _FBot4(0,i)=_F(NDu2,i);
+      _FTop4Send(0,i)=_F(NDu1,i);
+      _FBot4Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Send(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
-    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop4Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot4Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.NLast(),3,MPI_COMM_WORLD);
+    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
 
   } else if (_MpiObj.Nnode()==_MpiObj.NLast()){
 
@@ -316,14 +313,14 @@ void JFDMpi2DPeriodicHigh::Transfer4()
     NDu2=3;
 
     for (int i=0; i<_NX; i++){
-      _FTop4(0,i)=_F(NDu1,i);
-      _FBot4(0,i)=_F(NDu2,i);
+      _FTop4Send(0,i)=_F(NDu1,i);
+      _FBot4Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FTop4.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
-    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
+    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop4Send.Pointer(),_NX,MPI_DOUBLE,0,2,MPI_COMM_WORLD);
+    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,0,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot4Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
 
   } else{
@@ -331,14 +328,14 @@ void JFDMpi2DPeriodicHigh::Transfer4()
     NDu2=3;
 
     for (int i=0; i<_NX; i++){
-      _FTop4(0,i)=_F(NDu1,i);
-      _FBot4(0,i)=_F(NDu2,i);
+      _FTop4Send(0,i)=_F(NDu1,i);
+      _FBot4Send(0,i)=_F(NDu2,i);
     }
 
-    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
-    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
-    MPI_Send(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
+    MPI_Recv(_FBot4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,2,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FTop4Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,2,MPI_COMM_WORLD);
+    MPI_Recv(_FTop4.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()+1,3,MPI_COMM_WORLD,&_status);
+    MPI_Send(_FBot4Send.Pointer(),_NX,MPI_DOUBLE,_MpiObj.Nnode()-1,3,MPI_COMM_WORLD);
 
 
   }
@@ -364,26 +361,50 @@ double JFDMpi2DPeriodicHigh::FVal(const int &y, const int &x){
   else
     xTemp=x-_NX;
 
+// return _F(y,xTemp);
+  // if ((y>=0)&&(y<_Ny))
+  //   return _F(y,xTemp);
+  // else if (y==-1)
+  //   return _FTop(0,xTemp);
+  // else if (y==-2)
+  //   return _FTop2(0,xTemp);
+  // else if (y==-3)
+  //   return _FTop3(0,xTemp);
+  // else if (y==-4)
+  //   return _FTop4(0,xTemp);
+  // else if (y==_Ny)
+  //   return _FBot(0,xTemp);
+  // else if (y==_Ny+1)
+  //   return _FBot2(0,xTemp);
+  // else if (y==_Ny+2)
+  //   return _FBot3(0,xTemp);
+  // else if (y==_Ny+3)
+  //   return _FBot4(0,xTemp);
+  // else
+  //   return _F(y,xTemp);
+
   if ((y>=0)&&(y<_Ny))
     return _F(y,xTemp);
   else if (y==-1)
-    return _FTop(0,xTemp);
-  else if (y==-2)
-    return _FTop2(0,xTemp);
-  else if (y==-3)
-    return _FTop3(0,xTemp);
-  else if (y==-4)
-    return _FTop4(0,xTemp);
-  else if (y==_Ny)
     return _FBot(0,xTemp);
-  else if (y==_Ny+1)
+  else if (y==-2)
     return _FBot2(0,xTemp);
-  else if (y==_Ny+2)
+  else if (y==-3)
     return _FBot3(0,xTemp);
-  else if (y==_Ny+3)
+  else if (y==-4)
     return _FBot4(0,xTemp);
+  else if (y==_Ny)
+    return _FTop(0,xTemp);
+  else if (y==_Ny+1)
+    return _FTop2(0,xTemp);
+  else if (y==_Ny+2)
+    return _FTop3(0,xTemp);
+  else if (y==_Ny+3)
+    return _FTop4(0,xTemp);
   else
     return _F(y,xTemp);
+
+
 
 	// return _F(yTemp,xTemp);
 }
@@ -513,6 +534,7 @@ void JFDMpi2DPeriodicHigh::Calc_AllExceptXY(){
 
 // @@ ----------------------------------------------------------------
 void JFDMpi2DPeriodicHigh::Calc_All(){
+  TransferAll();
   Calc_O1();
   Calc_O2();
 }
@@ -608,21 +630,21 @@ double JFDMpi2DReflectHigh::FVal(const int &y, const int &x){
     if ((y>=0)&&(y<_Ny))
       return _F(y,xTemp);
     else if (y==-1)
-      return _FTop(0,xTemp);
-    else if (y==-2)
-      return _FTop2(0,xTemp);
-    else if (y==-3)
-      return _FTop3(0,xTemp);
-    else if (y==-4)
-      return _FTop4(0,xTemp);
-    else if (y==_Ny)
       return _FBot(0,xTemp);
-    else if (y==_Ny+1)
+    else if (y==-2)
       return _FBot2(0,xTemp);
-    else if (y==_Ny+2)
+    else if (y==-3)
       return _FBot3(0,xTemp);
-    else if (y==_Ny+3)
+    else if (y==-4)
       return _FBot4(0,xTemp);
+    else if (y==_Ny)
+      return _FTop(0,xTemp);
+    else if (y==_Ny+1)
+      return _FTop2(0,xTemp);
+    else if (y==_Ny+2)
+      return _FTop3(0,xTemp);
+    else if (y==_Ny+3)
+      return _FTop4(0,xTemp);
     else
       return _F(y,xTemp);
 
@@ -646,13 +668,13 @@ double JFDMpi2DReflectHigh::FVal(const int &y, const int &x){
     else if (y==-4)
       return _F(4,xTemp);
     else if (y==_Ny)
-      return _FBot(0,xTemp);
+      return _FTop(0,xTemp);
     else if (y==_Ny+1)
-      return _FBot2(0,xTemp);
+      return _FTop2(0,xTemp);
     else if (y==_Ny+2)
-      return _FBot3(0,xTemp);
+      return _FTop3(0,xTemp);
     else if (y==_Ny+3)
-      return _FBot4(0,xTemp);
+      return _FTop4(0,xTemp);
     else
       return _F(y,xTemp);
 
@@ -668,13 +690,13 @@ double JFDMpi2DReflectHigh::FVal(const int &y, const int &x){
     if ((y>=0)&&(y<_Ny))
       return _F(y,xTemp);
     else if (y==-1)
-      return _FTop(0,xTemp);
+      return _FBot(0,xTemp);
     else if (y==-2)
-      return _FTop2(0,xTemp);
+      return _FBot2(0,xTemp);
     else if (y==-3)
-      return _FTop3(0,xTemp);
+      return _FBot3(0,xTemp);
     else if (y==-4)
-      return _FTop4(0,xTemp);
+      return _FBot4(0,xTemp);
     else if (y==_Ny)
       return _F(_Ny-2,xTemp);
     else if (y==_Ny+1)
