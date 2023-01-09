@@ -32,7 +32,7 @@ void BasicChemPotential<FDClass>::Calc_Mu()
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++)
     {
-      mu_.Replace(j, i, -kappa_ * D_con_.D2(j, i));
+      mu_.Replace(j, i, -con_(j,i)-kappa_ * D_con_.D2(j, i));
     }
 }
 
