@@ -56,6 +56,7 @@ template <class FDClass>
 void BasicChemPotential<FDClass>::Update_Con(const double &dcondt, const double &dt, const int &y, const int &x)
 {
 
-  con_(y, x) += dcondt * dt ;
+  // con_(y, x) += dcondt * dt ;
+  con_.Replace(y, x, dcondt * dt);
 
 }
