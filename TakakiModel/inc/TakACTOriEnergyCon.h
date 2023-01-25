@@ -66,7 +66,7 @@ TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::TakACTOriEnergyCon(
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass, class FDAngleClass, class FDConClass>
-TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> & TakACTOriEnergyCon<FDClass, FDAngleClass>::operator=
+TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> & TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::operator=
   (const TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> &in1) {
 
     _Phi=in1._Phi;

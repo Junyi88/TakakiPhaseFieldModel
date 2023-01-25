@@ -57,7 +57,7 @@ protected:
   TakACWallEnergy<FDClass> * _WallEnergy;
   TakACGradEnergy<FDClass> * _GradEnergy;
   TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> * _OriEnergy;
-  TakACChemEnergy<FDClass> * _ChemEnergy;
+  TakACChemEnergy<FDConClass> * _ChemEnergy;
 
   JMpi _MpiObj;
 	int _NY, _NX, _Ny;
@@ -73,7 +73,7 @@ protected:
 //##========================================================================
 // @@ -- Constructor ----------------------------------------------------
 template <class FDClass, class FDAngleClass, class FDConClass>
-TakakiSolverAngleCon<FDClass, FDAngleClass>::TakakiSolverAngleCon(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
+TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::TakakiSolverAngleCon(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
    BasicChemPotential<FDConClass> * inCon,
    TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
    TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> * inOriEnergy,
