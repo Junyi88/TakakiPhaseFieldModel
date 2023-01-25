@@ -222,7 +222,7 @@ int main(int argc, char ** argv){
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup Con Class " << std::endl;
-  BasicChemPotential<JFDMpi2DReflectHigh> Con(MPIOBJ, kappa_chem, Con0);
+  BasicChemPotential<JFDMpi2DExternal1> Con(MPIOBJ, kappa_chem, Con0);
   LogFile << "Setup Con Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
@@ -242,18 +242,18 @@ int main(int argc, char ** argv){
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACTOriEnergy Class " << std::endl;
-  TakACTOriEnergyCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta, &Con,
+  TakACTOriEnergyCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle, JFDMpi2DExternal1> OriEnergy(&Phi, &Theta, &Con,
     S, MTheta0, InvPhiMin, MPIOBJ);
   LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACChemEnergy Class " << std::endl;
-  TakACChemEnergy<JFDMpi2DReflectHigh> ChemEnegy(&Con, MChem, MPIOBJ);
+  TakACChemEnergy<JFDMpi2DExternal1> ChemEnegy(&Con, MChem, MPIOBJ);
   LogFile << "Setup TakACChemEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakakiSolver Class " << std::endl;
-  TakakiSolverAngleCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(
+  TakakiSolverAngleCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle, JFDMpi2DExternal1> Solver(
     &Phi, &Theta, &Con,
     &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy, &ChemEnegy,
     inMPhiConst , dt, MPIOBJ);

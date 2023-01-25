@@ -738,3 +738,164 @@ double JFDMpi2DReflectHigh::DyVal(const int &y, const int &x){
   return _Dy(y,xTemp);
 }
 
+
+
+
+
+// @@ -----------------------------------------------
+JFDMpi2DExternal1::JFDMpi2DExternal1(JMpi inJMpi, JMat &in_F) :
+  JFDMpi2DPeriodicHigh(inJMpi, in_F) {}
+
+// @@ -----------------------------------------------
+JFDMpi2DExternal1 & JFDMpi2DExternal1::operator= (const JFDMpi2DExternal1 &in1){
+
+  _MpiObj=in1._MpiObj;
+  _F=in1._F;
+
+  _NY=in1._NY;
+  _NX=in1._NX;
+  _Ny=in1._Ny;
+  _Dx=in1._Dx;
+  _Dxx=in1._Dxx;
+  _Dy=in1._Dy;
+  _Dyy=in1._Dyy;
+  _D2=in1._D2;
+  _FTop=in1._FTop;
+  _FBot=in1._FBot;
+  _FTop2=in1._FTop2;
+  _FBot2=in1._FBot2;
+
+  _dx=in1._dx;
+  _dy=in1._dy;
+  _dxdouble=in1._dxdouble;
+  _dydouble=in1._dydouble;
+  _dxdx=in1._dxdx;
+  _dydy=in1._dydy;
+
+  _Dxy=in1._Dxy;
+  _FTop3=in1._FTop3;
+  _FBot3=in1._FBot3;
+  _FTop4=in1._FTop4;
+  _FBot4=in1._FBot4;
+
+  return *this;
+}
+
+
+// @@ ------------------------------------------------------------------
+double JFDMpi2DExternal1::FVal(const int &y, const int &x){
+
+//===================================================
+  if ((_MpiObj.Nnode()!=0)&&(_MpiObj.Nnode()!=_MpiObj.NLast())){
+
+    if ((x>=0)&&(x<_NX))
+      xTemp=x;
+    else
+      return 1.0;
+
+
+
+    if ((y>=0)&&(y<_Ny))
+      return _F(y,xTemp);
+    else if (y==-1)
+      return _FBot(0,xTemp);
+    else if (y==-2)
+      return _FBot2(0,xTemp);
+    else if (y==-3)
+      return _FBot3(0,xTemp);
+    else if (y==-4)
+      return _FBot4(0,xTemp);
+    else if (y==_Ny)
+      return _FTop(0,xTemp);
+    else if (y==_Ny+1)
+      return _FTop2(0,xTemp);
+    else if (y==_Ny+2)
+      return _FTop3(0,xTemp);
+    else if (y==_Ny+3)
+      return _FTop4(0,xTemp);
+    else
+      return _F(y,xTemp);
+
+  } else if (_MpiObj.Nnode()==0) {
+
+    if ((x>=0)&&(x<_NX))
+      xTemp=x;
+    else
+      return 1.0;
+
+    if ((y>=0)&&(y<_Ny))
+      return _F(y,xTemp);
+    else if (y==-1)
+      return 1.0;
+    else if (y==-2)
+      return 1.0;
+    else if (y==-3)
+      return 1.0;
+    else if (y==-4)
+      return 1.0;
+    else if (y==_Ny)
+      return _FTop(0,xTemp);
+    else if (y==_Ny+1)
+      return _FTop2(0,xTemp);
+    else if (y==_Ny+2)
+      return _FTop3(0,xTemp);
+    else if (y==_Ny+3)
+      return _FTop4(0,xTemp);
+    else
+      return _F(y,xTemp);
+
+  } else {
+
+    if ((x>=0)&&(x<_NX))
+      xTemp=x;
+    else
+      return 1.0;
+
+    if ((y>=0)&&(y<_Ny))
+      return _F(y,xTemp);
+    else if (y==-1)
+      return _FBot(0,xTemp);
+    else if (y==-2)
+      return _FBot2(0,xTemp);
+    else if (y==-3)
+      return _FBot3(0,xTemp);
+    else if (y==-4)
+      return _FBot4(0,xTemp);
+    else if (y==_Ny)
+      return 1.0;
+    else if (y==_Ny+1)
+      return 1.0;
+    else if (y==_Ny+2)
+      return 1.0;
+    else if (y==_Ny+3)
+      return 1.0;
+    else
+      return _F(y,xTemp);
+
+  }
+
+  // return _F(yTemp,xTemp);
+}
+
+// @@ ------------------------------------------------------------------
+double JFDMpi2DExternal1::DyVal(const int &y, const int &x){
+
+  if ((x>=0) && (x<_NX) && (y>=0) && (y<_Ny) )
+    return  _Dy(y,x);
+
+  double dydval = 0.0;
+
+  dydval = O1C[0]*FVal(y-4,x)+
+    O1C[1]*FVal(y-3,x)+
+    O1C[2]*FVal(y-2,x)+
+    O1C[3]*FVal(y-1,x)+
+    O1C[5]*FVal(y+1,x)+
+    O1C[6]*FVal(y+2,x)+
+    O1C[7]*FVal(y+3,x)+
+    O1C[8]*FVal(y+4,x);
+  dydval /= _dy;
+
+  return dydval;
+}
+
+

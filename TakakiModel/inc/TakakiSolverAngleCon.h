@@ -15,17 +15,17 @@
 #include <iostream>
 #include "math.h"
 //##========================================================================
-template <class FDClass, class FDAngleClass>
+template <class FDClass, class FDAngleClass, class FDConClass>
 class TakakiSolverAngleCon {
 public:
-  TakakiSolverAngleCon(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta, BasicChemPotential<FDClass> * inCon,
+  TakakiSolverAngleCon(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta, BasicChemPotential<FDConClass> * inCon,
     TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
-    TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergyCon<FDClass, FDAngleClass> * inOriEnergy,
-    TakACChemEnergy<FDClass> * inChemEnergy,
+    TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> * inOriEnergy,
+    TakACChemEnergy<FDConClass> * inChemEnergy,
     const double &inMPhiConst, const double &indt,
     JMpi inJMpi);
-	TakakiSolverAngleCon<FDClass, FDAngleClass> & operator= (
-    const TakakiSolverAngleCon<FDClass, FDAngleClass> &in1); //Write to operator
+	TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass> & operator= (
+    const TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass> &in1); //Write to operator
 
 
   void Step_NoUpdate();
@@ -52,11 +52,11 @@ public:
 protected:
   TakPhase<FDClass> * _Phi;
   TakAngle<FDAngleClass> * _Theta;
-  BasicChemPotential<FDClass> * _Con;
+  BasicChemPotential<FDConClass> * _Con;
   TakACBulkEnergy<FDClass> * _BulkEnergy;
   TakACWallEnergy<FDClass> * _WallEnergy;
   TakACGradEnergy<FDClass> * _GradEnergy;
-  TakACTOriEnergyCon<FDClass, FDAngleClass> * _OriEnergy;
+  TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> * _OriEnergy;
   TakACChemEnergy<FDClass> * _ChemEnergy;
 
   JMpi _MpiObj;
@@ -72,12 +72,12 @@ protected:
 //***************************************************************************
 //##========================================================================
 // @@ -- Constructor ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
+template <class FDClass, class FDAngleClass, class FDConClass>
 TakakiSolverAngleCon<FDClass, FDAngleClass>::TakakiSolverAngleCon(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-   BasicChemPotential<FDClass> * inCon,
+   BasicChemPotential<FDConClass> * inCon,
    TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
-   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergyCon<FDClass, FDAngleClass> * inOriEnergy,
-   TakACChemEnergy<FDClass> * inChemEnergy,
+   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> * inOriEnergy,
+   TakACChemEnergy<FDConClass> * inChemEnergy,
    const double &inMPhiConst, const double &indt,
    JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta), _Con(inCon),
    _BulkEnergy(inBulkEnergy), _WallEnergy(inWallEnergy), _GradEnergy(inGradEnergy),
@@ -88,9 +88,9 @@ TakakiSolverAngleCon<FDClass, FDAngleClass>::TakakiSolverAngleCon(TakPhase<FDCla
    _dEtadt(_NY,_NX) {Step_NoUpdate();}
 
 // @@ -- Write over operator ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-TakakiSolverAngleCon<FDClass, FDAngleClass> & TakakiSolverAngleCon<FDClass, FDAngleClass>::operator= (
- const TakakiSolverAngleCon<FDClass, FDAngleClass> &in1) {
+template <class FDClass, class FDAngleClass, class FDConClass>
+TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass> & TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::operator= (
+ const TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass> &in1) {
 
   _Phi=in1._Phi;
   _Theta=in1._Theta;
@@ -113,8 +113,8 @@ TakakiSolverAngleCon<FDClass, FDAngleClass> & TakakiSolverAngleCon<FDClass, FDAn
 }
 
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Step_NoUpdate(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Step_NoUpdate(){
   _Phi->Calc_All();
   _Theta->Calc_All();
   _Con->Calc_All();
@@ -127,8 +127,8 @@ void TakakiSolverAngleCon<FDClass, FDAngleClass>::Step_NoUpdate(){
 }
 
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Calc_dEtadt(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Calc_dEtadt(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dEtadt(j,i)=-(_BulkEnergy->dFdPhase(j,i));
@@ -168,8 +168,8 @@ void TakakiSolverAngleCon<FDClass, FDAngleClass>::Calc_dEtadt(){
 }
 
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Eta(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Update_Eta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _Phi->Update_Eta(_dEtadt(j,i),_dt,j,i);
@@ -177,8 +177,8 @@ void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Eta(){
 }
 
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Theta(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Update_Theta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _Theta->Update_Theta(_OriEnergy->dThetadt(j,i),_dt,j,i);
@@ -186,8 +186,8 @@ void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Theta(){
 }
 
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Eta(const double &dtimeCustom){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Update_Eta(const double &dtimeCustom){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _Phi->Update_Eta(_dEtadt(j,i),dtimeCustom,j,i);
@@ -195,8 +195,8 @@ void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Eta(const double &dtime
 }
 
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Theta(const double &dtimeCustom){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Update_Theta(const double &dtimeCustom){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _Theta->Update_Theta(_OriEnergy->dThetadt(j,i),dtimeCustom,j,i);
@@ -205,24 +205,24 @@ void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Theta(const double &dti
 
 
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Con(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Update_Con(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _Con->Update_Con(_ChemEnergy->dcondt()->Value(j,i),_dt,j,i);
     }
 }
 
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Update_Con(const double &dtimeCustom){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Update_Con(const double &dtimeCustom){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _Con->Update_Con(_ChemEnergy->dcondt()->Value(j,i),dtimeCustom,j,i);
     }
 }
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Step_All(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Step_All(){
   Update_Eta();
   Update_Theta();
   Update_Con();
@@ -230,8 +230,8 @@ void TakakiSolverAngleCon<FDClass, FDAngleClass>::Step_All(){
 }
 
 // @@ ------------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakakiSolverAngleCon<FDClass, FDAngleClass>::Step_All(const double &dtimeCustom){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass>::Step_All(const double &dtimeCustom){
   Update_Eta(dtimeCustom);
   Update_Theta(dtimeCustom);
   Update_Con(dtimeCustom);

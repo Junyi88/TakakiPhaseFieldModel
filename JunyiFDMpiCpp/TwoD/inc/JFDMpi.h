@@ -150,5 +150,17 @@ public:
 
 };
 
+// ## -----------------------------------------------------------------
+class JFDMpi2DExternal1 : public JFDMpi2DPeriodicHigh {
+
+public:
+	//JFDMpi2DPeriodicHigh(){ std::cout<<"JFDMpi2DPeriodicHigh empty construction error"<<std::endl; };
+	JFDMpi2DExternal1(JMpi inJMpi, JMat &in_F);
+	JFDMpi2DExternal1 & operator= (const JFDMpi2DExternal1 &in1); //Write to operator
+
+	double FVal(const int &y, const int &x) override;
+	double DyVal(const int &y, const int &x) override;
+
+};
 
 #endif

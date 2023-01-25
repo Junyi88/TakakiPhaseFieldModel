@@ -6,14 +6,14 @@
 #include "BasicChemPotential.h"
 
 //##========================================================================
-template <class FDClass, class FDAngleClass>
+template <class FDClass, class FDAngleClass, class FDConClass>
 class TakACTOriEnergyCon {
 public:
   TakACTOriEnergyCon(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-    BasicChemPotential<FDClass> * inCon,
+    BasicChemPotential<FDConClass> * inCon,
     const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
     JMpi inJMpi);
-	TakACTOriEnergyCon<FDClass, FDAngleClass> & operator= (const TakACTOriEnergyCon<FDClass, FDAngleClass> &in1); //Write to operator
+	TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> & operator= (const TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> &in1); //Write to operator
 
   void Calc_dFdPhase();
 
@@ -36,7 +36,7 @@ public:
 protected:
   TakPhase<FDClass> * _Phi;
   TakAngle<FDAngleClass> * _Theta;
-  BasicChemPotential<FDClass> * _Con;
+  BasicChemPotential<FDConClass> * _Con;
   JMpi _MpiObj;
 	int _NY, _NX, _Ny;
 
@@ -52,9 +52,9 @@ protected:
 //**********************************************************************
 //##========================================================================
 // @@ -- Constructor ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-TakACTOriEnergyCon<FDClass, FDAngleClass>::TakACTOriEnergyCon(
-  TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta, BasicChemPotential<FDClass> * inCon,
+template <class FDClass, class FDAngleClass, class FDConClass>
+TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::TakACTOriEnergyCon(
+  TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta, BasicChemPotential<FDConClass> * inCon,
   const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
   JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta), _Con(inCon),
   _MpiObj(inJMpi),
@@ -65,9 +65,9 @@ TakACTOriEnergyCon<FDClass, FDAngleClass>::TakACTOriEnergyCon(
   _dAngleRear(_NY,_NX), _dThetadt(_NY,_NX) {}
 
 // @@ -- Write over operator ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-TakACTOriEnergyCon<FDClass, FDAngleClass> & TakACTOriEnergyCon<FDClass, FDAngleClass>::operator=
-  (const TakACTOriEnergyCon<FDClass, FDAngleClass> &in1) {
+template <class FDClass, class FDAngleClass, class FDConClass>
+TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> & TakACTOriEnergyCon<FDClass, FDAngleClass>::operator=
+  (const TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> &in1) {
 
     _Phi=in1._Phi;
     _Theta=in1._Theta;
@@ -92,8 +92,8 @@ TakACTOriEnergyCon<FDClass, FDAngleClass> & TakACTOriEnergyCon<FDClass, FDAngleC
  }
 
 // @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dFdPhase(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_dFdPhase(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dFdPhase(j,i)=_s2*(_Phi->F(j,i))*(_Theta->Mag(j,i));
@@ -101,8 +101,8 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dFdPhase(){
 }
 
 // @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_MTheta(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_MTheta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _MTheta(j,i)=_Ms*(1.0-(_Phi->P(j,i)));
@@ -110,8 +110,8 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_MTheta(){
 }
 
 // @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dAngleFront(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_dAngleFront(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dAngleFront(j,i)=(_Theta->Dy(j,i))*(_Theta->Dy(j,i))*(_Theta->Dxx(j,i));
@@ -125,8 +125,8 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dAngleFront(){
 }
 
 // @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dAngleRear(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_dAngleRear(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dAngleRear(j,i)=(_Phi->Dx(j,i))*(_Theta->Dx(j,i));
@@ -140,8 +140,8 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dAngleRear(){
 }
 
 // @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dThetadt(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_dThetadt(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dThetadt(j,i)=_dAngleFront(j,i)+_dAngleRear(j,i);
@@ -162,8 +162,8 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_dThetadt(){
 }
 
 // @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void TakACTOriEnergyCon<FDClass, FDAngleClass>::Calc_All(){
+template <class FDClass, class FDAngleClass, class FDConClass>
+void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_All(){
   Calc_dFdPhase();
   Calc_MTheta();
   Calc_dAngleFront();
