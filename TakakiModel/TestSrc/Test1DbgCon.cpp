@@ -109,12 +109,12 @@ int main(int argc, char ** argv){
   // FDAngleClass=JFDMpi2DReflectHighAngle;
   LogFile << "========================================" << std::endl;
   LogFile << "Setup Con Class " << std::endl;
-  BasicChemPotential<JFDMpi2DReflectHigh> Con(MPIOBJ, kappacon, Con0);
+  BasicChemPotential<JFDMpi2DExternal1> Con(MPIOBJ, kappacon, Con0);
   LogFile << "Setup Con Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACChemEnergy Class " << std::endl;
-  TakACChemEnergy<JFDMpi2DReflectHigh> ChemEnegy(&Con, MChem, MPIOBJ);
+  TakACChemEnergy<JFDMpi2DExternal1> ChemEnegy(&Con, MChem, MPIOBJ);
   LogFile << "Setup TakACChemEnergy Class Completed \n" << std::endl;
 
 
@@ -147,13 +147,41 @@ int main(int argc, char ** argv){
 
   double _Ny = MPIOBJ.NYLo();
   double _NX = MPIOBJ.NX();
+  double dtime = 0.001;
 
   for (int j = 0; j<_Ny; j++)
     for (int i = 0; i<_NX; i++) {
-      Con.Update_Con(ChemEnegy.dcondt()->Value(j, i), 1.0, j, i);
+      Con.Update_Con(ChemEnegy.dcondt()->Value(j, i), dtime, j, i);
     }
   BufferString="Con_1.csv";
   WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
+
+  for (int ntime = 2; ntime < 2000; ntime++)
+  {
+      Con.Calc_All();
+      ChemEnegy.Calc_All();
+
+      for (int j = 0; j<_Ny; j++)
+        for (int i = 0; i<_NX; i++) {
+          Con.Update_Con(ChemEnegy.dcondt()->Value(j, i), dtime, j, i);
+        }
+
+      BufferString="Con_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
+      BufferString="Mu_0" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Con.Mu(), BufferString, MPIOBJ);
+
+      BufferString="D2Mu_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Con.DMuPtr()->D2P(), BufferString, MPIOBJ);
+
+      BufferString="dcondt_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(ChemEnegy.dcondt(), BufferString, MPIOBJ);
+
+
+  }
+
+  // BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
+
   // BufferString="Phi3_0.csv";
   // WriteMPITextFile(Phi.F3P(), BufferString, MPIOBJ);
   // BufferString="Phi4_0.csv";

@@ -32,7 +32,8 @@ void BasicChemPotential<FDClass>::Calc_Mu()
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++)
     {
-      mu_.Replace(j, i, -con_(j,i)-kappa_ * D_con_.D2(j, i));
+      // mu_.Replace(j, i, -con_(j,i)-kappa_ * D_con_.D2(j, i));
+      mu_.Replace(j, i, con_(j,i));
     }
 }
 
@@ -56,7 +57,16 @@ template <class FDClass>
 void BasicChemPotential<FDClass>::Update_Con(const double &dcondt, const double &dt, const int &y, const int &x)
 {
 
-  // con_(y, x) += dcondt * dt ;
-  con_.Replace(y, x, dcondt * dt);
+  con_(y, x) += dcondt * dt ;
+  if (con_(y, x) < 0.0)
+  {
+    con_(y, x) = 0.0;
+  }
+  if (con_(y, x) > 1.0)
+  {
+    con_(y, x) = 1.0;
+  }
+
+  // con_.Replace(y, x, dcondt * dt);
 
 }
