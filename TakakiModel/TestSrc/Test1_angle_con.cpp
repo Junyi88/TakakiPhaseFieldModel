@@ -27,7 +27,7 @@
 
 int main(int argc, char ** argv){
 
-  const int NInputParameters=17;
+  const int NInputParameters=19;
   //================================================================
   // # Initialise the MPI and system
   int NPrs, Nnode;
