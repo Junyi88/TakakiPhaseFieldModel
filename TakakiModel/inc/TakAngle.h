@@ -140,11 +140,11 @@ void TakAngle<FDClass>::Calc_All() {
 template <class FDClass>
 void TakAngle<FDClass>::WrapToPi(double &ValIn){
   if (ValIn>M_PI)
-    ValIn-=pidouble;
-  else if (ValIn<-M_PI)
-    ValIn+=pidouble;
+    ValIn-=M_PI;
+  else if (ValIn<0.0)
+    ValIn+=M_PI;
 
-  if ((ValIn>M_PI) || (ValIn<-M_PI))
+  if ((ValIn>M_PI) || (ValIn<0.0))
     std::cout << "Theta is large: " << ValIn << std::endl;
 }
 
