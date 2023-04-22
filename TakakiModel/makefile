@@ -11,7 +11,7 @@ FDOBJ_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/obj
 CFLAGS=-std=c++11 -O2 -Wreorder
 
 all : $(EXE_DIR)/Test1DbgCon.out $(EXE_DIR)/Test1Dbg.out $(EXE_DIR)/Test1.out $(EXE_DIR)/Test1Mini.out \
-	$(EXE_DIR)/Test1Con.out $(EXE_DIR)/Test1_angle_con.out
+	$(EXE_DIR)/Test1Con.out $(EXE_DIR)/Test1_angle_con.out $(EXE_DIR)/Test1_angle_con_stress.out
 
 $(EXE_DIR)/Test1Con.out : $(TESTSRC_DIR)/Test1Con.cpp
 	mpicxx $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -I$(INC_DIR) -I$(SRC_DIR) -o \
@@ -34,6 +34,12 @@ $(EXE_DIR)/Test1.out : $(TESTSRC_DIR)/Test1.cpp
 $(EXE_DIR)/Test1_angle_con.out : $(TESTSRC_DIR)/Test1_angle_con.cpp
 	mpicxx $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -I$(INC_DIR) -I$(SRC_DIR) -o \
 		$(EXE_DIR)/Test1_angle_con.out $(TESTSRC_DIR)/Test1_angle_con.cpp \
+		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp \
+		$(FDSRC_DIR)/AuxFunctions.cpp $(FDSRC_DIR)/JFDMpiAngle.cpp
+
+$(EXE_DIR)/Test1_angle_con_stress.out : $(TESTSRC_DIR)/Test1_angle_con_stress.cpp
+	mpicxx $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -I$(INC_DIR) -I$(SRC_DIR) -o \
+		$(EXE_DIR)/Test1_angle_con_stress.out $(TESTSRC_DIR)/Test1_angle_con_stress.cpp \
 		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp \
 		$(FDSRC_DIR)/AuxFunctions.cpp $(FDSRC_DIR)/JFDMpiAngle.cpp
 
