@@ -148,14 +148,29 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_dThetadt(){
       _dThetadt(j,i)*=_MTheta(j,i);
 
 
-      double cc = _Con->con(j,i);
-      if (cc <= 0.0)
+      // double cc = _Con->con(j,i);
+      // if (cc <= 0.0)
+      // {
+      //   _dThetadt(j,i) = 0.0;
+      // } else
+      // if (cc < 1.0)
+      // {
+      //   _dThetadt(j,i) *= cc;
+      // }
+
+      double tmp = 0.0;
+      double C3 = _Con->con(j,i);
+      C3 = C3 * C3 * C3;
+      double C4 = C3 * _Con->con(j,i);
+      double C5 = C4 * _Con->con(j,i);
+
+      if (( _Con->con(j,i) > 0.0) && ( _Con->con(j,i) < 1.0))
       {
-        _dThetadt(j,i) = 0.0;
-      } else
-      if (cc < 1.0)
+        tmp = 10.0 * C3 - 15.0 * C4 + 6.0 * C5;
+        _dThetadt(j,i)*=tmp;
+      } else if (_Con->con(j,i) <= 0.0)
       {
-        _dThetadt(j,i) *= cc;
+        _dThetadt(j, i) *= 0.0;
       }
 
     }
