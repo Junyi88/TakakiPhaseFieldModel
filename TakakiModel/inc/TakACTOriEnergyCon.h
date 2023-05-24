@@ -32,6 +32,8 @@ public:
   JMat * dFdPhasePointer() {return &(_dFdPhase);};
   JMat * dThetadtPointer() {return &(_dThetadt);};
   JMat * MThetaPointer() {return &(_MTheta);};
+  JMat * dAngleFrontPointer() {return &(_dAngleFront);};
+  JMat * dAngleRearPointer() {return &(_dAngleRear);};
 
 protected:
   TakPhase<FDClass> * _Phi;
@@ -170,8 +172,9 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_dThetadt(){
         _dThetadt(j,i)*=tmp;
       } else if (_Con->con(j,i) <= 0.0)
       {
-        _dThetadt(j, i) *= 0.0;
+        _dThetadt(j, i) = 0.0;
       }
+
 
     }
 }

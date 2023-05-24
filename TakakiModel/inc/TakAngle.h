@@ -35,6 +35,9 @@ public:
   JMat * DxyP(){return _D.DxyP();};
   JMat * D2P(){return _D.D2P();};
 
+  JMat * RP(){return &_R;};
+  JMat * R3P(){return &_R3;};
+
   // GetValues
   double F(const int &y, const int &x){return _F.Value(y,x);};
 
@@ -140,11 +143,11 @@ void TakAngle<FDClass>::Calc_All() {
 template <class FDClass>
 void TakAngle<FDClass>::WrapToPi(double &ValIn){
   if (ValIn>M_PI)
-    ValIn-=M_PI;
-  else if (ValIn<0.0)
-    ValIn+=M_PI;
+    ValIn-=2.0*M_PI;
+  else if (ValIn<-M_PI)
+    ValIn+= 2.0 * M_PI;
 
-  if ((ValIn>M_PI) || (ValIn<0.0))
+  if ((ValIn>M_PI) || (ValIn<-M_PI))
     std::cout << "Theta is large: " << ValIn << std::endl;
 }
 

@@ -368,6 +368,45 @@ int main(int argc, char ** argv){
   BufferString=HeaderName + "_Con_0.csv";
   WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
 
+    BufferString=HeaderName + "_Phi_00.csv";
+    WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+    BufferString=HeaderName + "_Theta_00.csv";
+    WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+
+    BufferString=HeaderName + "_Con_00csv";
+    WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_dEtadt_00.csv";
+    WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+    
+    BufferString=HeaderName + "_dThetadt_00.csv";
+    WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_MTheta_00.csv";
+    WriteMPITextFile(OriEnergy.MThetaPointer(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_Front_00.csv";
+    WriteMPITextFile(OriEnergy.dAngleFrontPointer(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_Rear_00.csv";
+    WriteMPITextFile(OriEnergy.dAngleRearPointer(), BufferString, MPIOBJ);
+
+    BufferString=HeaderName + "_Tx_00.csv";
+    WriteMPITextFile(Theta.DxP(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_Txx_00.csv";
+    WriteMPITextFile(Theta.DxxP(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_Ty_00.csv";
+    WriteMPITextFile(Theta.DyP(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_Tyy_00.csv";
+    WriteMPITextFile(Theta.DyyP(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_Txy_00.csv";
+    WriteMPITextFile(Theta.DxyP(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_T2_00.csv";
+    WriteMPITextFile(Theta.D2P(), BufferString, MPIOBJ);
+
+    BufferString=HeaderName + "_TR_00.csv";
+    WriteMPITextFile(Theta.RP(), BufferString, MPIOBJ);
+    BufferString=HeaderName + "_TR3_00.csv";
+    WriteMPITextFile(Theta.R3P(), BufferString, MPIOBJ);
+
 //  BufferString=HeaderName + "_Q1_0.csv";
 //  WriteMPITextFile(Theta.FP1(), BufferString, MPIOBJ);
   // ***********************************************
@@ -380,6 +419,47 @@ int main(int argc, char ** argv){
   for (int ntime=ntStart; ntime<ntEnd; ntime++){
     Solver.Step_All();
     if (counter<WriteCount){
+      if (ntime==0)
+        {
+        BufferString=HeaderName + "_Phi_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+        BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+
+        BufferString=HeaderName + "_Con_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+        
+        BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_MTheta_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(OriEnergy.MThetaPointer(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_Front_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(OriEnergy.dAngleFrontPointer(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_Rear_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(OriEnergy.dAngleRearPointer(), BufferString, MPIOBJ);
+
+        BufferString=HeaderName + "_Tx_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.DxP(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_Txx_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.DxxP(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_Ty_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.DyP(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_Tyy_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.DyyP(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_Txy_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.DxyP(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_T2_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.D2P(), BufferString, MPIOBJ);
+
+        BufferString=HeaderName + "_TR_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.RP(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_TR3_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(Theta.R3P(), BufferString, MPIOBJ);
+        }
       counter++;
     } else{
       counter=1;
@@ -392,12 +472,18 @@ int main(int argc, char ** argv){
 
       BufferString=HeaderName + "_Con_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
-      // BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
-      // WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
-      //
-      // BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
-      // WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+      BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+      
+      BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
 
+      BufferString=HeaderName + "_MTheta_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(OriEnergy.MThetaPointer(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_Front_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(OriEnergy.dAngleFrontPointer(), BufferString, MPIOBJ);
+        BufferString=HeaderName + "_Rear_" + std::to_string(ntime) + ".csv";
+        WriteMPITextFile(OriEnergy.dAngleRearPointer(), BufferString, MPIOBJ);
       if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<<"nTime = "<< ntime <<std::endl;
     }

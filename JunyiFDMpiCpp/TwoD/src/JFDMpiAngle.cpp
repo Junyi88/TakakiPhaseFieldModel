@@ -44,12 +44,14 @@ JFDMpi2DReflectHighAngle & JFDMpi2DReflectHighAngle::operator= (const JFDMpi2DRe
 double JFDMpi2DReflectHighAngle::WrapAngle(const double &Next, const double &Ref){
 
   AngleBuffer=Next-Ref;
-  if ((AngleBuffer<=M_PI) && (AngleBuffer >=0.0))
+  if ((AngleBuffer<=M_PI) && (AngleBuffer >=-M_PI))
     return AngleBuffer;
   else if ((AngleBuffer)>M_PI)
-    return (AngleBuffer-M_PI);
-  else if ((AngleBuffer)<0.0)
-    return (AngleBuffer+M_PI);
+    return (AngleBuffer-2.0*M_PI);
+  else if ((AngleBuffer)<-M_PI)
+    return (AngleBuffer+2.0*M_PI);
+
+  
 
   return AngleBuffer;
 
