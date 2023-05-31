@@ -23,11 +23,11 @@
 
 #include "TakACChemEnergy.h"
 
-#include "TakakiSolverAngleConTanh.h"
+#include "TakakiSolverAngleCon.h"
 
 int main(int argc, char ** argv){
 
-  const int NInputParameters=25;
+  const int NInputParameters=23;
   //================================================================
   // # Initialise the MPI and system
   int NPrs, Nnode;
@@ -112,8 +112,6 @@ int main(int argc, char ** argv){
   double MThetaStress = InputParameters[21];
   double MChemStress = InputParameters[22];
 
-  double kConcentration = InputParameters[23];
-  double gradientConcentration = InputParameters[24];
 
   LogFile << "NY =  " << NY << std::endl;
   LogFile << "NX =  " << NX << std::endl;
