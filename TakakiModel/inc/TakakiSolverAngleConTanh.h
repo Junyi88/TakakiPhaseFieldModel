@@ -23,7 +23,7 @@ public:
     TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass> * inOriEnergy,
     TakACChemEnergy<FDConClass> * inChemEnergy,
     const double &inMPhiConst, const double &indt,
-    JMpi inJMpi);
+    JMpi inJMpi, double k, double grad);
 	TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass> & operator= (
     const TakakiSolverAngleCon<FDClass, FDAngleClass, FDConClass> &in1); //Write to operator
 

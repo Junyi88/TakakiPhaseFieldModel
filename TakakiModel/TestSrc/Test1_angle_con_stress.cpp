@@ -112,7 +112,7 @@ int main(int argc, char ** argv){
   double MThetaStress = InputParameters[21];
   double MChemStress = InputParameters[22];
 
-  double kConcentration = InputParameters[23];
+  double k_concentration = InputParameters[23];
   double gradientConcentration = InputParameters[24];
 
   LogFile << "NY =  " << NY << std::endl;
@@ -284,7 +284,7 @@ int main(int argc, char ** argv){
   TakakiSolverAngleCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle, JFDMpi2DExternal1> Solver(
     &Phi, &Theta, &Con,
     &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy, &ChemEnegy,
-    inMPhiConst , dt, MPIOBJ);
+    inMPhiConst , dt, MPIOBJ, k_concentration, gradientConcentration);
   LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
   //TakPhase(JMpi inJMpi, const JMat &in_F);
   //TakAngle(JMpi inJMpi, const JMat &in_F, const double &inMinMag);
