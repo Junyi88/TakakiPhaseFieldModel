@@ -19,7 +19,7 @@
 #include "TakACBulkEnergy.h"
 #include "TakACWallEnergy.h"
 #include "TakACGradEnergy.h"
-#include "TakACTOriEnergyCon.h"
+#include "TakACTOriEnergyConContinue.h"
 
 #include "TakACChemEnergy.h"
 
@@ -27,7 +27,7 @@
 
 int main(int argc, char ** argv){
 
-  const int NInputParameters=25;
+  const int NInputParameters=26;
   //================================================================
   // # Initialise the MPI and system
   int NPrs, Nnode;
@@ -114,6 +114,7 @@ int main(int argc, char ** argv){
 
   double k_concentration = InputParameters[23];
   double gradientConcentration = InputParameters[24];
+  double minMtheta = InputParameters[25];
 
   LogFile << "NY =  " << NY << std::endl;
   LogFile << "NX =  " << NX << std::endl;
@@ -271,7 +272,7 @@ int main(int argc, char ** argv){
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACTOriEnergy Class " << std::endl;
   TakACTOriEnergyCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle, JFDMpi2DExternal1> OriEnergy(&Phi, &Theta, &Con,
-    S, MTheta0, InvPhiMin, MPIOBJ);
+    S, MTheta0, InvPhiMin, MPIOBJ, minMtheta);
   LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
