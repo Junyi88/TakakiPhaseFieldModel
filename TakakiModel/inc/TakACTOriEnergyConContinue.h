@@ -124,12 +124,19 @@ template <class FDClass, class FDAngleClass, class FDConClass>
 void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_MTheta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _MTheta(j,i)=_Ms*(1.0-(_Phi->P(j,i)));
 
-      if (_MTheta(j,i) < _MThetaMin)
+      if (_Phi->P(j,i) <= 0.98)
       {
-       _MTheta(j,i) = _MThetaMin; 
+        _MTheta(j,i)=_Ms*(1.0-(_Phi->P(j,i)));
+      } else {
+
+        double grad = (_MThetaMin - _Ms*0.02) / 0.02;
+        _MTheta(j,i)= grad * (_Phi->P(j,i) - 0.98) + _Ms*0.02;
+
       }
+      
+
+
 
     }
 }
