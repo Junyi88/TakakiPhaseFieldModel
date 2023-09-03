@@ -125,7 +125,7 @@ void TakACTOriEnergyCon<FDClass, FDAngleClass, FDConClass>::Calc_MTheta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
 
-      if (_Phi->P(j,i) <= 0.98)
+      if (_Phi->P(j,i) >= 0.99999999999)
       {
         _MTheta(j,i)=_Ms*(1.0-(_Phi->P(j,i)));
       } else {
