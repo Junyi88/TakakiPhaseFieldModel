@@ -9,21 +9,18 @@ template <class FDClass, class FDAngleClass>
 class ChenYunACTOriEnergy {
 public:
   ChenYunACTOriEnergy(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-    const double& minDelTheta, const double& alpha, const double& beta, const double& omega, 
+    const double& alpha, const double& beta, const double& omega, 
     const double& mu,
     JMpi inJMpi);
 	ChenYunACTOriEnergy<FDClass, FDAngleClass> & operator= (const ChenYunACTOriEnergy<FDClass, FDAngleClass> &in1); //Write to operator
 
 
   void Calc_Simples();
-
-  void Calc_dFdPhase();
-
-  void Calc_MTheta();
-  void Calc_dAngleFront();
-  void Calc_dAngleRear();
+  void Calc_dThetadt_T1();
+  void Calc_dThetadt_T2();
   void Calc_dThetadt();
 
+  void Calc_dFdPhase();
   void Calc_All();
 
   // Getter Functions
@@ -41,16 +38,10 @@ protected:
   JMpi _MpiObj;
 	int _NY, _NX, _Ny;
 
-  double _minDelTheta, _alpha, _beta, _omega, _mu;
+  double _alpha, _beta, _omega, _omega2, _mu;
 
-  JMat _Q;
-  JMat _absDeltaTheta;
-  JMat _absDeltaTheta_2;
-  JMat _R;
-  JMat _R3; // This is 
+  JMat _Q; 
   
-  JMat _dFdPhase_T1;
-  JMat _dFdPhase_T2;
   JMat _dFdPhase;
 
   JMat _dThetadt_T1;
@@ -67,9 +58,9 @@ ChenYunACTOriEnergy<FDClass, FDAngleClass>::ChenYunACTOriEnergy(
   const double& minDelTheta, const double& alpha, const double& beta, const double& omega, 
   JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta), _MpiObj(inJMpi),
   _NY(_MpiObj.NYGl()),  _NX(_MpiObj.NX()),  _Ny(_MpiObj.NYLo()),
-  _minDelTheta(minDelTheta), _alpha(alpha), _beta(beta), _omega(omega), _mu(mu),
-  _Q(_NY,_NX), _absDeltaTheta(_NY,_NX), _absDeltaTheta_2(_NY,_NX),
-  _R(_NY,_NX), _R3(_NY,_NX) {}
+  _minDelTheta(minDelTheta), _alpha(alpha), _beta(beta), 
+  _omega(omega), _omega2(omega*omega), _mu(mu),
+  _Q(_NY,_NX) {}
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
@@ -87,13 +78,10 @@ ChenYunACTOriEnergy<FDClass, FDAngleClass> & ChenYunACTOriEnergy<FDClass, FDAngl
     _alpha=in1._alpha;
     _beta=in1.beta;
     _omega=in1._omega;
+    _omega2=in1._omega2;
     _mu=in1._mu;
 
     _Q=in1._Q;
-    _absDeltaTheta=in1._absDeltaTheta;
-    _absDeltaTheta_2=in1._absDeltaTheta_2;
-    _R=in1._R;
-    _R3=in1._R3;
 
     _dFdPhase_T1=in1._dFdPhase_T1;
     _dFdPhase_T2=in1._dFdPhase_T2;
@@ -112,18 +100,68 @@ void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_Simples(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       
-      _absDeltaTheta_2(j, i) = _Theta->Dx(j,i) * _Theta->Dx(j,i) + _Theta->Dy(j,i) * _Theta->Dy(j,i);
-      _absDeltaTheta(j, i) = sqrt(_absDeltaTheta_2(j, i));
-      if (_absDeltaTheta > _minDelTheta)
-      {
-        _R(j, i) = 1.0 / _absDeltaTheta(j, i);
-      } else {
-        _R(j, i) = 1.0 / _minDelTheta;
-      }
+      // _absDeltaTheta_2(j, i) = _Theta->Dx(j,i) * _Theta->Dx(j,i) + _Theta->Dy(j,i) * _Theta->Dy(j,i);
+      // _absDeltaTheta(j, i) = sqrt(_absDeltaTheta_2(j, i));
+      // if (_absDeltaTheta > _minDelTheta)
+      // {
+      //   _R(j, i) = 1.0 / _absDeltaTheta(j, i);
+      // } else {
+      //   _R(j, i) = 1.0 / _minDelTheta;
+      // }
       
-      _R3(j, i) = _R(j, i) * _R(j, i) * _R(j, i);
+      // _R3(j, i) = _R(j, i) * _R(j, i) * _R(j, i);
 
       _Q(j,i) = 1.0 + (1.0 - _mu/_omega) * exp(-_beta * _omega * _absDeltaTheta(j,i));
+
+    }
+}
+
+template <class FDClass, class FDAngleClass>
+void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dThetadt_T1(){
+  double t2 = 0.0;
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      
+      _dThetadt_T1(j,i) = _Theta->Mag(j,i) * _Theta->Mag(j,i) * (_Theta->Dxx(j,i) + _Theta->Dyy(j,i));
+      _dThetadt_T1(j,i) -= _Theta->Dxy(j,i) * (_Theta->Dx(j,i) + _Theta->Dy(j,i)) +
+        _Theta->Dx(j,i) * _Theta->Dxx(j,i) + _Theta->Dy(j,i) * _Theta->Dyy(j,i);
+      _dThetadt_T1 *= (_Phi->F2(j,i)) * _Theta->R3(j,i);
+
+
+      t2 = _Phi->Dx(j,i) * _Theta->Dx(j,i) + _Phi->Dy(j,i) * _Theta->Dy(j,i);
+      t2 *= 2.0 * (_Phi->F(j,i)) / _Theta->Mag(j,i);
+
+      _dThetadt_T1(j,i) += t2;
+      _dThetadt_T1(j,i) *= _alpha;
+    }
+}
+
+
+template <class FDClass, class FDAngleClass>
+void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dThetadt_T2(){
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      
+      _dThetadt_T2(j,i) = 2.0 * _Phi->F(j,i) * (
+          _Phi->Dx(j,i) * _Theta->Dx(j,i) +
+          _Phi->Dy(j,i) * _Theta->Dy(j,i) 
+        );
+
+      _dThetadt_T2(j,i) += _Phi->F2(j,i) * (_Theta->Dxx(j,i) + _Theta->Dyy(j,i));
+      _dThetadt_T2(j,i) *= _omega2;
+    }
+}
+
+
+
+
+template <class FDClass, class FDAngleClass>
+void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dThetadt(){
+  for (int j=0; j<_Ny; j++)
+    for (int i=0; i<_NX; i++){
+      
+      _dThetadt(j, i) = _dThetadt_T1(j,i) + _dThetadt_T2(j,i);
+      _dThetadt(j,i) /= _Q(j,i); 
 
     }
 }
@@ -133,67 +171,20 @@ template <class FDClass, class FDAngleClass>
 void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dFdPhase(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _dFdPhase(j,i)=_s2*(_Phi->F(j,i))*(_Theta->Mag(j,i));
-    }
-}
-
-// @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_MTheta(){
-  for (int j=0; j<_Ny; j++)
-    for (int i=0; i<_NX; i++){
-      _MTheta(j,i)=_Ms*(1.0-(_Phi->P(j,i)));
-    }
-}
-
-// @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dAngleFront(){
-  for (int j=0; j<_Ny; j++)
-    for (int i=0; i<_NX; i++){
-      _dAngleFront(j,i)=(_Theta->Dy(j,i))*(_Theta->Dy(j,i))*(_Theta->Dxx(j,i));
-      _dAngleFront(j,i)-=(_Theta->Dy(j,i))*(_Theta->Dxy(j,i))*(_Theta->Dx(j,i));
-
-      _dAngleFront(j,i)+=(_Theta->Dx(j,i))*(_Theta->Dx(j,i))*(_Theta->Dyy(j,i));
-      _dAngleFront(j,i)-=(_Theta->Dx(j,i))*(_Theta->Dxy(j,i))*(_Theta->Dy(j,i));
-
-      _dAngleFront(j,i)*=_Theta->R3(j,i);
-    }
-}
-
-// @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dAngleRear(){
-  for (int j=0; j<_Ny; j++)
-    for (int i=0; i<_NX; i++){
-      _dAngleRear(j,i)=(_Phi->Dx(j,i))*(_Theta->Dx(j,i));
-      _dAngleRear(j,i)+=(_Phi->Dy(j,i))*(_Theta->Dy(j,i));
-
-      if ((_Phi->F(j,i))>=_InvPhiMin)
-        _dAngleRear(j,i)*=2.0*(_Theta->R(j,i))/(_Phi->F(j,i));
-      else
-        _dAngleRear(j,i)*=2.0*(_Theta->R(j,i))/(_InvPhiMin);
-    }
-}
-
-// @@ -- Function ----------------------------------------------------
-template <class FDClass, class FDAngleClass>
-void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dThetadt(){
-  for (int j=0; j<_Ny; j++)
-    for (int i=0; i<_NX; i++){
-      _dThetadt(j,i)=_dAngleFront(j,i)+_dAngleRear(j,i);
-      _dThetadt(j,i)*=_MTheta(j,i);
+      _dFdPhase(j,i)= -2.0 * _Phi->F(j,i) * _Theta->Mag(j,i);
+      _dFdPhase(j,i) -= _omega2 * Phi->F(j,i) * _Theta->Mag(j,i) * _Theta->Mag(j,i);
     }
 }
 
 // @@ -- Function ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
 void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_All(){
-  Calc_dFdPhase();
-  Calc_MTheta();
-  Calc_dAngleFront();
-  Calc_dAngleRear();
+  Calc_Simples();
+  Calc_dThetadt_T1();
+  Calc_dThetadt_T2();
   Calc_dThetadt();
+
+  Calc_dFdPhase();
 
 }
 
