@@ -14,20 +14,15 @@
 
 #include "TakPhase.h"
 #include "TakAngle.h"
-#include "BasicChemPotential.h"
 
-#include "TakACBulkEnergy.h"
-#include "TakACWallEnergy.h"
-#include "TakACGradEnergy.h"
-#include "TakACTOriEnergyCon.h"
+#include "ChenYunACBulkEnergy.h"
+#include "ChenYunACTOriEnergy.h"
 
-#include "TakACChemEnergy.h"
-
-#include "TakakiSolverAngleCon.h"
+#include "ChenYunSolver.h"
 
 int main(int argc, char ** argv){
 
-  const int NInputParameters=19;
+  const int NInputParameters=33;
   //================================================================
   // # Initialise the MPI and system
   int NPrs, Nnode;
@@ -63,11 +58,6 @@ int main(int argc, char ** argv){
   InitialConditionFileList.push_back(BufferString); // Eta
   BufferInputStream1>>BufferString;
   InitialConditionFileList.push_back(BufferString); // Theta
-  BufferInputStream1>>BufferString;
-  InitialConditionFileList.push_back(BufferString); // Rho
-
-  BufferInputStream1 >> BufferString;
-  InitialConditionFileList.push_back(BufferString); // Con
 
   BufferInputStream1.close();
   for (int i=0; i<InitialConditionFileList.size(); i++)
@@ -107,6 +97,23 @@ int main(int argc, char ** argv){
   kappa_chem = InputParameters[17];
   MChem = InputParameters[18];
 
+  double Stress = InputParameters[19];
+  double MPhiStress = InputParameters[20];
+  double MThetaStress = InputParameters[21];
+  double MChemStress = InputParameters[22];
+
+  double k_concentration = InputParameters[23];
+  double gradientConcentration = InputParameters[24];
+  double minMtheta = InputParameters[25];
+
+  double CY_alpha = InputParameters[26];
+  double CY_beta = InputParameters[27];
+  double CY_omega = InputParameters[28];
+  double CY_mu = InputParameters[29];
+  double CY_epsilon = InputParameters[30];
+  double CY_tauPhi = InputParameters[31];
+  double CY_tauTheta = InputParameters[32];
+
   LogFile << "NY =  " << NY << std::endl;
   LogFile << "NX =  " << NX << std::endl;
   LogFile << "dy =  " << dy << std::endl;
@@ -128,21 +135,15 @@ int main(int argc, char ** argv){
   LogFile << "kappa_chem =  " << kappa_chem << std::endl; //sigma
   LogFile << "MChem =  " << MChem << std::endl; //sigma
 
-  // Input Parameters List
-  // InputParameters[0] 1=NY
-  // InputParameters[1] 2=NX
-  // InputParameters[2] 3=dy
-  // InputParameters[3] 4=dx
-  // InputParameters[4] 5=dt
-  // InputParameters[5] 6=ntStart
-  // InputParameters[6] 7=ntEnd
-  // InputParameters[7] 8=WriteCount
-  // InputParameters[8] 9=MinAngle0
-  // InputParameters[9] 10=BVec
-  // InputParameters[10] 11=mu
-  // InputParameters[11] 12=MTheta0
-  // InputParameters[12] 13=InvPhiMin
-  // InputParameters[13] 14=inMPhiConst
+  LogFile << "CY_alpha =  " << CY_alpha << std::endl;
+  LogFile << "CY_beta =  " << CY_beta << std::endl;
+  LogFile << "CY_omega =  " << CY_omega << std::endl;
+  LogFile << "CY_mu =  " << CY_mu << std::endl;
+  LogFile << "CY_epsilon =  " << CY_epsilon << std::endl;
+
+  LogFile << "CY_tauPhi =  " << CY_tauPhi << std::endl;
+  LogFile << "CY_tauTheta =  " << CY_tauTheta << std::endl;
+
 
   LogFile << "Reading Parameter Files Completed \n" << std::endl;
 
@@ -193,20 +194,6 @@ int main(int argc, char ** argv){
   Splitter(Theta0, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Theta Completed \n" << std::endl;
 
-  LogFile << "========================================" << std::endl;
-  LogFile << "Reading Initial Conditions Rho =  " << InitialConditionFileList[2] << std::endl;
-  BufferString=InitialConditionFileList[2];
-  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(Rho0, BufferFull, MPIOBJ);
-  LogFile << "Reading Initial Conditions Rho Completed \n" << std::endl;
-
-  LogFile << "========================================" << std::endl;
-  LogFile << "Reading Initial Conditions Con =  " << InitialConditionFileList[3] << std::endl;
-  BufferString=InitialConditionFileList[3];
-  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
-  Splitter(Con0, BufferFull, MPIOBJ);
-  LogFile << "Reading Initial Conditions Con Completed \n" << std::endl;
-
   //*************************************************************************
   //FDClass=JFDMpi2DReflectHigh;
   //FDAngleClass=JFDMpi2DReflectHighAngle;
@@ -221,63 +208,29 @@ int main(int argc, char ** argv){
   LogFile << "Setup Theta Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
-  LogFile << "Setup Con Class " << std::endl;
-  BasicChemPotential<JFDMpi2DExternal1> Con(MPIOBJ, kappa_chem, Con0);
-  LogFile << "Setup Con Class Completed \n" << std::endl;
-
-  LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACBulkEnergy Class " << std::endl;
-  TakACBulkEnergy<JFDMpi2DReflectHigh> BulkEnergy(&Phi, BVec, mu, Rho0, MPIOBJ);
+  ChenYunACBulkEnergy<JFDMpi2DReflectHigh> BulkEnergy(&Phi, CY_epsilon, MPIOBJ);
   LogFile << "Setup TakACBulkEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
-  LogFile << "Setup TakACGradEnergy Class " << std::endl;
-  TakACGradEnergy<JFDMpi2DReflectHigh> GradEnergy(&Phi, alpha, MPIOBJ);
-  LogFile << "Setup TakACGradEnergy Class Completed \n" << std::endl;
-
-  LogFile << "========================================" << std::endl;
-  LogFile << "Setup TakACGradEnergy Class " << std::endl;
-  TakACWallEnergy<JFDMpi2DReflectHigh> WallEnergy(&Phi, Wa, MPIOBJ);
-  LogFile << "Setup TakACGradEnergy Class Completed \n" << std::endl;
-
-  LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACTOriEnergy Class " << std::endl;
-  TakACTOriEnergyCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle, JFDMpi2DExternal1> OriEnergy(&Phi, &Theta, &Con,
-    S, MTheta0, InvPhiMin, MPIOBJ);
+  ChenYunACTOriEnergy<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriEnergy(&Phi, &Theta,
+    CY_alpha, CY_beta, CY_omega, CY_mu, MPIOBJ);
   LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
-  LogFile << "Setup TakACChemEnergy Class " << std::endl;
-  TakACChemEnergy<JFDMpi2DExternal1> ChemEnegy(&Con, MChem, MPIOBJ);
-  LogFile << "Setup TakACChemEnergy Class Completed \n" << std::endl;
-
-  LogFile << "========================================" << std::endl;
   LogFile << "Setup TakakiSolver Class " << std::endl;
-  TakakiSolverAngleCon<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle, JFDMpi2DExternal1> Solver(
-    &Phi, &Theta, &Con,
-    &BulkEnergy, &WallEnergy, &GradEnergy, &OriEnergy, &ChemEnegy,
-    inMPhiConst , dt, MPIOBJ);
+  ChenYunSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(
+    &Phi, &Theta,
+    &BulkEnergy, &OriEnergy,
+    inMPhiConst , dt, 
+    CY_tauPhi, CY_tauTheta,
+    MPIOBJ);
   LogFile << "Setup TakakiSolver Class Completed \n" << std::endl;
-  //TakPhase(JMpi inJMpi, const JMat &in_F);
-  //TakAngle(JMpi inJMpi, const JMat &in_F, const double &inMinMag);
-  // TakACBulkEnergy(TakPhase<FDClass> * inPhi, const double &BVec, const double &mu,
-  //   const JMat &RhoIn, JMpi inJMpi);
-  // TakACGradEnergy(TakPhase<FDClass> * inPhi, const double &inalpha, JMpi inJMpi);
-  // TakACWallEnergy(TakPhase<FDClass> * inPhi, const double &inWa, JMpi inJMpi);
-  // TakACTOriEnergy(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-  //   const double &insConst, const double &inMTheta0,  const double &inInvPhiMin,
-  //   JMpi inJMpi);
-  // TakakiSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-  //   TakACBulkEnergy<FDClass> * inBulkEnergy, TakACWallEnergy<FDClass> * inWallEnergy,
-  //   TakACGradEnergy<FDClass> * inGradEnergy, TakACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
-  //   const double &inMPhiConst, const double &indt,
-  //   JMpi inJMpi);
 
   BufferString="Phi_0_R.csv";
   WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
-  BufferString=HeaderName + "_Con_0_R.csv";
-  WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
 
   LogFile << "========================================" << std::endl;
   LogFile << "Do 1 Step " << std::endl;
@@ -316,31 +269,17 @@ int main(int argc, char ** argv){
   LogFile << "Write Outputs - dFdPhase" << std::endl;
   BufferString="Bulk_dFdPhase_0.csv";
   WriteMPITextFile(BulkEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
-  BufferString="Grad_dFdPhase_0.csv";
-  WriteMPITextFile(GradEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
-  BufferString="Wall_dFdPhase_0.csv";
-  WriteMPITextFile(WallEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
   BufferString="Ori_dFdPhase_0.csv";
   WriteMPITextFile(OriEnergy.dFdPhasePointer(), BufferString, MPIOBJ);
 
   LogFile << "Write Outputs - Others" << std::endl;
 
-  BufferString="MTheta_0.csv";
-  WriteMPITextFile(OriEnergy.MThetaPointer(), BufferString, MPIOBJ);
-
   BufferString="dPhidt_0.csv";
   WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
-
-  BufferString="Rho_0.csv";
-  WriteMPITextFile(BulkEnergy.RhoPointer(), BufferString, MPIOBJ);
-  BufferString="EStored_0.csv";
-  WriteMPITextFile(BulkEnergy.EStoredPointer(), BufferString, MPIOBJ);
 
   BufferString=HeaderName + "_Phi_0.csv";
   WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
-  BufferString=HeaderName + "_Con_0.csv";
-  WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
 
 //  BufferString=HeaderName + "_Q1_0.csv";
 //  WriteMPITextFile(Theta.FP1(), BufferString, MPIOBJ);
@@ -362,15 +301,6 @@ int main(int argc, char ** argv){
 
       BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
-
-
-      BufferString=HeaderName + "_Con_" + std::to_string(ntime) + ".csv";
-      WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
-      // BufferString=HeaderName + "_dEtadt_" + std::to_string(ntime) + ".csv";
-      // WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
-      //
-      // BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
-      // WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
 
       if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<<"nTime = "<< ntime <<std::endl;

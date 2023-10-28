@@ -12,7 +12,7 @@ class ChenYunSolver {
 public:
   ChenYunSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
     ChenYunACBulkEnergy<FDClass> * inBulkEnergy, ChenYunACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
-    const double &inMPhiConst, const double &indt,
+    const double &inMPhiConst, const double &indt, const double& tauPhi, const double& tauTheta,
     JMpi inJMpi);
 	ChenYunSolver<FDClass, FDAngleClass> & operator= (
     const ChenYunSolver<FDClass, FDAngleClass> &in1); //Write to operator
@@ -47,6 +47,8 @@ protected:
 
   double _MPhiConst;
   double _dt;
+  double _tauPhi;
+  double _tauTheta;
   JMat _dEtadt;
   // JMat _dThetadt;
 
@@ -58,11 +60,11 @@ protected:
 template <class FDClass, class FDAngleClass>
 ChenYunSolver<FDClass, FDAngleClass>::ChenYunSolver(TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
    ChenYunACBulkEnergy<FDClass> * inBulkEnergy, ChenYunACTOriEnergy<FDClass, FDAngleClass> * inOriEnergy,
-   const double &inMPhiConst, const double &indt,
+   const double &inMPhiConst, const double &indt, const double& tauPhi, const double& tauTheta,
    JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta),
    _BulkEnergy(inBulkEnergy), _OriEnergy(inOriEnergy), _MpiObj(inJMpi),
    _NY(_MpiObj.NYGl()), _NX(_MpiObj.NX()), _Ny(_MpiObj.NYLo()),
-   _MPhiConst(inMPhiConst), _dt(indt),
+   _MPhiConst(inMPhiConst), _dt(indt), _tauPhi(tauPhi), _tauTheta(tauTheta),
    _dEtadt(_NY,_NX) {Step_NoUpdate();}
 
 // @@ -- Write over operator ----------------------------------------------------
@@ -80,6 +82,9 @@ ChenYunSolver<FDClass, FDAngleClass> & ChenYunSolver<FDClass, FDAngleClass>::ope
   _Ny=in1._Ny;
   _MPhiConst=in1._MPhiConst;
   _dt=in1._dt;
+  _tauPhi=in1.tauPhi;
+  _tauTheta=in1.tauTheta;
+
   _dEtadt=in1._dEtadt;
   // _dThetadt=in1._dThetadt;
 
@@ -112,7 +117,7 @@ template <class FDClass, class FDAngleClass>
 void ChenYunSolver<FDClass, FDAngleClass>::Update_Eta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _Phi->Update_Eta(_dEtadt(j,i),_dt,j,i);
+      _Phi->Update_Eta(_dEtadt(j,i) / _tauPhi,_dt,j,i);
     }
 }
 
@@ -121,7 +126,7 @@ template <class FDClass, class FDAngleClass>
 void ChenYunSolver<FDClass, FDAngleClass>::Update_Theta(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _Theta->Update_Theta(_OriEnergy->dThetadt(j,i),_dt,j,i);
+      _Theta->Update_Theta(_OriEnergy->dThetadt(j,i) / _tauTheta,_dt,j,i);
     }
 }
 

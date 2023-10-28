@@ -30,7 +30,6 @@ public:
 
   JMat * dFdPhasePointer() {return &(_dFdPhase);};
   JMat * dThetadtPointer() {return &(_dThetadt);};
-  JMat * MThetaPointer() {return &(_MTheta);};
 
 protected:
   TakPhase<FDClass> * _Phi;
@@ -42,6 +41,8 @@ protected:
 
   JMat _Q; 
   
+  JMat _dFdPhase_T1;
+  JMat _dFdPhase_T2;
   JMat _dFdPhase;
 
   JMat _dThetadt_T1;
@@ -55,12 +56,16 @@ protected:
 template <class FDClass, class FDAngleClass>
 ChenYunACTOriEnergy<FDClass, FDAngleClass>::ChenYunACTOriEnergy(
   TakPhase<FDClass> * inPhi, TakAngle<FDAngleClass> * inTheta,
-  const double& minDelTheta, const double& alpha, const double& beta, const double& omega, 
+  const double& alpha, const double& beta, const double& omega, 
+  const double& mu,
   JMpi inJMpi) : _Phi(inPhi), _Theta(inTheta), _MpiObj(inJMpi),
   _NY(_MpiObj.NYGl()),  _NX(_MpiObj.NX()),  _Ny(_MpiObj.NYLo()),
-  _minDelTheta(minDelTheta), _alpha(alpha), _beta(beta), 
+  _alpha(alpha), _beta(beta), 
   _omega(omega), _omega2(omega*omega), _mu(mu),
-  _Q(_NY,_NX) {}
+  _Q(_NY,_NX), 
+  _dFdPhase_T1(_NY,_NX), _dFdPhase_T2(_NY,_NX), _dFdPhase(_NY,_NX),
+  _dThetadt_T1(_NY,_NX), _dThetadt_T2(_NY,_NX), _dThetadt(_NY,_NX)
+  {}
 
 // @@ -- Write over operator ----------------------------------------------------
 template <class FDClass, class FDAngleClass>
@@ -74,7 +79,6 @@ ChenYunACTOriEnergy<FDClass, FDAngleClass> & ChenYunACTOriEnergy<FDClass, FDAngl
     _NX=in1._NX;
     _Ny=in1._Ny;
 
-    _minDelTheta=in1._minDelTheta;
     _alpha=in1._alpha;
     _beta=in1.beta;
     _omega=in1._omega;
@@ -111,7 +115,7 @@ void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_Simples(){
       
       // _R3(j, i) = _R(j, i) * _R(j, i) * _R(j, i);
 
-      _Q(j,i) = 1.0 + (1.0 - _mu/_omega) * exp(-_beta * _omega * _absDeltaTheta(j,i));
+      _Q(j,i) = 1.0 + (1.0 - _mu/_omega) * exp(-_beta * _omega * _Theta->Mag(j,i));
 
     }
 }
@@ -125,7 +129,7 @@ void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dThetadt_T1(){
       _dThetadt_T1(j,i) = _Theta->Mag(j,i) * _Theta->Mag(j,i) * (_Theta->Dxx(j,i) + _Theta->Dyy(j,i));
       _dThetadt_T1(j,i) -= _Theta->Dxy(j,i) * (_Theta->Dx(j,i) + _Theta->Dy(j,i)) +
         _Theta->Dx(j,i) * _Theta->Dxx(j,i) + _Theta->Dy(j,i) * _Theta->Dyy(j,i);
-      _dThetadt_T1 *= (_Phi->F2(j,i)) * _Theta->R3(j,i);
+      _dThetadt_T1(j,i) *= (_Phi->F2(j,i)) * _Theta->R3(j,i);
 
 
       t2 = _Phi->Dx(j,i) * _Theta->Dx(j,i) + _Phi->Dy(j,i) * _Theta->Dy(j,i);
@@ -172,7 +176,7 @@ void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dFdPhase(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
       _dFdPhase(j,i)= -2.0 * _Phi->F(j,i) * _Theta->Mag(j,i);
-      _dFdPhase(j,i) -= _omega2 * Phi->F(j,i) * _Theta->Mag(j,i) * _Theta->Mag(j,i);
+      _dFdPhase(j,i) -= _omega2 * _Phi->F(j,i) * _Theta->Mag(j,i) * _Theta->Mag(j,i);
     }
 }
 
