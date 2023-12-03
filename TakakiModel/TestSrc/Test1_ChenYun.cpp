@@ -277,6 +277,9 @@ int main(int argc, char ** argv){
   BufferString="dPhidt_0.csv";
   WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
 
+  BufferString="dThetadt_0.csv";
+  WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+
   BufferString=HeaderName + "_Phi_0.csv";
   WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
@@ -301,6 +304,12 @@ int main(int argc, char ** argv){
 
       BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+      BufferString=HeaderName + "_dPhidt_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+
+      BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
 
       if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<<"nTime = "<< ntime <<std::endl;

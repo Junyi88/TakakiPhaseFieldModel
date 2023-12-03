@@ -131,9 +131,14 @@ void ChenYunACTOriEnergy<FDClass, FDAngleClass>::Calc_dThetadt_T1(){
         _Theta->Dx(j,i) * _Theta->Dxx(j,i) + _Theta->Dy(j,i) * _Theta->Dyy(j,i);
       _dThetadt_T1(j,i) *= (_Phi->F2(j,i)) * _Theta->R3(j,i);
 
+      double tmp = _Theta->Mag(j,i);
+      if (abs(tmp) <= 1.0e-12)
+      {
+        tmp = 1.0e-8;
+      }
 
       t2 = _Phi->Dx(j,i) * _Theta->Dx(j,i) + _Phi->Dy(j,i) * _Theta->Dy(j,i);
-      t2 *= 2.0 * (_Phi->F(j,i)) / _Theta->Mag(j,i);
+      t2 *= 2.0 * (_Phi->F(j,i)) / tmp;
 
       _dThetadt_T1(j,i) += t2;
       _dThetadt_T1(j,i) *= _alpha;
