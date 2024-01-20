@@ -22,7 +22,7 @@
 
 int main(int argc, char ** argv){
 
-  const int NInputParameters=33;
+  const int NInputParameters=34;
   //================================================================
   // # Initialise the MPI and system
   int NPrs, Nnode;
@@ -113,6 +113,9 @@ int main(int argc, char ** argv){
   double CY_epsilon = InputParameters[30];
   double CY_tauPhi = InputParameters[31];
   double CY_tauTheta = InputParameters[32];
+  double CY_w = InputParameters[33];
+
+  double CY_a = 3.0 * CY_epsilon / CY_w;
 
   LogFile << "NY =  " << NY << std::endl;
   LogFile << "NX =  " << NX << std::endl;
@@ -144,6 +147,8 @@ int main(int argc, char ** argv){
   LogFile << "CY_tauPhi =  " << CY_tauPhi << std::endl;
   LogFile << "CY_tauTheta =  " << CY_tauTheta << std::endl;
 
+  LogFile << "CY_w =  " << CY_w << std::endl;
+  LogFile << "CY_a =  " << CY_a << std::endl;
 
   LogFile << "Reading Parameter Files Completed \n" << std::endl;
 
@@ -209,7 +214,7 @@ int main(int argc, char ** argv){
 
   LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACBulkEnergy Class " << std::endl;
-  ChenYunACBulkEnergy<JFDMpi2DReflectHigh> BulkEnergy(&Phi, CY_epsilon, MPIOBJ);
+  ChenYunACBulkEnergy<JFDMpi2DReflectHigh> BulkEnergy(&Phi, CY_epsilon, CY_a, MPIOBJ);
   LogFile << "Setup TakACBulkEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;

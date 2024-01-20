@@ -7,7 +7,7 @@
 template <class FDClass>
 class ChenYunACBulkEnergy {
 public:
-  ChenYunACBulkEnergy(TakPhase<FDClass> * inPhi, const double &epsilon, JMpi inJMpi);
+  ChenYunACBulkEnergy(TakPhase<FDClass> * inPhi, const double &epsilon, const double &a, JMpi inJMpi);
 	ChenYunACBulkEnergy<FDClass> & operator= (const ChenYunACBulkEnergy<FDClass> &in1); //Write to operator
 
   void Calc_All();
@@ -23,6 +23,7 @@ protected:
 	int _NY, _NX, _Ny;
 
   double _epsilon2;
+  double _a2;
   JMat _dFdPhase;
 };
 
@@ -30,9 +31,9 @@ protected:
 // @@ -- Constructor ----------------------------------------------------
 template <class FDClass>
 ChenYunACBulkEnergy<FDClass>::ChenYunACBulkEnergy(TakPhase<FDClass> * inPhi,
-  const double& epsilon, JMpi inJMpi) :
+  const double& epsilon, const double &a, JMpi inJMpi) :
  _Phi(inPhi), _MpiObj(inJMpi), _NY(_MpiObj.NYGl()),  _NX(_MpiObj.NX()),
- _Ny(_MpiObj.NYLo()), _epsilon2(epsilon), _dFdPhase(_NY,_NX)  {
+ _Ny(_MpiObj.NYLo()), _epsilon2(epsilon), _a2(a * a), _dFdPhase(_NY,_NX)  {
  }
 
 // @@ -- Write over operator ----------------------------------------------------
@@ -56,7 +57,7 @@ template <class FDClass>
 void ChenYunACBulkEnergy<FDClass>::Calc_All(){
   for (int j=0; j<_Ny; j++)
     for (int i=0; i<_NX; i++){
-      _dFdPhase(j,i) = _epsilon2 * _Phi->D2(j,i) - _Phi->F(j,i) * 2.0;
+      _dFdPhase(j,i) = _epsilon2 * _Phi->D2(j,i) + (1.0 - _Phi->F(j,i)) * _a2;
     }
 }
 

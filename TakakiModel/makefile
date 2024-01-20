@@ -8,7 +8,7 @@ FD_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD
 FDSRC_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/src
 FDINC_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/inc
 FDOBJ_DIR=$(MOD_DIR)../JunyiFDMpiCpp/TwoD/obj
-CFLAGS=-std=c++11 -O2 -Wreorder
+CFLAGS=-std=c++11 -O2 -Wreorder -march=skylake
 
 all : $(EXE_DIR)/Test1DbgCon.out $(EXE_DIR)/Test1Dbg.out $(EXE_DIR)/Test1.out $(EXE_DIR)/Test1Mini.out \
 	$(EXE_DIR)/Test1Con.out $(EXE_DIR)/Test1_angle_con.out $(EXE_DIR)/Test1_angle_con_stress.out $(EXE_DIR)/Stage2_stress.out \
