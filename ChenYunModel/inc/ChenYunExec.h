@@ -17,4 +17,5 @@
 
 #include <ChenYunOriRHS_Term1.h>
 #include <ChenYunOriRHS_Term2.h>
-
+#include <ChenYunOriLHS_Q.h>
+#include <ChenYunDThetaDT.h>

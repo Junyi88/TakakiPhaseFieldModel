@@ -109,6 +109,12 @@ int main(int argc, char ** argv){
     CYOriRHS_Term2<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_2(
         &Phi, &Theta, omega, MPIOBJ
     );
+    ChenYunOriLHS_Q<JFDMpi2DReflectHighAngle> OriLHS_Q(
+        &Theta, beta, mu, omega, MPIOBJ
+    );
+    CYOri_DThetaDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Ori_dTheta_dt(
+        &OriLHS_Q, &OriRHS_1, &OriRHS_2, tau_theta, MPIOBJ
+    );
 
     if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<< "DONE" <<std::endl;
