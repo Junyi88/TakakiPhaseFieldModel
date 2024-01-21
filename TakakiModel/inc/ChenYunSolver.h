@@ -108,7 +108,7 @@ void ChenYunSolver<FDClass, FDAngleClass>::Calc_dEtadt(){
     for (int i=0; i<_NX; i++){
       _dEtadt(j,i)=(_BulkEnergy->dFdPhase(j,i));
       _dEtadt(j,i)+=(_OriEnergy->dFdPhase(j,i));
-      _dEtadt(j,i)*=_MPhiConst;
+      // _dEtadt(j,i)*=_tauPhi;
     }
 }
 
