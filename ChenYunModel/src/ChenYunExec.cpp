@@ -106,6 +106,9 @@ int main(int argc, char ** argv){
     CYOriRHS_Term1<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_1(
         &Phi, &Theta, alpha, MinAngle0, MPIOBJ
     );
+    CYOriRHS_Term2<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_2(
+        &Phi, &Theta, omega, MPIOBJ
+    );
 
     if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<< "DONE" <<std::endl;
