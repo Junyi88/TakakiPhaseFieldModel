@@ -55,6 +55,7 @@ CYOriRHS_Term2<FDClass, FDAngleClass>::CYOriRHS_Term2(
     const double& omega,
     JMpi inJMpi
 ) :  _omega2(omega * omega),
+    _Phi(inPhi), _Theta(inTheta),
     _MpiObj(inJMpi),
     _NY(_MpiObj.NYGl()), _NX(_MpiObj.NX()), _Ny(_MpiObj.NYLo()),
     _term1(_NY,_NX), _term2(_NY, _NX), _val(_NY, _NX)

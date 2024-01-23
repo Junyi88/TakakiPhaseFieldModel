@@ -60,6 +60,7 @@ CYOriLHS_Q<FDAngleClass>::CYOriLHS_Q(
     _omega(omega),
     _beta_omega(beta*omega),
     _mu_omega(mu/omega),
+    _Theta(inTheta),
     _MpiObj(inJMpi),
     _NY(_MpiObj.NYGl()), _NX(_MpiObj.NX()), _Ny(_MpiObj.NYLo()),
     _exponent(_NY,_NX), _val(_NY, _NX), _inv(_NY, _NX)

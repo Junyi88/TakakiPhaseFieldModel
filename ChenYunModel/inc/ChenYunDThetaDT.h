@@ -10,9 +10,9 @@ class CYOri_DThetaDT {
 
 public:
     CYOri_DThetaDT(
-        CYOriLHS_Q<FDAngleClass>* Q;
-        CYOriRHS_Term1<FDClass, FDAngleClass>* RHS_T1;
-        CYOriRHS_Term2<FDClass, FDAngleClass>* RHS_T2;
+        CYOriLHS_Q<FDAngleClass>* Q,
+        CYOriRHS_Term1<FDClass, FDAngleClass>* RHS_T1,
+        CYOriRHS_Term2<FDClass, FDAngleClass>* RHS_T2,
         const double& tau_theta,
         JMpi inJMpi
     );

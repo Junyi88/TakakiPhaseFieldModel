@@ -37,7 +37,7 @@ protected:
     TakPhase<FDClass>* _Phi;
     TakAngle<FDAngleClass>* _Theta;
     JMpi _MpiObj;
-	int _NY, _NX, _Ny;
+	  int _NY, _NX, _Ny;
 
     JMat _term1;
     JMat _term2;
@@ -58,6 +58,7 @@ CYOriRHS_Term1<FDClass, FDAngleClass>::CYOriRHS_Term1(
     const double& min_theta,
     JMpi inJMpi
 ) :  _alpha(alpha), _min_theta(min_theta),
+    _Phi(inPhi), _Theta(inTheta),
     _MpiObj(inJMpi),
     _NY(_MpiObj.NYGl()), _NX(_MpiObj.NX()), _Ny(_MpiObj.NYLo()),
     _term1(_NY,_NX), _term2(_NY, _NX), _val(_NY, _NX)

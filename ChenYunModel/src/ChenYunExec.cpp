@@ -76,6 +76,8 @@ int main(int argc, char ** argv){
     tau_theta = InputParameters[15];
     w = InputParameters[16];
 
+    double inv_tau_phi = 1.0 / tau_phi;
+
     //====================================================================
     // Setup MPI
     JMpi MPIOBJ(Nnode, NPrs, NY, NX, dy, dx);
@@ -115,6 +117,14 @@ int main(int argc, char ** argv){
     CYOri_DThetaDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Ori_dTheta_dt(
         &OriLHS_Q, &OriRHS_1, &OriRHS_2, tau_theta, MPIOBJ
     );
+
+    //====
+    CYBulkRHS_Term1<JFDMpi2DReflectHigh> BulkRHS_1(&Phi, epsilon, MPIOBJ);
+    CYBulkRHS_Term2<JFDMpi2DReflectHigh> BulkRHS_2(&Phi, epsilon, w, MPIOBJ);
+    CYBulkRHS_Term3<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_3(
+        &Phi, &Theta, alpha, MPIOBJ);
+    CYBulkRHS_Term4<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_4(
+        &Phi, &Theta, omega, MPIOBJ);
 
     if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<< "DONE" <<std::endl;
