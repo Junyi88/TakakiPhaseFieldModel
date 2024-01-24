@@ -105,26 +105,72 @@ int main(int argc, char ** argv){
     TakAngle<JFDMpi2DReflectHighAngle> Theta(MPIOBJ, Theta0, MinAngle0);
 
     //=== Some Codes
-    CYOriRHS_Term1<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_1(
-        &Phi, &Theta, alpha, MinAngle0, MPIOBJ
-    );
-    CYOriRHS_Term2<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_2(
-        &Phi, &Theta, omega, MPIOBJ
-    );
-    ChenYunOriLHS_Q<JFDMpi2DReflectHighAngle> OriLHS_Q(
-        &Theta, beta, mu, omega, MPIOBJ
-    );
-    CYOri_DThetaDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Ori_dTheta_dt(
-        &OriLHS_Q, &OriRHS_1, &OriRHS_2, tau_theta, MPIOBJ
-    );
+    LogFile << "Start Loop \n" << std::endl;
+    int counter=0;
 
-    //====
-    CYBulkRHS_Term1<JFDMpi2DReflectHigh> BulkRHS_1(&Phi, epsilon, MPIOBJ);
-    CYBulkRHS_Term2<JFDMpi2DReflectHigh> BulkRHS_2(&Phi, epsilon, w, MPIOBJ);
-    CYBulkRHS_Term3<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_3(
-        &Phi, &Theta, alpha, MPIOBJ);
-    CYBulkRHS_Term4<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_4(
-        &Phi, &Theta, omega, MPIOBJ);
+    ntEnd++;
+    for (int ntime=ntStart; ntime<ntEnd; ntime++){
+
+        Phi.Calc_All();
+        Theta.Calc_All();
+        CYOriRHS_Term1<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_1(
+            &Phi, &Theta, alpha, MinAngle0, MPIOBJ
+        );
+        CYOriRHS_Term2<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_2(
+            &Phi, &Theta, omega, MPIOBJ
+        );
+        ChenYunOriLHS_Q<JFDMpi2DReflectHighAngle> OriLHS_Q(
+            &Theta, beta, mu, omega, MPIOBJ
+        );
+        CYOri_DThetaDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Ori_dTheta_dt(
+            &OriLHS_Q, &OriRHS_1, &OriRHS_2, tau_theta, MPIOBJ
+        );
+
+        //====
+        CYBulkRHS_Term1<JFDMpi2DReflectHigh> BulkRHS_1(&Phi, epsilon, MPIOBJ);
+        CYBulkRHS_Term2<JFDMpi2DReflectHigh> BulkRHS_2(&Phi, epsilon, w, MPIOBJ);
+        CYBulkRHS_Term3<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_3(
+            &Phi, &Theta, alpha, MPIOBJ);
+        CYBulkRHS_Term4<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_4(
+            &Phi, &Theta, omega, MPIOBJ);
+
+        CYBulk_DPhiDT dPhi_dt(
+            &BulkRHS_1,
+            &BulkRHS_2,
+            &BulkRHS_3,
+            &BulkRHS_4,
+            tau_phi,
+            MPIOBJ
+        );
+
+        for (int j=0; j < MPIOBJ.NYLo(); j++)
+            for (int i=0; i < MPIOBJ.NX(); i++)
+            {
+                Phi.Update_Eta(dPhi_dt.val(j,i), dt, j, i);
+                Theta.Update_Theta(Ori_dTheta_dt.val(j,u), dt, j, i);
+            }
+
+        if (counter<WriteCount){
+      counter++;
+    } else{
+      counter=1;
+      BufferString=HeaderName + "_Phi_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+      BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+      BufferString=HeaderName + "_dPhidt_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
+
+      BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
+
+      if (MPIOBJ.Nnode()==MPIOBJ.NLast())
+        std::cout<<"nTime = "<< ntime <<std::endl;
+    }
+
+    }
 
     if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<< "DONE" <<std::endl;
