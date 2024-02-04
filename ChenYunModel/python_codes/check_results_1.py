@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 import os
 
 #%%
-step_start = 10
-step_end = 100000
+step_start = 0
+step_end = 180000
 
 res_dir = "/home/junyi/scratch/diffusionbonding/run3/"
 run_name = "Test3" 

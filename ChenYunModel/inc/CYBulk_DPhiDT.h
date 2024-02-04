@@ -40,7 +40,7 @@ protected:
 
     JMat _val;
 
-protected:
+public:
     void calc_all();
 
 };

@@ -35,7 +35,7 @@ protected:
     int _NY, _NX, _Ny;
     JMat _val;
 
-protected:
+public:
     void calc_all();
 
 };

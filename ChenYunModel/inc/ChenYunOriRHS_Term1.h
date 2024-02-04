@@ -43,7 +43,7 @@ protected:
     JMat _term2;
     JMat _val;
 
-protected:
+public:
     void calc_term_1();
     void calc_term_2();
     void calc_all();

@@ -41,7 +41,7 @@ protected:
     JMat _val;
     JMat _inv;
 
-protected:
+public:
     void calc_exponent();
     void calc_all();
 

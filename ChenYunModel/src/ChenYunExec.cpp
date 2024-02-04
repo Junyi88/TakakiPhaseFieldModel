@@ -108,40 +108,61 @@ int main(int argc, char ** argv){
     LogFile << "Start Loop \n" << std::endl;
     int counter=0;
 
+    BufferString=HeaderName + "_Phi_0.csv";
+    WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
+
+    BufferString=HeaderName + "_Theta_0.csv";
+    WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+    Phi.Calc_All();
+    Theta.Calc_All();
+    CYOriRHS_Term1<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_1(
+        &Phi, &Theta, alpha, MinAngle0, MPIOBJ
+    );
+    CYOriRHS_Term2<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_2(
+        &Phi, &Theta, omega, MPIOBJ
+    );
+    CYOriLHS_Q<JFDMpi2DReflectHighAngle> OriLHS_Q(
+        &Theta, beta, mu, omega, MPIOBJ
+    );
+    CYOri_DThetaDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Ori_dTheta_dt(
+        &OriLHS_Q, &OriRHS_1, &OriRHS_2, tau_theta, MPIOBJ
+    );
+
+    //====
+    CYBulkRHS_Term1<JFDMpi2DReflectHigh> BulkRHS_1(&Phi, epsilon, MPIOBJ);
+    CYBulkRHS_Term2<JFDMpi2DReflectHigh> BulkRHS_2(&Phi, epsilon, w, MPIOBJ);
+    CYBulkRHS_Term3<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_3(
+        &Phi, &Theta, alpha, MPIOBJ);
+    CYBulkRHS_Term4<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_4(
+        &Phi, &Theta, omega, MPIOBJ);
+
+    CYBulk_DPhiDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> dPhi_dt(
+        &BulkRHS_1,
+        &BulkRHS_2,
+        &BulkRHS_3,
+        &BulkRHS_4,
+        tau_phi,
+        MPIOBJ
+    );
+
     ntEnd++;
     for (int ntime=ntStart; ntime<ntEnd; ntime++){
 
         Phi.Calc_All();
         Theta.Calc_All();
-        CYOriRHS_Term1<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_1(
-            &Phi, &Theta, alpha, MinAngle0, MPIOBJ
-        );
-        CYOriRHS_Term2<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_2(
-            &Phi, &Theta, omega, MPIOBJ
-        );
-        CYOriLHS_Q<JFDMpi2DReflectHighAngle> OriLHS_Q(
-            &Theta, beta, mu, omega, MPIOBJ
-        );
-        CYOri_DThetaDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Ori_dTheta_dt(
-            &OriLHS_Q, &OriRHS_1, &OriRHS_2, tau_theta, MPIOBJ
-        );
+        
+        OriRHS_1.calc_all();
+        OriRHS_2.calc_all();
+        OriLHS_Q.calc_all();
 
-        //====
-        CYBulkRHS_Term1<JFDMpi2DReflectHigh> BulkRHS_1(&Phi, epsilon, MPIOBJ);
-        CYBulkRHS_Term2<JFDMpi2DReflectHigh> BulkRHS_2(&Phi, epsilon, w, MPIOBJ);
-        CYBulkRHS_Term3<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_3(
-            &Phi, &Theta, alpha, MPIOBJ);
-        CYBulkRHS_Term4<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_4(
-            &Phi, &Theta, omega, MPIOBJ);
+        BulkRHS_1.calc_all();
+        BulkRHS_2.calc_all();
+        BulkRHS_3.calc_all();
+        BulkRHS_4.calc_all();
 
-        CYBulk_DPhiDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> dPhi_dt(
-            &BulkRHS_1,
-            &BulkRHS_2,
-            &BulkRHS_3,
-            &BulkRHS_4,
-            tau_phi,
-            MPIOBJ
-        );
+        Ori_dTheta_dt.calc_all();
+        dPhi_dt.calc_all();
 
         for (int j=0; j < MPIOBJ.NYLo(); j++)
             for (int i=0; i < MPIOBJ.NX(); i++)
