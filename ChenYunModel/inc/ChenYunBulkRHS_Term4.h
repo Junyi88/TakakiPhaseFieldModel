@@ -43,7 +43,7 @@ protected:
 
 
 template <class FDClass, class FDAngleClass>
-CYBulkRHS_Term3<FDClass, FDAngleClass>::CYBulkRHS_Term1(
+CYBulkRHS_Term4<FDClass, FDAngleClass>::CYBulkRHS_Term4(
     TakPhase<FDClass>* inPhi,
     TakAngle<FDAngleClass>* inTheta,
     const double& omega,
@@ -57,8 +57,8 @@ CYBulkRHS_Term3<FDClass, FDAngleClass>::CYBulkRHS_Term1(
 
 
 template <class FDClass, class FDAngleClass>
-CYBulkRHS_Term3<FDClass>& CYBulkRHS_Term3<FDClass, FDAngleClass>::operator=(
-    const CYBulkRHS_Term3<FDClass, FDAngleClass>& obj)
+CYBulkRHS_Term4<FDClass, FDAngleClass>& CYBulkRHS_Term4<FDClass, FDAngleClass>::operator=(
+    const CYBulkRHS_Term4<FDClass, FDAngleClass>& obj)
 {
     _omega2 = obj._omega2;
 
@@ -77,7 +77,7 @@ CYBulkRHS_Term3<FDClass>& CYBulkRHS_Term3<FDClass, FDAngleClass>::operator=(
 
 
 template <class FDClass, class FDAngleClass>
-void CYBulkRHS_Term3<FDClass, FDAngleClass>::calc_all()
+void CYBulkRHS_Term4<FDClass, FDAngleClass>::calc_all()
 {
 
     for (int j=0; j<_Ny; j++)

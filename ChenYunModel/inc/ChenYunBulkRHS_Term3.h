@@ -44,7 +44,7 @@ protected:
 
 template <class FDClass, class FDAngleClass>
 CYBulkRHS_Term3<FDClass, FDAngleClass>::CYBulkRHS_Term3(
-    TakPhase<FDClass, FDAngleClass>* inPhi,
+    TakPhase<FDClass>* inPhi,
     TakAngle<FDAngleClass>* inTheta,
     const double& alpha,
     JMpi inJMpi
@@ -57,7 +57,7 @@ CYBulkRHS_Term3<FDClass, FDAngleClass>::CYBulkRHS_Term3(
 
 
 template <class FDClass, class FDAngleClass>
-CYBulkRHS_Term3<FDClass>& CYBulkRHS_Term3<FDClass, FDAngleClass>::operator=(
+CYBulkRHS_Term3<FDClass, FDAngleClass>& CYBulkRHS_Term3<FDClass, FDAngleClass>::operator=(
     const CYBulkRHS_Term3<FDClass, FDAngleClass>& obj)
 {
     _alpha_times_2 = obj._alpha_times_2;

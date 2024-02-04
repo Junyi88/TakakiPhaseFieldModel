@@ -119,7 +119,7 @@ int main(int argc, char ** argv){
         CYOriRHS_Term2<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> OriRHS_2(
             &Phi, &Theta, omega, MPIOBJ
         );
-        ChenYunOriLHS_Q<JFDMpi2DReflectHighAngle> OriLHS_Q(
+        CYOriLHS_Q<JFDMpi2DReflectHighAngle> OriLHS_Q(
             &Theta, beta, mu, omega, MPIOBJ
         );
         CYOri_DThetaDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Ori_dTheta_dt(
@@ -134,7 +134,7 @@ int main(int argc, char ** argv){
         CYBulkRHS_Term4<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> BulkRHS_4(
             &Phi, &Theta, omega, MPIOBJ);
 
-        CYBulk_DPhiDT dPhi_dt(
+        CYBulk_DPhiDT<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> dPhi_dt(
             &BulkRHS_1,
             &BulkRHS_2,
             &BulkRHS_3,
@@ -147,7 +147,7 @@ int main(int argc, char ** argv){
             for (int i=0; i < MPIOBJ.NX(); i++)
             {
                 Phi.Update_Eta(dPhi_dt.val(j,i), dt, j, i);
-                Theta.Update_Theta(Ori_dTheta_dt.val(j,u), dt, j, i);
+                Theta.Update_Theta(Ori_dTheta_dt.val(j,i), dt, j, i);
             }
 
         if (counter<WriteCount){
@@ -159,12 +159,6 @@ int main(int argc, char ** argv){
 
       BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
-
-      BufferString=HeaderName + "_dPhidt_" + std::to_string(ntime) + ".csv";
-      WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);
-
-      BufferString=HeaderName + "_dThetadt_" + std::to_string(ntime) + ".csv";
-      WriteMPITextFile(OriEnergy.dThetadtPointer(), BufferString, MPIOBJ);
 
       if (MPIOBJ.Nnode()==MPIOBJ.NLast())
         std::cout<<"nTime = "<< ntime <<std::endl;

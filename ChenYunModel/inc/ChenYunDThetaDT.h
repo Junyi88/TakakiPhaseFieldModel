@@ -44,9 +44,9 @@ protected:
 
 template <class FDClass, class FDAngleClass>
 CYOri_DThetaDT<FDClass, FDAngleClass>::CYOri_DThetaDT(
-    CYOriLHS_Q<FDAngleClass>* Q;
-    CYOriRHS_Term1<FDClass, FDAngleClass>* RHS_T1;
-    CYOriRHS_Term2<FDClass, FDAngleClass>* RHS_T2;
+    CYOriLHS_Q<FDAngleClass>* Q,
+    CYOriRHS_Term1<FDClass, FDAngleClass>* RHS_T1,
+    CYOriRHS_Term2<FDClass, FDAngleClass>* RHS_T2,
     const double& tau_theta,
     JMpi inJMpi
   ) :  _tau_theta(tau_theta), _inv_tau_theta(1.0 / tau_theta),
