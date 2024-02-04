@@ -1,0 +1,1 @@
+mpiexec -n 2 /home/junyi/repos/TakakiPhaseFieldModel/ChenYunModel/exec/ChenYunExec.out Test3 /home/junyi/scratch/diffusionbonding/run3/datafiles.inp /home/junyi/scratch/diffusionbonding/run3/params.inp
