@@ -19,6 +19,10 @@
 #include "ChenYunACTOriEnergy.h"
 
 #include "ChenYunSolver.h"
+#include "ChenYunSolver_Con.h"
+
+#include "BasicChemPotential.h"
+#include "TakACChemEnergy.h"
 
 int main(int argc, char ** argv){
 
@@ -199,6 +203,14 @@ int main(int argc, char ** argv){
   Splitter(Theta0, BufferFull, MPIOBJ);
   LogFile << "Reading Initial Conditions Theta Completed \n" << std::endl;
 
+  LogFile << "========================================" << std::endl;
+  LogFile << "Reading Initial Conditions Con =  " << InitialConditionFileList[3] << std::endl;
+  BufferString=InitialConditionFileList[2];
+  ReadTextFile(BufferFull.Pointer() , BufferString, NX, NY, ',');
+  Splitter(Con0, BufferFull, MPIOBJ);
+  LogFile << "Reading Initial Conditions Con Completed \n" << std::endl;
+
+
   //*************************************************************************
   //FDClass=JFDMpi2DReflectHigh;
   //FDAngleClass=JFDMpi2DReflectHighAngle;
@@ -213,6 +225,11 @@ int main(int argc, char ** argv){
   LogFile << "Setup Theta Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
+  LogFile << "Setup Con Class " << std::endl;
+  BasicChemPotential<JFDMpi2DExternal1> Con(MPIOBJ, kappa_chem, Con0);
+  LogFile << "Setup Con Class Completed \n" << std::endl;
+
+  LogFile << "========================================" << std::endl;
   LogFile << "Setup TakACBulkEnergy Class " << std::endl;
   ChenYunACBulkEnergy<JFDMpi2DReflectHigh> BulkEnergy(&Phi, CY_epsilon, CY_a, MPIOBJ);
   LogFile << "Setup TakACBulkEnergy Class Completed \n" << std::endl;
@@ -224,10 +241,17 @@ int main(int argc, char ** argv){
   LogFile << "Setup TakACTOriEnergy Class Completed \n" << std::endl;
 
   LogFile << "========================================" << std::endl;
+  LogFile << "Setup TakACChemEnergy Class " << std::endl;
+  TakACChemEnergy<JFDMpi2DExternal1> ChemEnegy(&Con, MChem, MPIOBJ);
+  LogFile << "Setup TakACChemEnergy Class Completed \n" << std::endl;
+
+
+  LogFile << "========================================" << std::endl;
   LogFile << "Setup TakakiSolver Class " << std::endl;
-  ChenYunSolver<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(
-    &Phi, &Theta,
+  ChenYunSolver_Con<JFDMpi2DReflectHigh, JFDMpi2DReflectHighAngle> Solver(
+    &Phi, &Theta, &Con,
     &BulkEnergy, &OriEnergy,
+    &ChemEnegy,
     inMPhiConst , dt, 
     CY_tauPhi, CY_tauTheta,
     MPIOBJ);
@@ -236,6 +260,8 @@ int main(int argc, char ** argv){
   BufferString="Phi_0_R.csv";
   WriteMPITextFile(Phi.FP(), BufferString, MPIOBJ);
 
+  BufferString=HeaderName + "_Con_0.csv";
+  WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
 
   LogFile << "========================================" << std::endl;
   LogFile << "Do 1 Step " << std::endl;
@@ -309,6 +335,9 @@ int main(int argc, char ** argv){
 
       BufferString=HeaderName + "_Theta_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Theta.FP(), BufferString, MPIOBJ);
+
+      BufferString=HeaderName + "_Con_" + std::to_string(ntime) + ".csv";
+      WriteMPITextFile(Con.FP(), BufferString, MPIOBJ);
 
       BufferString=HeaderName + "_dPhidt_" + std::to_string(ntime) + ".csv";
       WriteMPITextFile(Solver.dEtadtPointer(), BufferString, MPIOBJ);

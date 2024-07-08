@@ -68,6 +68,12 @@ $(EXE_DIR)/Test1_ChenYun.out : $(TESTSRC_DIR)/Test1_ChenYun.cpp
 		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp \
 		$(FDSRC_DIR)/AuxFunctions.cpp $(FDSRC_DIR)/JFDMpiAngle.cpp
 
+$(EXE_DIR)/Test1_ChenYun_Con.out : $(TESTSRC_DIR)/Test1_ChenYun_Con.cpp
+	mpicxx $(CFLAGS) -I$(FDINC_DIR) -I$(FDSRC_DIR) -I$(INC_DIR) -I$(SRC_DIR) -o \
+		$(EXE_DIR)/Test1_ChenYun_Con.out $(TESTSRC_DIR)/Test1_ChenYun_Con.cpp \
+		$(FDSRC_DIR)/JMat.cpp $(FDSRC_DIR)/JMpi.cpp $(FDSRC_DIR)/JFDMpi.cpp \
+		$(FDSRC_DIR)/AuxFunctions.cpp $(FDSRC_DIR)/JFDMpiAngle.cpp
+
 .PHONY: clean
 clean:
 		rm -f $(EXE_DIR)/*.out
