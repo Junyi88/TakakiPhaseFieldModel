@@ -24,7 +24,7 @@ private:
   JMpi _MpiObj;
   int _NY, _NX, _Ny;
 
-  const double _MChem;
+  double _MChem;
   JMat _dcondt;
 };
 
